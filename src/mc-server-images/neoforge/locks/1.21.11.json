@@ -1,0 +1,935 @@
+{
+  "entries": [
+    {
+      "artifact": {
+        "filename": "Chunky-NeoForge-1.4.54.jar",
+        "sha512": "aa35a6aebf5aeef0fc428e729b607a40e67f413be7c1dc38c7c1f1589c35bdefda57a68627cd80d1967dcb84f6897169982bd80d0ef57a713ae89ad6ff76abb4",
+        "size": 352784,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/gF4bKpRK/Chunky-NeoForge-1.4.54.jar"
+      },
+      "build": null,
+      "closure": [
+        "chunky"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "chunky",
+      "identity": {
+        "file_id": null,
+        "project_id": "fALzjamp",
+        "slug": "chunky",
+        "version_id": "gF4bKpRK"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "pop4959"
+        ],
+        "description": "Pre-generates chunks, quickly and efficiently",
+        "homepage": "https://modrinth.com/mod/chunky",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "Chunky",
+        "version": "1.4.54"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "cloth-config-21.11.153-neoforge.jar",
+        "sha512": "04713c7d5c3e0a8de711b4f54933c2adf72836008e37dd6e65e8c10b4c7a45d28f3ecdf4b3a94dad6c62725cd5135247cafc378ae2711b13440962abf9c61dfe",
+        "size": 1157748,
+        "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Wsus0EWg/cloth-config-21.11.153-neoforge.jar"
+      },
+      "build": null,
+      "closure": [
+        "cloth-config"
+      ],
+      "conflicts": [],
+      "declared": false,
+      "dependencies": [],
+      "id": "cloth-config",
+      "identity": {
+        "file_id": null,
+        "project_id": "9s6osm5g",
+        "slug": "cloth-config",
+        "version_id": "Wsus0EWg"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "shedaniel"
+        ],
+        "description": "Configuration Library for Minecraft Mods",
+        "homepage": "https://modrinth.com/mod/cloth-config",
+        "license": "LGPL-3.0-only",
+        "missing": [],
+        "name": "Cloth Config API",
+        "version": "21.11.153+neoforge"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "Clumps-neoforge-1.21.11-29.0.0.1.jar",
+        "sha512": "48d735331125a5aa6bc936b64c88195be8879f02ede244c8199dd5d33cad6d8207e552ae7e63e6b6eb34e961eac06c8f7a694b1f6a87a80583d8dab6548fa4c9",
+        "size": 18772,
+        "url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/a8bNGdqK/Clumps-neoforge-1.21.11-29.0.0.1.jar"
+      },
+      "build": null,
+      "closure": [
+        "clumps"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "clumps",
+      "identity": {
+        "file_id": null,
+        "project_id": "Wnxd13zP",
+        "slug": "clumps",
+        "version_id": "a8bNGdqK"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "jaredlll08"
+        ],
+        "description": "Clumps XP orbs together to reduce lag",
+        "homepage": "https://modrinth.com/mod/clumps",
+        "license": "MIT",
+        "missing": [],
+        "name": "Clumps",
+        "version": "29.0.0.1"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "codxlib-1.6.1-neoforge+1.21.11.jar",
+        "sha512": "d25252f59436ffe941006fedac02d2e714ed19a0e59ae56d72923526330ad976f6e28bbccb03b4e7273c435372101c8019283951692d19e4f6abf1a4f10f3d3a",
+        "size": 193585,
+        "url": "https://cdn.modrinth.com/data/6oyMM4yX/versions/WxwLuZ2H/codxlib-1.6.1-neoforge%2B1.21.11.jar"
+      },
+      "build": null,
+      "closure": [
+        "codxlib"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "codxlib",
+      "identity": {
+        "file_id": null,
+        "project_id": "6oyMM4yX",
+        "slug": "codxlib",
+        "version_id": "WxwLuZ2H"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [],
+        "description": "A library with shared functions for all Codx mods.",
+        "homepage": "https://modrinth.com/mod/codxlib",
+        "license": "CC-BY-NC-ND-4.0",
+        "missing": [
+          "authors"
+        ],
+        "name": "CodxLib",
+        "version": "1.6.1+neoforge-1.21.11"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "cristellib-neoforge-1.21.11-3.1.7.jar",
+        "sha512": "120dc80f8c93df143a76124cfea3c34ca0861947df581a8649ab2c750ecbc4ab344c88b54f33d1ead9e73e87d2bf4db64c3ad8cb458af231b146568ba4eee04b",
+        "size": 584662,
+        "url": "https://cdn.modrinth.com/data/cl223EMc/versions/rhpKhWXb/cristellib-neoforge-1.21.11-3.1.7.jar"
+      },
+      "build": null,
+      "closure": [
+        "cloth-config",
+        "cristel-lib"
+      ],
+      "conflicts": [],
+      "declared": false,
+      "dependencies": [
+        {
+          "id": "cloth-config",
+          "kind": "required"
+        }
+      ],
+      "id": "cristel-lib",
+      "identity": {
+        "file_id": null,
+        "project_id": "cl223EMc",
+        "slug": "cristel-lib",
+        "version_id": "rhpKhWXb"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Cristelknight"
+        ],
+        "description": "A Library mod for easy structure config and runtime datapacks.",
+        "homepage": "https://modrinth.com/mod/cristel-lib",
+        "license": "CC-BY-NC-ND-4.0",
+        "missing": [],
+        "name": "Cristel Lib",
+        "version": "neoforge-1.21.11-3.1.7"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "ferritecore-8.2.0-neoforge.jar",
+        "sha512": "83f402ab8c5cd4aa28ad922af0c8ecd82daecc9e7faf7475ebfa999f3cf76005aab2170a64cb616ae4e6e36a82b1265cb0167454e0211c8724e02fd3bc23721b",
+        "size": 79272,
+        "url": "https://cdn.modrinth.com/data/uXXizFIs/versions/mLI5k2Gi/ferritecore-8.2.0-neoforge.jar"
+      },
+      "build": null,
+      "closure": [
+        "ferrite-core"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "ferrite-core",
+      "identity": {
+        "file_id": null,
+        "project_id": "uXXizFIs",
+        "slug": "ferrite-core",
+        "version_id": "mLI5k2Gi"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "malte0811"
+        ],
+        "description": "Memory usage optimizations",
+        "homepage": "https://modrinth.com/mod/ferrite-core",
+        "license": "MIT",
+        "missing": [],
+        "name": "FerriteCore",
+        "version": "8.2.0-neoforge"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "Jade-1.21.11-NeoForge-21.1.7.jar",
+        "sha512": "0ced9be214e2bfd3d5afe9cff1cd3e243de7f8ca3d4b9fe773f5019bfd9f831a31a5f185865cd94688294a8375ed142c52be2ccb565bfc38c4623d18c2c265c4",
+        "size": 948614,
+        "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/LDFqgwEA/Jade-1.21.11-NeoForge-21.1.7.jar"
+      },
+      "build": null,
+      "closure": [
+        "jade"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "jade",
+      "identity": {
+        "file_id": null,
+        "project_id": "nvQzSEkH",
+        "slug": "jade",
+        "version_id": "LDFqgwEA"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Snownee"
+        ],
+        "description": "Shows information about what you are looking at. (Hwyla/Waila fork for Minecraft 1.16+)",
+        "homepage": "https://modrinth.com/mod/jade",
+        "license": "CC-BY-NC-SA-4.0",
+        "missing": [],
+        "name": "Jade 🔍",
+        "version": "21.1.7+neoforge"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "jei-1.21.11-neoforge-27.35.0.90.jar",
+        "sha512": "e228b9f69ded355f6cc0eccdcfdba37c630a2fa0860861b46796684d86396efbc9086d3ae28153228342adcd1db3249c2930eea31f220a61a3958129b9b3ea1e",
+        "size": 1824127,
+        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/HHAZAOwD/jei-1.21.11-neoforge-27.35.0.90.jar"
+      },
+      "build": null,
+      "closure": [
+        "jei"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "jei",
+      "identity": {
+        "file_id": null,
+        "project_id": "u6dRKJwZ",
+        "slug": "jei",
+        "version_id": "HHAZAOwD"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "mezz"
+        ],
+        "description": "View Items and Recipes",
+        "homepage": "https://modrinth.com/mod/jei",
+        "license": "MIT",
+        "missing": [],
+        "name": "Just Enough Items (JEI)",
+        "version": "27.35.0.90"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "ketket-graves-2.1.jar",
+        "sha512": "0a398243471629b645d99da9acea6d65826bffcd70855f974b45fae491d128aaa0ba6cb46182889294dd27474dff1f92747673dbf2fdd89142513d7a0672dcd2",
+        "size": 238863,
+        "url": "https://cdn.modrinth.com/data/bYcfmIoG/versions/hsHPP0ZY/ketket-graves-2.1.jar"
+      },
+      "build": null,
+      "closure": [
+        "ketket-graves"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "ketket-graves",
+      "identity": {
+        "file_id": null,
+        "project_id": "bYcfmIoG",
+        "slug": "ketket-graves",
+        "version_id": "hsHPP0ZY"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "efeketket"
+        ],
+        "description": "This datapack creates a grave when a player dies, safely storing their items. Retrieve your belongings without worrying about losing them!",
+        "homepage": "https://modrinth.com/mod/ketket-graves",
+        "license": "MIT",
+        "missing": [],
+        "name": "Graves",
+        "version": "2.1+mod"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "lithium-neoforge-0.21.4+mc1.21.11.jar",
+        "sha512": "df72f98f0a678aaa1bc6967105b00ac0533f078ec3a85098385d5a4a36ee5f8e101109ca19ae2170ba6e6b55c15c4a7654976d7c457f09ec44cda3fff4a7f270",
+        "size": 878706,
+        "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/M93zf1Gr/lithium-neoforge-0.21.4%2Bmc1.21.11.jar"
+      },
+      "build": null,
+      "closure": [
+        "lithium"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "lithium",
+      "identity": {
+        "file_id": null,
+        "project_id": "gvQqBUqZ",
+        "slug": "lithium",
+        "version_id": "M93zf1Gr"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "jellysquid3",
+          "2No2Name"
+        ],
+        "description": "No-compromises game logic optimization mod, useful for both single-player games and multi-player servers.",
+        "homepage": "https://modrinth.com/mod/lithium",
+        "license": "LGPL-3.0-only",
+        "missing": [],
+        "name": "Lithium",
+        "version": "mc1.21.11-0.21.4-neoforge"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "lithostitched-1.7.2-neoforge-21.11.jar",
+        "sha512": "d47c37dacb3bd410196b05a26274f6558735f4e382d3f1ad8663ccf3ea892121f1e35b2f7c30872c524173c04e0555367715e5472fe13592622952d990f53e95",
+        "size": 828510,
+        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/GXKf1eIb/lithostitched-1.7.2-neoforge-21.11.jar"
+      },
+      "build": null,
+      "closure": [
+        "lithostitched"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "lithostitched",
+      "identity": {
+        "file_id": null,
+        "project_id": "XaDC71GB",
+        "slug": "lithostitched",
+        "version_id": "GXKf1eIb"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Apollo"
+        ],
+        "description": "Library mod with new configurability and compatibility enhancements for worldgen",
+        "homepage": "https://modrinth.com/mod/lithostitched",
+        "license": "MIT",
+        "missing": [],
+        "name": "Lithostitched",
+        "version": "1.7.2-neoforge-21.11"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "lootr-neoforge-1.21.11-1.20.34.104.jar",
+        "sha512": "3c69c048191e9ae5a676fb39db3cc956bda2499eac5739dde4ded62964279ed0144bd32fc83e89336d4b26f630723c4fb16631d45d2be13befda5316ec7f3814",
+        "size": 988168,
+        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/TBkxTN54/lootr-neoforge-1.21.11-1.20.34.104.jar"
+      },
+      "build": null,
+      "closure": [
+        "lootr"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "lootr",
+      "identity": {
+        "file_id": null,
+        "project_id": "EltpO5cN",
+        "slug": "lootr",
+        "version_id": "TBkxTN54"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "embeddedt",
+          "ZestyBlaze",
+          "noobanidus"
+        ],
+        "description": "A mod that makes it so nobody misses out on Loot! All loot chests are instanced per player and visually unique.",
+        "homepage": "https://modrinth.com/mod/lootr",
+        "license": "MIT",
+        "missing": [],
+        "name": "Lootr",
+        "version": "1.21.11-1.20.34.104"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": null,
+      "build": null,
+      "closure": [
+        "mezzconfig"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "mezzconfig",
+      "identity": {
+        "file_id": null,
+        "project_id": "7tEfOcA7",
+        "slug": "mezzconfig",
+        "version_id": null
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "mezz"
+        ],
+        "description": "Simple configuration library for Minecraft Mods",
+        "homepage": "https://modrinth.com/mod/mezzconfig",
+        "license": "MIT",
+        "missing": [],
+        "name": "MezzConfig",
+        "version": null
+      },
+      "reason": "no stable neoforge release found for Minecraft 1.21.11 or any other version",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
+    },
+    {
+      "artifact": {
+        "filename": "monsters_in_the_closet_reborn-1.0.3+1.21.11-neoforge.jar",
+        "sha512": "72151804a91debd419f36cda672f049f942ba1d4326fb5c14e3810b0785cbec366576b3ed9420670a31e8898fbbd13397d7073841a8985b9eb65856f34fa4f78",
+        "size": 13956,
+        "url": "https://cdn.modrinth.com/data/uA5LOlSs/versions/94i592eV/monsters_in_the_closet_reborn-1.0.3%2B1.21.11-neoforge.jar"
+      },
+      "build": null,
+      "closure": [
+        "monsters-in-the-closet-reborn"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "monsters-in-the-closet-reborn",
+      "identity": {
+        "file_id": null,
+        "project_id": "uA5LOlSs",
+        "slug": "monsters-in-the-closet-reborn",
+        "version_id": "94i592eV"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "KoroWin"
+        ],
+        "description": "Highlights the mobs that are preventing you from sleeping.",
+        "homepage": "https://modrinth.com/mod/monsters-in-the-closet-reborn",
+        "license": "MIT",
+        "missing": [],
+        "name": "Monsters in the Closet Reborn",
+        "version": "1.0.3"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "servercore-neoforge-1.5.15+1.21.11.jar",
+        "sha512": "9b500d0e049b8b7fd08cdfcee69d77add58aacdf438d23566118eba333fadc6c7edfb98a6a2f2f87377b49a0829e2dbc1a90ee777ae0eb8a6c632acd262a988b",
+        "size": 1517659,
+        "url": "https://cdn.modrinth.com/data/4WWQxlQP/versions/7Fkwao8d/servercore-neoforge-1.5.15%2B1.21.11.jar"
+      },
+      "build": null,
+      "closure": [
+        "servercore"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "servercore",
+      "identity": {
+        "file_id": null,
+        "project_id": "4WWQxlQP",
+        "slug": "servercore",
+        "version_id": "7Fkwao8d"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Wesley1808"
+        ],
+        "description": "A mod that aims to optimize the minecraft server.",
+        "homepage": "https://modrinth.com/mod/servercore",
+        "license": "MIT",
+        "missing": [],
+        "name": "ServerCore",
+        "version": "1.5.15+1.21.11"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "SimpleBackups-1.20.1-3.1.19.jar",
+        "sha512": "48d4f27876a9693dc5299004c878e9599ae3564bf57598710481b053d4916a330683cc21b5d927d7db1098b6f754a8efd37c6cdb6311302642e9b4740ed43e00",
+        "size": 46819,
+        "url": "https://cdn.modrinth.com/data/fzSKSXVK/versions/b0VVmLcA/SimpleBackups-1.20.1-3.1.19.jar"
+      },
+      "build": null,
+      "closure": [
+        "simple-backups"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "simple-backups",
+      "identity": {
+        "file_id": null,
+        "project_id": "fzSKSXVK",
+        "slug": "simple-backups",
+        "version_id": "b0VVmLcA"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "MelanX"
+        ],
+        "description": "A simple mod to create scheduled backups",
+        "homepage": "https://modrinth.com/mod/simple-backups",
+        "license": "Apache-2.0",
+        "missing": [],
+        "name": "Simple Backups",
+        "version": "1.20.1-3.1.19"
+      },
+      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 1.21.11 (neoforge 21.11.45)",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unsupported_fallback",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.20.1"
+      ]
+    },
+    {
+      "artifact": null,
+      "build": null,
+      "closure": [
+        "sophisticated-backpacks"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "sophisticated-backpacks",
+      "identity": {
+        "file_id": null,
+        "project_id": "TyCTlI4b",
+        "slug": "sophisticated-backpacks",
+        "version_id": null
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "P3pp3rF1y"
+        ],
+        "description": "Yet another backpack mod this time with backpack you can place in world, color in different color combinations, upgrade with more inventory and enhance with many functional upgrades",
+        "homepage": "https://modrinth.com/mod/sophisticated-backpacks",
+        "license": "LicenseRef-All-Rights-Reserved",
+        "missing": [],
+        "name": "Sophisticated Backpacks",
+        "version": null
+      },
+      "reason": "license 'LicenseRef-All-Rights-Reserved' is not on the redistribution allowlist (licenses.yml); no author permission recorded",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
+    },
+    {
+      "artifact": null,
+      "build": null,
+      "closure": [
+        "sophisticated-storage"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "sophisticated-storage",
+      "identity": {
+        "file_id": null,
+        "project_id": "hMlaZH8f",
+        "slug": "sophisticated-storage",
+        "version_id": null
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "P3pp3rF1y"
+        ],
+        "description": "Storage mod with multiple tiers and functional upgrades",
+        "homepage": "https://modrinth.com/mod/sophisticated-storage",
+        "license": "LicenseRef-All-Rights-Reserved",
+        "missing": [],
+        "name": "Sophisticated Storage",
+        "version": null
+      },
+      "reason": "license 'LicenseRef-All-Rights-Reserved' is not on the redistribution allowlist (licenses.yml); no author permission recorded",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
+    },
+    {
+      "artifact": {
+        "filename": "spark-1.10.170-neoforge.jar",
+        "sha512": "66d623311c2893f2b1617d0f6f148a1a451b34313809b764087f802b85167b58a4d40bd0de06f0d5beff23ae6dc0a03e087cd72a76964352cdfd8a7de57db4c6",
+        "size": 3958504,
+        "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/FZ8rM4gr/spark-1.10.170-neoforge.jar"
+      },
+      "build": null,
+      "closure": [
+        "spark"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "spark",
+      "identity": {
+        "file_id": null,
+        "project_id": "l6YH9Als",
+        "slug": "spark",
+        "version_id": "FZ8rM4gr"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "lucko"
+        ],
+        "description": "spark is a performance profiler for Minecraft clients, servers and proxies.",
+        "homepage": "https://modrinth.com/mod/spark",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "spark",
+        "version": "1.10.170-neoforge"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": null,
+      "build": null,
+      "closure": [
+        "terralith"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "terralith",
+      "identity": {
+        "file_id": null,
+        "project_id": "8oi3bsk5",
+        "slug": "terralith",
+        "version_id": null
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Apollo",
+          "catter1",
+          "Starmute"
+        ],
+        "description": "Explore almost 100 new biomes consisting of both realism and light fantasy, using just Vanilla blocks. Complete with several immersive structures to compliment the overhauled terrain.",
+        "homepage": "https://modrinth.com/mod/terralith",
+        "license": "LicenseRef-Stardust-Labs-License",
+        "missing": [],
+        "name": "Terralith",
+        "version": null
+      },
+      "reason": "license 'LicenseRef-Stardust-Labs-License' is not on the redistribution allowlist (licenses.yml); no author permission recorded",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
+    },
+    {
+      "artifact": {
+        "filename": "t_and_t-fabric-neoforge-1.13.9.jar",
+        "sha512": "e0f743b746e78b271bca04c8684408eeb8e4a8570dccc4eebabc62a774c8404569963090f04056bb0f25bb39116a1b8ee47840dfd75a1c415ac5dfb41678b6c9",
+        "size": 3507359,
+        "url": "https://cdn.modrinth.com/data/DjLobEOy/versions/qb0cwwDT/t_and_t-fabric-neoforge-1.13.9.jar"
+      },
+      "build": null,
+      "closure": [
+        "cloth-config",
+        "cristel-lib",
+        "towns-and-towers"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [
+        {
+          "id": "cristel-lib",
+          "kind": "required"
+        }
+      ],
+      "id": "towns-and-towers",
+      "identity": {
+        "file_id": null,
+        "project_id": "DjLobEOy",
+        "slug": "towns-and-towers",
+        "version_id": "qb0cwwDT"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Biban_Auriu",
+          "Kubek",
+          "Cristelknight"
+        ],
+        "description": "Spice up your world with new villages, pillager outposts, and even new ships!",
+        "homepage": "https://modrinth.com/mod/towns-and-towers",
+        "license": "CC-BY-NC-SA-4.0",
+        "missing": [],
+        "name": "Towns and Towers",
+        "version": "1.13.9"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "neoforge"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    }
+  ],
+  "image": "minecraft-server-neoforge",
+  "inputs_hash": "sha256:cb5e3a850c636d4bd49d6b3a4083d1b0a10dacba6de0783bdef96477f5274691",
+  "minecraft_version": "1.21.11",
+  "runtime": {
+    "base_digest": "sha256:cff19e6215689161eb6162c11b86b0c60ddf802164f2eaf48d570f8fb79a36c5",
+    "base_image": "eclipse-temurin:21-jre",
+    "java_major": 21
+  },
+  "schema": 1,
+  "server": "neoforge",
+  "server_build": {
+    "details": {
+      "downloads": {
+        "installer": {
+          "sha1": "040069577abf286e8d2348756b4aa2a8fb51fefe",
+          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.11.45/neoforge-21.11.45-installer.jar"
+        }
+      }
+    },
+    "loader_version": "21.11.45",
+    "reason": null,
+    "status": "available"
+  }
+}
