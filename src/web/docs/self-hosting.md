@@ -1,11 +1,11 @@
 # Self-hosting this site
 
-This documentation is published to GitHub Pages and also as a container image, `ghcr.io/hambn/minecraft-web:latest`, that serves the same pages from an unprivileged web server.
+This documentation is published to GitHub Pages and also as a container image, `ghcr.io/{{owner}}/minecraft-web:latest`, that serves the same pages from an unprivileged web server.
 
 ## Run the published image
 
 ```sh
-docker run -d --name mc-docs -p 8080:8080 ghcr.io/hambn/minecraft-web:latest
+docker run -d --name mc-docs -p 8080:8080 ghcr.io/{{owner}}/minecraft-web:latest
 ```
 
 Open http://localhost:8080/. The site is served from the root path `/`. The container listens on port 8080 and runs as a non-root user. It needs no volumes and no network access.
@@ -23,7 +23,7 @@ The page content reflects the lock files in your checkout, so run `git pull` fir
 
 ## Generate the files without Docker
 
-The generator needs only Python 3.12 and the standard library:
+The generator needs only a recent Python 3 and the standard library:
 
 ```sh
 python3 src/web/build.py --servers src/mc-server-images --out site --base-path /
@@ -37,7 +37,7 @@ Use a different `--base-path`, such as `/minecraft/`, when you serve the site be
 ```yaml
 services:
   docs:
-    image: ghcr.io/hambn/minecraft-web:latest
+    image: ghcr.io/{{owner}}/minecraft-web:latest
     ports:
       - "8080:8080"
     restart: unless-stopped

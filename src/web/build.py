@@ -5,7 +5,7 @@
         --base-path /minecraft/ [--docs src/web/docs] [--repo hambn/minecraft]
 
 Reads ``<server>/locks/status.json`` and ``<server>/locks/<minecraft>.json``
-and renders plain HTML files (no JavaScript, no external assets). Python 3.12,
+and renders plain HTML files (no JavaScript, no external assets). Python 3,
 standard library only. The output is deterministic for identical inputs.
 """
 
@@ -15,6 +15,7 @@ import argparse
 import hashlib
 import html
 import json
+import os
 import re
 import shutil
 import sys
@@ -27,8 +28,8 @@ sys.path.insert(0, str(HERE))
 
 import markdown_lite  # noqa: E402
 
-SERVERS = ["fabric", "neoforge", "paper", "pumpkin"]
-
+# Optional descriptive metadata. Servers are discovered from
+# <servers>/*/locks/status.json; one missing here gets default_info().
 SERVER_INFO: dict[str, dict[str, Any]] = {
     "fabric": {
         "title": "Fabric",
@@ -67,6 +68,24 @@ SERVER_INFO: dict[str, dict[str, Any]] = {
         "blurb": "Pumpkin, a Rust server built from source (no Mojang code). WASM plugins are selected with PLUGINS.",
     },
 }
+
+def default_info(server: str) -> dict[str, Any]:
+    return {
+        "title": server.replace("-", " ").title(),
+        "env": "MODS",
+        "kind": "mods",
+        "catalog_dir": "/data/mods",
+        "eula": True,
+        "loader_label": "Loader version",
+        "blurb": f"The {server} server image.",
+    }
+
+
+def discover_servers(servers_dir: Path) -> list[str]:
+    """Server names that have a locks/status.json, sorted."""
+    found = [p.parent.parent.name for p in servers_dir.glob("*/locks/status.json")]
+    return sorted(n for n in found if VERSION_RE.match(n))
+
 
 DOC_ORDER = [
     "getting-started",
@@ -141,7 +160,7 @@ class ImageData:
 
     def __init__(self, server: str, servers_dir: Path):
         self.server = server
-        self.info = SERVER_INFO[server]
+        self.info = {**default_info(server), **SERVER_INFO.get(server, {})}
         directory = servers_dir / server / "locks"
         self.status = read_json(directory / "status.json") or {}
         raw_targets = self.status.get("targets")
@@ -169,16 +188,23 @@ class ImageData:
         return [str(v) for v in as_list(self.status.get("window")) if VERSION_RE.match(str(v))]
 
     @property
+    def upcoming(self) -> list[str]:
+        """Newer releases this server has no stable build for yet (always pending)."""
+        return [str(v) for v in as_list(self.status.get("upcoming")) if VERSION_RE.match(str(v))]
+
+    @property
     def latest(self) -> str | None:
         latest = self.status.get("latest")
         return str(latest) if latest and VERSION_RE.match(str(latest)) else None
 
     def versions(self) -> list[str]:
-        names = set(self.targets) | set(self.locks) | set(self.window)
+        names = set(self.targets) | set(self.locks) | set(self.window) | set(self.upcoming)
         return sorted(names, key=version_key, reverse=True)
 
     def state(self, version: str) -> str:
         target = self.targets.get(version)
+        if version in self.upcoming:
+            return "pending"
         if target is not None:
             state = str(target.get("state", ""))
             if state in ("published", "pending", "frozen"):
@@ -207,10 +233,11 @@ class Site:
         self.docs_dir = docs
         self.repo = repo
         self.owner = repo.split("/")[0].lower() if "/" in repo else repo.lower()
-        self.images = {s: ImageData(s, servers) for s in SERVERS}
+        self.servers = discover_servers(servers)
+        self.images = {s: ImageData(s, servers) for s in self.servers}
         for image in self.images.values():
-            if "{owner}" in image.image_ref:
-                image.status.setdefault("image", f"ghcr.io/{self.owner}/minecraft-server-{image.server}")
+            # The registry owner always comes from --repo, never from a stale status file.
+            image.status["image"] = f"ghcr.io/{self.owner}/minecraft-server-{image.server}"
         self.templates = {p.stem: Template(p.read_text(encoding="utf-8")) for p in (HERE / "templates").glob("*.html")}
         css = (HERE / "static" / "style.css").read_bytes()
         self.css_version = hashlib.sha256(css).hexdigest()[:10]
@@ -237,7 +264,7 @@ class Site:
 
     def nav(self, section: str) -> str:
         items = [("", "Overview", "home")]
-        items += [(f"images/{s}/", SERVER_INFO[s]["title"], f"image-{s}") for s in SERVERS]
+        items += [(f"images/{s}/", self.images[s].info["title"], f"image-{s}") for s in self.servers]
         items.append(("docs/", "Docs", "docs"))
         parts = []
         for path, label, key in items:
@@ -284,7 +311,7 @@ class Site:
         self.copy_static()
         self.load_docs()
         self.render_index()
-        for server in SERVERS:
+        for server in self.servers:
             self.render_image(self.images[server])
             for version in self.images[server].versions():
                 if self.images[server].available(version) and version in self.images[server].locks:
@@ -311,7 +338,7 @@ class Site:
 
     def render_index(self) -> None:
         cards = []
-        for server in SERVERS:
+        for server in self.servers:
             image = self.images[server]
             latest = f"<code>{e(image.latest)}</code>" if image.latest and image.available(image.latest) else "none yet"
             cards.append(self.templates["image_card"].safe_substitute(
@@ -323,11 +350,18 @@ class Site:
                 versions=self.version_badges(image),
             ))
 
-        windows = [i.window for i in self.images.values() if i.window]
+        rows = []
+        for server in self.servers:
+            image = self.images[server]
+            maintained = ", ".join(f"<code>{e(v)}</code>" for v in image.window) or DASH
+            upcoming = ", ".join(f"<code>{e(v)}</code>" for v in image.upcoming) or DASH
+            rows.append(f"<tr><td>{self.link(f'images/{server}/', image.info['title'])}</td>"
+                        f"<td>{maintained}</td><td>{upcoming}</td></tr>")
         window_html = ""
-        if windows:
-            window_html = ("<p>The currently maintained Minecraft releases are "
-                           + ", ".join(f"<code>{e(v)}</code>" for v in windows[0]) + ".</p>")
+        if rows:
+            window_html = ('<div class="table-wrap"><table>'
+                           "<thead><tr><th>Image</th><th>Maintained</th><th>Upcoming (pending)</th></tr></thead>"
+                           "<tbody>" + "".join(rows) + "</tbody></table></div>")
         any_published = any(i.by_state("published") or i.by_state("frozen") for i in self.images.values())
         empty = ""
         if not any_published:
@@ -342,12 +376,12 @@ class Site:
 {"".join(cards)}
 </div>
 <h2 id="window">Maintained versions</h2>
+<p>Each image maintains the three newest stable Minecraft releases that it has a stable server build for, so the versions differ per image. Each release has its own tag, and <code>latest</code> points at the newest one that built and passed its checks.</p>
 {window_html}
-<p>Only the three newest stable Minecraft releases are rebuilt. Each release has its own tag, and <code>latest</code> points at the newest one that built and passed its checks.</p>
 <ul>
 <li>{self.badge("published")} the tag exists in the registry and is rebuilt when its components update.</li>
-<li>{self.badge("pending")} the release is in the window but no stable server build exists yet. It is <strong>not</strong> pullable.</li>
-<li>{self.badge("frozen")} the release left the window. The tag stays published but is no longer updated.</li>
+<li>{self.badge("pending")} a newer Minecraft release this server has no stable build for yet; not pullable.</li>
+<li>{self.badge("frozen")} the release left this server&rsquo;s maintained window. The tag stays published but is no longer updated.</li>
 </ul>
 <p>Next: {self.link("docs/getting-started/", "getting started")}, {self.link("docs/mods-and-plugins/", "choosing mods and plugins")} or {self.link("docs/tags-and-updates/", "tags and updates")}.</p>
 """
@@ -372,9 +406,12 @@ class Site:
         if latest and image.available(latest):
             parts.append(f"<p>Latest: <code>{e(latest)}</code> (<code>{e(ref)}:latest</code>)</p>")
             if image.status.get("latest_outside_window"):
-                parts.append('<div class="notice warn"><code>latest</code> points at a release that is outside the maintained window because no newer target has built yet.</div>')
+                parts.append('<div class="notice warn"><code>latest</code> points at a release that is outside this image&rsquo;s maintained window because no newer target has built yet.</div>')
         if image.window:
-            parts.append("<p>Active window: " + ", ".join(f"<code>{e(v)}</code>" for v in image.window) + ".</p>")
+            parts.append("<p>Maintained: " + ", ".join(f"<code>{e(v)}</code>" for v in image.window) + ".</p>")
+        if image.upcoming:
+            parts.append("<p>Upcoming (newer releases without a stable server build yet, not pullable): "
+                         + ", ".join(f"<code>{e(v)}</code>" for v in image.upcoming) + ".</p>")
         if image.status.get("updated_at"):
             parts.append(f'<p class="muted">Status updated {e(image.status["updated_at"])}.</p>')
 
@@ -390,7 +427,7 @@ class Site:
                 elif state in AVAILABLE_STATES:
                     contents = '<span class="muted">lock file not available</span>'
                 elif state == "pending":
-                    contents = f'<span class="muted">{e(target.get("reason") or "Waiting for a stable server build.")}</span>'
+                    contents = f'<span class="muted">{e(target.get("reason") or "No stable server build for this release yet.")}</span>'
                 else:
                     contents = '<span class="muted">not recorded as published</span>'
                 pull = f"<code>{e(ref)}:{e(v)}</code>" if state in AVAILABLE_STATES else DASH
@@ -444,7 +481,7 @@ class Site:
 <h1>{e(info["title"])} {e(version)} {self.badge(state)}</h1>
 """]
         if state == "frozen":
-            parts.append('<div class="notice warn">This release left the maintained window. The tag stays published, but it is frozen and no longer updated.</div>')
+            parts.append('<div class="notice warn">This release left this image&rsquo;s maintained window. The tag stays published, but it is frozen and no longer updated.</div>')
         pull = [f"docker pull {ref}:{version}"]
         digest = target.get("digest")
         if digest:
@@ -588,9 +625,37 @@ class Site:
         files = {p.stem: p for p in self.docs_dir.glob("*.md") if VERSION_RE.match(p.stem)}
         order = [s for s in DOC_ORDER if s in files] + sorted(s for s in files if s not in DOC_ORDER)
         for slug in order:
-            text = files[slug].read_text(encoding="utf-8")
+            text = self.expand_placeholders(files[slug].read_text(encoding="utf-8"), slug)
             title = markdown_lite.first_heading(text) or slug.replace("-", " ").title()
             self.docs.append({"slug": slug, "text": text, "title": title})
+
+    PLACEHOLDER_RE = re.compile(r"\{\{\s*([a-z]+)(?::([0-9A-Za-z._-]+))?\s*\}\}")
+
+    def placeholder(self, kind: str, server: str | None) -> str | None:
+        """Value for {{kind}} or {{kind:server}}; None when unknown."""
+        if server is None:
+            return {"owner": self.owner, "repo": self.repo}.get(kind)
+        image = self.images.get(server)
+        if image is None:
+            return None
+        newest = image.latest if image.latest and image.available(image.latest) else (image.window[0] if image.window else None)
+        return {
+            "image": image.image_ref,
+            "latest": newest or "<minecraft-version>",
+            "latestregex": (newest or "<minecraft-version>").replace(".", "\\."),
+            "window": ", ".join(image.window) or "none",
+            "upcoming": ", ".join(image.upcoming) or "none",
+        }.get(kind)
+
+    def expand_placeholders(self, text: str, slug: str) -> str:
+        """Replace {{owner}}, {{repo}}, {{image:S}}, {{latest:S}}, {{latestregex:S}}, {{window:S}}, {{upcoming:S}}."""
+        def sub(m: re.Match) -> str:
+            value = self.placeholder(m.group(1), m.group(2))
+            if value is None:
+                print(f"warning: docs/{slug}.md: unknown placeholder {m.group(0)}", file=sys.stderr)
+                return m.group(0)
+            return value
+        return self.PLACEHOLDER_RE.sub(sub, text)
 
     def rewrite_link(self, url: str) -> str:
         if re.match(r"^[a-z][a-z0-9+.-]*:", url, re.I) or url.startswith("#") or url.startswith("//"):
@@ -657,7 +722,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", required=True, type=Path, help="output directory (replaced)")
     parser.add_argument("--base-path", default="/", help="URL prefix, e.g. /minecraft/ for GitHub Pages or / for root")
     parser.add_argument("--docs", type=Path, default=HERE / "docs", help="markdown documentation directory")
-    parser.add_argument("--repo", default="hambn/minecraft", help="GitHub owner/name used for links and image refs")
+    parser.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY") or "hambn/minecraft", help="GitHub owner/name used for links and image refs")
     args = parser.parse_args(argv)
 
     site = Site(args.servers, args.out, args.base_path, args.docs, args.repo)

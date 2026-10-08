@@ -4,18 +4,18 @@
 #   docker build -f src/web/Dockerfile -t minecraft-web:local .
 #   docker run --rm -p 8080:8080 minecraft-web:local      # http://localhost:8080/
 
-FROM python:3.12.11-slim-bookworm AS builder
+FROM python:3-slim AS builder
 # build.py and markdown_lite.py use only the standard library; no pip install needed.
 WORKDIR /build
 COPY src/web/ ./web/
-COPY src/mc-server-images/fabric/locks/ ./servers/fabric/locks/
-COPY src/mc-server-images/neoforge/locks/ ./servers/neoforge/locks/
-COPY src/mc-server-images/paper/locks/ ./servers/paper/locks/
-COPY src/mc-server-images/pumpkin/locks/ ./servers/pumpkin/locks/
-RUN python web/build.py --servers servers --out /site --base-path / \
+# Every server dir is copied; build.py only reads <server>/locks/*.json.
+COPY src/mc-server-images/ ./servers/
+# Owner/name for image refs and links; CI passes --build-arg REPO=$GITHUB_REPOSITORY.
+ARG REPO=hambn/minecraft
+RUN python web/build.py --servers servers --out /site --base-path / --repo "$REPO" \
     && test -s /site/index.html
 
-FROM nginxinc/nginx-unprivileged:1.29-alpine
+FROM nginxinc/nginx-unprivileged:stable-alpine
 # Replace the default server block: static files, 404 page, caching.
 RUN printf '%s\n' \
     'server {' \

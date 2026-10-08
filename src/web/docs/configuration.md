@@ -44,7 +44,7 @@ Only the keys you set are changed on each start. Other lines in `server.properti
 
 ```sh
 docker run --rm -v mc-data:/data -e EULA=TRUE -e MODS=lithium -e ACTIVATE_ONLY=true \
-  ghcr.io/hambn/minecraft-server-fabric:<version>
+  {{image:fabric}}:<version>
 ```
 
 The exit status is 0 when the selection is valid and non-zero with an error message otherwise.

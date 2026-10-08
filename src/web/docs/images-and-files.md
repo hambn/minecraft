@@ -33,11 +33,11 @@ Nothing is fetched during startup. The Minecraft server, loader and every mod or
 Images carry OCI labels, including `org.opencontainers.image.source`, `org.opencontainers.image.version` (the Minecraft version), `io.github.hambn.minecraft.server`, `io.github.hambn.minecraft.catalog-env` and `io.github.hambn.minecraft.catalog-dir`. Inspect them with:
 
 ```sh
-docker inspect --format '{{json .Config.Labels}}' ghcr.io/hambn/minecraft-server-paper:<version>
+docker inspect --format '{{json .Config.Labels}}' {{image:paper}}:<version>
 ```
 
 To see the exact catalog inside an image:
 
 ```sh
-docker run --rm --entrypoint cat ghcr.io/hambn/minecraft-server-paper:<version> /opt/catalog/catalog.tsv
+docker run --rm --entrypoint cat {{image:paper}}:<version> /opt/catalog/catalog.tsv
 ```

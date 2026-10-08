@@ -6,12 +6,12 @@ Run a prebuilt Minecraft server image with one command. Mods and plugins are alr
 
 | Image | Server | Selection variable |
 | --- | --- | --- |
-| `ghcr.io/hambn/minecraft-server-fabric` | Fabric | `MODS` |
-| `ghcr.io/hambn/minecraft-server-neoforge` | NeoForge | `MODS` |
-| `ghcr.io/hambn/minecraft-server-paper` | Paper | `PLUGINS` |
-| `ghcr.io/hambn/minecraft-server-pumpkin` | Pumpkin | `PLUGINS` |
+| `{{image:fabric}}` | Fabric | `MODS` |
+| `{{image:neoforge}}` | NeoForge | `MODS` |
+| `{{image:paper}}` | Paper | `PLUGINS` |
+| `{{image:pumpkin}}` | Pumpkin | `PLUGINS` |
 
-Every image has one tag per Minecraft release, for example `ghcr.io/hambn/minecraft-server-paper:26.2`. Only the tags listed on the overview and image pages are published. A release marked pending has no image yet. See [tags and updates](tags-and-updates.md).
+Every image has one tag per Minecraft release, for example `{{image:paper}}:{{latest:paper}}`. Only the tags listed on the overview and image pages are published. A release marked pending is a newer Minecraft release that server has no stable build for yet, so there is no image to pull. See [tags and updates](tags-and-updates.md).
 
 ## Run with Docker
 
@@ -21,10 +21,10 @@ docker run -d --name mc \
   -v mc-data:/data \
   -e EULA=TRUE \
   -e MEMORY=4G \
-  ghcr.io/hambn/minecraft-server-paper:<version>
+  {{image:paper}}:<version>
 ```
 
-Replace `<version>` with a published Minecraft version tag.
+Replace `<version>` with a published Minecraft version tag, for example `{{latest:paper}}`. The versions differ per image; each image page lists its own.
 
 - `-p 25565:25565` exposes the Minecraft port.
 - `-v mc-data:/data` keeps the world, configuration and logs. Without a volume the world is lost when the container is removed.
@@ -34,7 +34,7 @@ The container runs as UID 1000. When you bind-mount a host directory instead of 
 
 ```sh
 mkdir -p ./data && sudo chown 1000:1000 ./data
-docker run -d -p 25565:25565 -v "$PWD/data:/data" -e EULA=TRUE ghcr.io/hambn/minecraft-server-paper:<version>
+docker run -d -p 25565:25565 -v "$PWD/data:/data" -e EULA=TRUE {{image:paper}}:<version>
 ```
 
 Follow the log and stop the server cleanly:
@@ -51,7 +51,7 @@ The server saves the world on SIGTERM, so give it time to stop.
 ```yaml
 services:
   minecraft:
-    image: ghcr.io/hambn/minecraft-server-fabric:<version>
+    image: {{image:fabric}}:<version>
     ports:
       - "25565:25565"
     environment:
@@ -76,7 +76,7 @@ Everything bundled in an image is inactive until you select it. Fabric and NeoFo
 ```sh
 docker run -d -p 25565:25565 -v mc-data:/data -e EULA=TRUE \
   -e MODS=lithium,ferrite-core \
-  ghcr.io/hambn/minecraft-server-fabric:<version>
+  {{image:fabric}}:<version>
 ```
 
 The IDs you can use for each image and Minecraft version are listed on that version's page, which is linked from the overview. See [mods and plugins](mods-and-plugins.md) for the rules.

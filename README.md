@@ -8,20 +8,20 @@ Prebuilt Minecraft server images and a documentation website. Every server image
 
 | Image | Server |
 | --- | --- |
-| `ghcr.io/hambn/minecraft-server-fabric` | Fabric |
-| `ghcr.io/hambn/minecraft-server-neoforge` | NeoForge |
-| `ghcr.io/hambn/minecraft-server-paper` | Paper |
-| `ghcr.io/hambn/minecraft-server-pumpkin` | Pumpkin |
+| `ghcr.io/<owner>/minecraft-server-fabric` | Fabric |
+| `ghcr.io/<owner>/minecraft-server-neoforge` | NeoForge |
+| `ghcr.io/<owner>/minecraft-server-paper` | Paper |
+| `ghcr.io/<owner>/minecraft-server-pumpkin` | Pumpkin |
 
 Each server keeps one manifest beside its custom files, for example `src/mc-server-images/fabric/mods/mods.yml` or `src/mc-server-images/paper/plugins/plugins.yml`. It has `modrinth` and `curseforge` for automatic stable updates, `custom_build` for source projects compiled by CI, and `prebuilt` for ready JAR or WASM files. Metadata and versions for upstream entries are fetched automatically; custom entries declare them explicitly. Exact versions, metadata, and checksums for each Minecraft target are recorded in `src/mc-server-images/locks/`.
 
 ### Tags
 
-- Exact Minecraft version tags, including patch versions, for example `26.3`, `26.2`, and `26.1.2`. CI maintains only the three newest stable releases and pushes component updates to those same tags. Older published tags remain frozen.
+- Exact Minecraft version tags, including patch versions, for example `<minecraft-version>` such as `1.2.3`. The maintenance window is per server: each image maintains the three newest stable Minecraft releases that it actually has a stable server build for, and CI pushes component updates to those same tags. A newer Minecraft release a server has no stable build for yet is listed as upcoming (pending) and is not pullable. Tags that leave a server's window remain published but frozen. Pumpkin supports only one Minecraft version at a time, so its window has one entry.
 - `latest`: the newest successfully built and checked active Minecraft version for each server image. Missing mod/plugin support does not block it.
 - These are the only image tags; there are no separate build or mod-version tags.
 
-Pin a version tag (for example `26.3`) to get updates within that Minecraft version without moving to the next one.
+Pin a version tag to get updates within that Minecraft version without moving to the next one. The documentation website lists the current versions of each image.
 
 ## Mod and plugin selection
 
@@ -31,13 +31,13 @@ Each maintained version bundles the newest compatible stable upstream releases w
 
 ## Documentation website
 
-`ghcr.io/hambn/minecraft-web` documents what each server image contains and how to run and configure it. The site covers maintained and frozen versions, mod/plugin metadata and compatibility, selection IDs and environment variables, startup behavior, persistent storage, and image updates.
+`ghcr.io/<owner>/minecraft-web` documents what each server image contains and how to run and configure it. The site covers maintained and frozen versions, mod/plugin metadata and compatibility, selection IDs and environment variables, startup behavior, persistent storage, and image updates.
 
 The documentation is published to GitHub Pages and packaged as a self-hostable image built with `src/web/Dockerfile`. A dedicated `web.yml` workflow handles both destinations.
 
 ## Build automation
 
-Fabric, NeoForge, Paper, and Pumpkin each have their own GitHub Actions workflow. Every stage uses a matrix: `plan` discovers the three newest stable Minecraft releases, `build` runs one job per release, and `push_image` currently has one GHCR registry job that publishes the tested images.
+Fabric, NeoForge, Paper, and Pumpkin each have their own GitHub Actions workflow. Every stage uses a matrix: `plan` discovers the three newest stable Minecraft releases each server has a stable build for, `build` runs one job per release, and `push_image` currently has one GHCR registry job that publishes the tested images.
 
 Updates are fully automatic. After an image passes its checks, the workflow pushes the tags and commits the new locks and `status.json` straight to `main`; there are no update PRs to approve.
 
