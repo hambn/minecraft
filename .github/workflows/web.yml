@@ -143,7 +143,7 @@ jobs:
           user="$(docker inspect --format '{{.Config.User}}' local/minecraft-web:latest)"
           case "$user" in ''|0|root|0:*|root:*) echo "::error::image runs as root"; exit 1 ;; esac
           docker run -d --name web-smoke -p 8080:8080 local/minecraft-web:latest
-          curl -fsS --retry 15 --retry-delay 1 --retry-connrefused http://127.0.0.1:8080/ | grep -qi '<html'
+          curl -fsS --retry 15 --retry-delay 1 --retry-all-errors http://127.0.0.1:8080/ | grep -qi '<html'
 
       - name: Show container logs on failure
         if: failure() && matrix.target == 'docker'
