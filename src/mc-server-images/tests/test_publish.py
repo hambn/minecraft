@@ -35,7 +35,8 @@ def digest(tag: str, salt: str = "") -> str:
 class FakeRunner:
     """Records commands; emulates skopeo's --digestfile and optional failures."""
 
-    def __init__(self, salt: str = "", fail=None):
+    def __init__(self, salt: str = "", fail=None, staged: bool = True):
+        self.staged = staged
         self.calls: list[list[str]] = []
         self.cwds: list = []
         self.salt = salt
@@ -46,6 +47,8 @@ class FakeRunner:
         self.cwds.append(cwd)
         if self.fail(cmd, len(self.calls)):
             raise subprocess.CalledProcessError(1, cmd)
+        if cmd[:4] == ["git", "diff", "--cached", "--quiet"] and self.staged:
+            raise subprocess.CalledProcessError(1, cmd)  # git's "there are staged changes"
         if "--digestfile" in cmd:
             tag = cmd[-1].rsplit(":", 1)[1]
             Path(cmd[cmd.index("--digestfile") + 1]).write_text(digest(tag, self.salt) + "\n")
@@ -132,14 +135,22 @@ class TestHappyPath(PublishTestBase):
         self.assertEqual(calls, [
             ["skopeo", "copy", f"docker-archive:{tar}", f"docker://{IMAGE}:26.3"],
             ["skopeo", "copy", "--all", f"docker://{IMAGE}:26.3", f"docker://{IMAGE}:latest"],
-            ["git", "add", "src/mc-server-images/fabric/locks"],
+            ["git", "fetch", "origin", "main"],
+            ["git", "reset", "--hard", "origin/main"],
+            ["git", "add", "--all", "src/mc-server-images/fabric/locks"],
+            ["git", "diff", "--cached", "--quiet"],
             ["git", "-c", "user.name=github-actions[bot]",
              "-c", "user.email=41898282+github-actions[bot]@users.noreply.github.com",
              "commit", "-m", "chore(fabric): update locks for 26.3"],
-            ["git", "pull", "--rebase", "origin", "main"],
             ["git", "push", "origin", "HEAD:main"],
         ])
-        self.assertEqual(runner.cwds[2:], [self.repo] * 4)
+        self.assertEqual(runner.cwds[2:], [self.repo] * 6)
+        self.assertTrue((self.fabric / "26.3.json").is_file())  # restored after the reset
+
+    def test_nothing_to_push_when_main_already_matches(self):
+        code, runner = self.run_publish(runner=FakeRunner(staged=False))
+        self.assertEqual(code, 0)
+        self.assertFalse([c for c in runner.calls if "commit" in c or c[:2] == ["git", "push"]])
         digestfile = runner.calls[0][3]
         self.assertEqual(runner.calls[0][2], "--digestfile")
         self.assertTrue(digestfile.endswith("digest"))
@@ -370,7 +381,7 @@ class TestPushRetry(PublishTestBase):
         code, runner = self.run_publish(runner=FakeRunner(fail=fail))
         self.assertEqual(code, 0)
         self.assertEqual(len(pushes), 3)
-        self.assertEqual(len([c for c in runner.calls if c[:2] == ["git", "pull"]]), 3)
+        self.assertEqual(len([c for c in runner.calls if c[:2] == ["git", "fetch"]]), 3)
         self.assertEqual(self.sleeps, [2, 4])
 
     def test_gives_up_after_five(self):

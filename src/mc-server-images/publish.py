@@ -475,6 +475,13 @@ class Publisher:
         return changed
 
     def _commit(self, versions: list[str], window: list[str]) -> None:
+        """Commit this server's locks directory on top of the newest ``main`` and push.
+
+        Only this server's publisher writes its locks directory, so every attempt
+        starts from a fresh ``origin/main`` and lays the computed files over it.
+        That cannot conflict, unlike a rebase of a commit that touched the same
+        lock as a concurrent run. Meant for CI checkouts (it resets the work tree).
+        """
         try:
             rel = self.server_locks.relative_to(self.repo_root)
         except ValueError:
@@ -484,18 +491,27 @@ class Publisher:
         else:
             message = f"chore({self.server}): update status"
         cwd = self.repo_root
-        self.run(["git", "add", str(rel)], cwd=cwd)
-        self.run(
-            [
-                "git", "-c", f"user.name={BOT_NAME}", "-c", f"user.email={BOT_EMAIL}",
-                "commit", "-m", message,
-            ],
-            cwd=cwd,
-        )
+        snapshot = {
+            path.name: path.read_bytes()
+            for path in sorted(self.server_locks.glob("*.json"))
+        } if self.server_locks.is_dir() else {}
         last: Exception | None = None
         for attempt in range(1, PUSH_ATTEMPTS + 1):
             try:
-                self.run(["git", "pull", "--rebase", "origin", "main"], cwd=cwd)
+                self.run(["git", "fetch", "origin", "main"], cwd=cwd)
+                self.run(["git", "reset", "--hard", "origin/main"], cwd=cwd)
+                self._restore(snapshot)
+                self.run(["git", "add", "--all", str(rel)], cwd=cwd)
+                if self._nothing_staged(cwd):
+                    log("main already has these files")
+                    return
+                self.run(
+                    [
+                        "git", "-c", f"user.name={BOT_NAME}", "-c", f"user.email={BOT_EMAIL}",
+                        "commit", "-m", message,
+                    ],
+                    cwd=cwd,
+                )
                 self.run(["git", "push", "origin", "HEAD:main"], cwd=cwd)
                 return
             except subprocess.CalledProcessError as exc:
@@ -504,6 +520,23 @@ class Publisher:
                 if attempt < PUSH_ATTEMPTS:
                     self._sleep(2 ** attempt)
         raise PublishError(f"could not push to main after {PUSH_ATTEMPTS} attempts: {last}")
+
+    def _restore(self, snapshot: dict[str, bytes]) -> None:
+        if self.dry_run:
+            return
+        self.server_locks.mkdir(parents=True, exist_ok=True)
+        for path in self.server_locks.glob("*.json"):
+            if path.name not in snapshot:
+                path.unlink()
+        for name, data in snapshot.items():
+            (self.server_locks / name).write_bytes(data)
+
+    def _nothing_staged(self, cwd: Path) -> bool:
+        try:
+            ran = self.run(["git", "diff", "--cached", "--quiet"], cwd=cwd)
+        except subprocess.CalledProcessError:
+            return False  # exit 1: there are staged changes
+        return ran
 
 
 def publish_command(args: Any, **injected: Any) -> int:
