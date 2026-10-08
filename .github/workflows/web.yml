@@ -1,0 +1,239 @@
+# Documentation site pipeline. Stages (each uses a job matrix):
+#   plan           snapshot the website sources and committed server locks, pin the commit,
+#                  emit the build targets (pages with the repository sub-path, docker at /).
+#   build          one job per target: generate the site and check it. `pages` produces the
+#                  Pages deployment artifact; `docker` builds src/web/Dockerfile, smoke-tests the
+#                  container and exports the tested image as an artifact.
+#   publish_pages  main only: deploy the Pages artifact (github-pages environment).
+#   push_image     main only: push the tested image archive to ghcr.io/<owner>/minecraft-web:latest.
+# Runs again after any server workflow succeeds so the site reflects newly published locks.
+name: web
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "src/web/**"
+      - "src/mc-server-images/*/locks/**"
+      - ".github/workflows/web.yml"
+  pull_request:
+    paths:
+      - "src/web/**"
+      - "src/mc-server-images/*/locks/**"
+      - ".github/workflows/web.yml"
+  workflow_run:
+    workflows: [fabric, neoforge, paper, pumpkin]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('web-pr-{0}', github.ref) || 'web' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  plan:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        site: [docs]
+    outputs:
+      targets: ${{ steps.targets.outputs.targets }}
+      sha: ${{ steps.snapshot.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.ref }}
+
+      - name: Snapshot documentation inputs and locks
+        id: snapshot
+        run: |
+          sha="$(git rev-parse HEAD)"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          mkdir -p snapshot
+          tar -czf snapshot/inputs.tar.gz src/web src/mc-server-images/*/locks
+          {
+            echo "commit $sha"
+            find src/web src/mc-server-images/*/locks -type f -print0 | sort -z | xargs -0 sha256sum
+          } > snapshot/inputs.sha256
+
+      - name: Emit build targets
+        id: targets
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          targets="$(jq -cn --arg repo "$REPO_NAME" \
+            '{include: [{target: "pages", base_path: ("/" + $repo + "/")}, {target: "docker", base_path: "/"}]}')"
+          echo "targets=$targets" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web-plan-${{ matrix.site }}
+          path: snapshot
+          retention-days: 3
+          if-no-files-found: error
+
+  build:
+    name: build ${{ matrix.target }}
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.targets) }}
+    steps:
+      # Same commit the plan snapshotted, so both targets use identical inputs.
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.plan.outputs.sha }}
+
+      - uses: actions/setup-python@v7
+        if: matrix.target == 'pages'
+        with:
+          python-version: "3.12"
+
+      - name: Install site generator dependencies
+        if: matrix.target == 'pages'
+        run: |
+          for req in src/web/requirements.txt src/mc-server-images/requirements.txt; do
+            if [ -f "$req" ]; then pip install -r "$req"; fi
+          done
+
+      - name: Generate site for GitHub Pages
+        if: matrix.target == 'pages'
+        run: |
+          python src/web/build.py \
+            --servers src/mc-server-images \
+            --out site \
+            --base-path "${{ matrix.base_path }}"
+          test -s site/index.html
+
+      - uses: actions/configure-pages@v6
+        if: matrix.target == 'pages' && github.event_name != 'pull_request'
+
+      - uses: actions/upload-pages-artifact@v5
+        if: matrix.target == 'pages'
+        with:
+          path: site
+          retention-days: 3
+
+      - uses: docker/setup-buildx-action@v4
+        if: matrix.target == 'docker'
+        with:
+          driver: docker
+
+      # The Dockerfile builds the site itself with base path "/" from the repository root.
+      - name: Build web image
+        if: matrix.target == 'docker'
+        run: |
+          docker build \
+            -f src/web/Dockerfile \
+            --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
+            --label "org.opencontainers.image.revision=${{ needs.plan.outputs.sha }}" \
+            -t local/minecraft-web:latest .
+
+      - name: Smoke test web image
+        if: matrix.target == 'docker'
+        run: |
+          user="$(docker inspect --format '{{.Config.User}}' local/minecraft-web:latest)"
+          case "$user" in ''|0|root|0:*|root:*) echo "::error::image runs as root"; exit 1 ;; esac
+          docker run -d --name web-smoke -p 8080:8080 local/minecraft-web:latest
+          curl -fsS --retry 15 --retry-delay 1 --retry-connrefused http://127.0.0.1:8080/ | grep -qi '<html'
+
+      - name: Show container logs on failure
+        if: failure() && matrix.target == 'docker'
+        run: docker logs web-smoke || true
+
+      - name: Stop container
+        if: always() && matrix.target == 'docker'
+        run: docker rm -f web-smoke || true
+
+      - name: Export web image
+        if: matrix.target == 'docker'
+        run: |
+          mkdir -p web-image
+          docker save -o web-image/image.tar local/minecraft-web:latest
+
+      - uses: actions/upload-artifact@v7
+        if: matrix.target == 'docker'
+        with:
+          name: web-image
+          path: web-image
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+
+  publish_pages:
+    needs: [plan, build]
+    if: >-
+      github.event_name != 'pull_request'
+      && github.ref == 'refs/heads/main'
+      && needs.build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        destination: [github-pages]
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: ${{ matrix.destination }}
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
+
+  push_image:
+    needs: [plan, build]
+    if: >-
+      github.event_name != 'pull_request'
+      && github.ref == 'refs/heads/main'
+      && needs.build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        registry: [ghcr]
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: web-image
+          path: web-image
+
+      - name: Select registry
+        id: registry
+        env:
+          REGISTRY: ${{ matrix.registry }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          case "$REGISTRY" in
+            ghcr) host=ghcr.io ;;
+            *) echo "::error::unknown registry $REGISTRY"; exit 1 ;;
+          esac
+          echo "host=$host" >> "$GITHUB_OUTPUT"
+          echo "image=$host/${OWNER,,}/minecraft-web:latest" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to the registry
+        env:
+          REGISTRY: ${{ matrix.registry }}
+          HOST: ${{ steps.registry.outputs.host }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          case "$REGISTRY" in
+            ghcr) skopeo login "$HOST" -u "${{ github.actor }}" --password-stdin <<< "$GITHUB_TOKEN" ;;
+          esac
+
+      - name: Push image
+        run: |
+          skopeo copy \
+            "docker-archive:web-image/image.tar" \
+            "docker://${{ steps.registry.outputs.image }}"
