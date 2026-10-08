@@ -13,7 +13,8 @@ ARG LOADER_VERSION
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 WORKDIR /build
 COPY downloads/installer.jar downloads/server.jar ./
-RUN java -jar installer.jar server \
+RUN mkdir -p /opt/server; \
+    java -jar installer.jar server \
         -mcversion "${MINECRAFT_VERSION}" \
         -loader "${LOADER_VERSION}" \
         -dir /opt/server; \
