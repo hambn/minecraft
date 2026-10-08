@@ -1,18 +1,18 @@
 {
   "entries": [],
   "image": "minecraft-server-pumpkin",
-  "inputs_hash": "sha256:0f8b4fcff3b494c6c34522e5175e119723370d695d84d90c88ebeb24a5a6200d",
+  "inputs_hash": "sha256:1417f8b711e281a0bca72f8a3ab381a9d2d2a0d3c37f093c59e4e2766b75048b",
   "minecraft_version": "26.3",
   "runtime": {
-    "base_digest": "sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587",
-    "base_image": "debian:bookworm-slim",
+    "base_digest": "sha256:a29215f6a35e51e22adffa17f89e9d2ef06214e64a2bad10d765c46aea49f11f",
+    "base_image": "debian:trixie-slim",
     "java_major": null
   },
   "schema": 1,
   "server": "pumpkin",
   "server_build": {
     "details": {
-      "builder_image": "rust:1.96-bookworm@sha256:a339861ae23e9abb272cea45dfafde21760d2ce6577a70f8a926153677902663",
+      "builder_image": "rust:1.96-trixie@sha256:1f0dbad1df66647807e6952d1db85d0b2bda7606cb2139d82517e4f009967376",
       "downloads": {},
       "source": {
         "commit": "5ede4c217f4f74499cf52a748eac65d9437f2eaf",

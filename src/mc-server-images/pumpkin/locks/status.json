@@ -2,28 +2,19 @@
   "schema": 1,
   "server": "pumpkin",
   "image": "ghcr.io/hambn/minecraft-server-pumpkin",
-  "updated_at": "2026-10-08T12:33:56Z",
+  "updated_at": "2026-10-08T13:26:30Z",
   "window": [
-    "26.3",
-    "26.2",
-    "26.1.2"
+    "26.3"
   ],
+  "upcoming": [],
   "latest": "26.3",
   "latest_outside_window": false,
   "targets": {
     "26.3": {
       "state": "published",
-      "digest": "sha256:e264f0f91880ce27736452bc3283e152e105f5fd93b16600e165982b5b1505d1",
-      "published_at": "2026-10-08T12:33:56Z",
+      "digest": "sha256:a0df1c9399672b629609e2e7d0af9c88a06345906160923de1e54e488fcb22fc",
+      "published_at": "2026-10-08T13:26:30Z",
       "lock": "26.3.json"
-    },
-    "26.2": {
-      "state": "pending",
-      "reason": "Pumpkin master (5ede4c217f4f) supports Minecraft 26.3, not 26.2"
-    },
-    "26.1.2": {
-      "state": "pending",
-      "reason": "Pumpkin master (5ede4c217f4f) supports Minecraft 26.3, not 26.1.2"
     }
   }
 }
