@@ -68,7 +68,7 @@ def read_results(artifacts: Path, server: str) -> dict[str, dict]:
     """
     found: dict[str, dict] = {}
     if not artifacts.is_dir():
-        raise PublishError(f"artifacts directory does not exist: {artifacts}")
+        return found  # no build jobs ran: every target was unchanged or pending
     for path in sorted(artifacts.rglob("result.json")):
         try:
             result = json.loads(path.read_text(encoding="utf-8"))
@@ -85,6 +85,21 @@ def read_results(artifacts: Path, server: str) -> dict[str, dict]:
             log(f"warning: duplicate result for {mc}: {path} replaces {found[mc]['dir']}")
         found[mc] = {"result": result, "dir": path.parent}
     return found
+
+
+def read_plan_pending(plan_dir: Path | None) -> dict[str, str]:
+    """``{minecraft: reason}`` for the plan's pending targets (they get no build job)."""
+    if plan_dir is None:
+        return {}
+    path = Path(plan_dir) / "plan.json"
+    if not path.is_file():
+        raise PublishError(f"plan file does not exist: {path}")
+    plan = read_json(path)
+    return {
+        str(t["minecraft"]): t.get("reason") or "pending"
+        for t in plan.get("targets") or []
+        if t.get("status") == "pending"
+    }
 
 
 def read_json(path: Path) -> Any:
@@ -123,8 +138,6 @@ def compute_status(
 
     for mc in upcoming:
         old = prev_targets.get(mc)
-        if old and old.get("digest") and old.get("state") in ("published", "frozen"):
-            continue  # handled with the frozen tags below
         if mc in pending:
             targets[mc] = {"state": "pending", "reason": pending[mc]}
         elif old and old.get("state") == "pending":
@@ -154,12 +167,8 @@ def compute_status(
             targets[mc] = dict(old)
         # else: no information about this version yet; leave it out.
 
-    # Versions that left the window: published ones freeze, the rest are dropped.
-    for mc, old in prev_targets.items():
-        if mc in in_window:
-            continue
-        if old.get("digest") and old.get("state") in ("published", "frozen"):
-            targets[mc] = {**old, "state": "frozen"}
+    # Versions that left the window are dropped (their locks are deleted); the
+    # registry tags stay but are no longer maintained.
 
     latest = None
     outside = False
@@ -234,6 +243,8 @@ class Publisher:
         self.registry: str = args.registry.rstrip("/")
         self.dry_run: bool = bool(getattr(args, "dry_run", False))
         self.no_commit: bool = bool(getattr(args, "no_commit", False))
+        plan_dir = getattr(args, "plan", None)
+        self.plan_dir: Path | None = Path(plan_dir) if plan_dir else None
         self._run = run or default_runner
         self._now = now or (lambda: datetime.now(timezone.utc))
         self._window_fn = window_fn or (lambda: default_window(self.server))
@@ -262,11 +273,12 @@ class Publisher:
         window, upcoming = [str(v) for v in window], [str(v) for v in upcoming]
         log(f"window: {', '.join(window) or '(none)'}; upcoming: {', '.join(upcoming) or '(none)'}")
         found = read_results(self.artifacts, self.server)
-        if not found:
-            raise PublishError(f"no result.json found under {self.artifacts}")
 
         built: dict[str, dict] = {}
-        pending: dict[str, str] = {}
+        pending: dict[str, str] = {
+            mc: reason for mc, reason in read_plan_pending(self.plan_dir).items()
+            if mc in window or mc in upcoming
+        }
         for mc, item in sorted(found.items()):
             result = item["result"]
             status = result.get("status")
@@ -433,6 +445,15 @@ class Publisher:
         self, status: dict, previous: dict | None, published: dict, built: dict
     ) -> bool:
         changed = False
+        # Locks of versions that left the window are no longer needed.
+        if self.server_locks.is_dir():
+            for path in sorted(self.server_locks.glob("*.json")):
+                if path.name == "status.json" or path.stem in status["window"]:
+                    continue
+                changed = True
+                if not self.dry_run:
+                    path.unlink()
+                log(f"lock {path.name} removed (left the window)")
         for mc in published:
             lock = read_json(built[mc]["dir"] / "lock.json")
             text = canonical_json(lock)

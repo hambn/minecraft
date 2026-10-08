@@ -12,7 +12,7 @@ Each image maintains the three newest stable Minecraft releases (no snapshots or
 
 - **Published.** The tag exists and is rebuilt when its inputs change.
 - **Pending.** A newer Minecraft release this server has no stable build for yet; not pullable. These are listed as upcoming on the image page, and the tag appears once a stable server build exists.
-- **Frozen.** The release left that server's window. The tag stays in the registry but is never rebuilt.
+- **Dropped.** When a release leaves a server's window, it disappears from this site and from the repository. Its tag stays in the registry but is never rebuilt.
 
 The overview and image pages show the state of every tag, taken from the published status data.
 
@@ -64,9 +64,9 @@ spec:
 
 Reference the result in a manifest with an image setter marker, for example `image: {{image:paper}}:{{latest:paper}}@sha256:<digest> # {"$imagepolicy": "flux-system:minecraft-paper"}`. Check the `digestReflectionPolicy` field against your Flux version.
 
-## Frozen tags
+## Tags that left the window
 
-When a release leaves a server's window, its tag is frozen. It remains pullable, but it receives no security or mod updates. Plan a move to a newer release, and back up `/data` first, because worlds cannot be downgraded.
+When a release leaves a server's window, its lock file is deleted and it is no longer listed here. The registry tag remains pullable, but it receives no security or mod updates. Plan a move to a newer release, and back up `/data` first, because worlds cannot be downgraded.
 
 ## Rollback
 

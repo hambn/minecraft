@@ -31,7 +31,7 @@ Each maintained version bundles the newest compatible stable upstream releases w
 
 ## Documentation website
 
-`ghcr.io/<owner>/minecraft-web` documents what each server image contains and how to run and configure it. The site covers maintained and frozen versions, mod/plugin metadata and compatibility, selection IDs and environment variables, startup behavior, persistent storage, and image updates.
+`ghcr.io/<owner>/minecraft-web` documents what each server image contains and how to run and configure it. The site covers maintained and upcoming versions, mod/plugin metadata and compatibility, selection IDs and environment variables, startup behavior, persistent storage, and image updates.
 
 The documentation is published to GitHub Pages and packaged as a self-hostable image built with `src/web/Dockerfile`. A dedicated `web.yml` workflow handles both destinations.
 

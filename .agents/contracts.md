@@ -181,13 +181,12 @@ Written by `publish`, read by the website.
   "latest_outside_window": false,
   "targets": {
     "26.3": {"state": "published", "digest": "sha256:...", "published_at": "2026-10-08T12:00:00Z", "lock": "26.3.json"},
-    "26.2": {"state": "pending", "reason": "No stable Fabric loader build for 26.2 yet"},
-    "26.1.1": {"state": "frozen", "digest": "sha256:...", "published_at": "...", "lock": "26.1.1.json"}
+    "26.2": {"state": "pending", "reason": "No stable Fabric loader build for 26.2 yet"}
   }
 }
 ```
 
-`updated_at` changes only when something else in the file changes. A previously published version that leaves the window becomes `frozen` and keeps its digest. A previously published version whose new build is pending stays `published`.
+`updated_at` changes only when something else in the file changes. A version that leaves the window is removed from `targets` and its lock file is deleted; its registry tag is left as is. A previously published version whose new build is pending stays `published`.
 
 ## CLI (`python src/mc-server-images/cli.py <command>`)
 

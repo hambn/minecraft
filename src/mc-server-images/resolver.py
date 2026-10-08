@@ -563,7 +563,9 @@ def plan(server: str, out: str | Path, *, force: bool = False, window: list[str]
 
 
 def matrix(result: dict) -> dict:
-    return {"include": [{"minecraft": t["minecraft"], "status": t["status"]} for t in result["targets"]]}
+    """Build jobs only for targets that need building; pending/unchanged ones go via plan.json."""
+    return {"include": [{"minecraft": t["minecraft"], "status": t["status"]}
+                        for t in result["targets"] if t["status"] == "build"]}
 
 
 def plan_command(args: Any) -> int:
@@ -577,5 +579,7 @@ def plan_command(args: Any) -> int:
             print("error: --github-output needs $GITHUB_OUTPUT", file=sys.stderr)
             return 1
         with open(path, "a", encoding="utf-8") as handle:
-            handle.write("matrix=" + json.dumps(matrix(result), separators=(",", ":")) + "\n")
+            jobs = matrix(result)
+            handle.write("matrix=" + json.dumps(jobs, separators=(",", ":")) + "\n")
+            handle.write(f"has_builds={'true' if jobs['include'] else 'false'}\n")
     return 0

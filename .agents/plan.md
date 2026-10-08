@@ -162,7 +162,7 @@ Using the illustrative maintained window `26.3`, `26.2`, and `26.1.2`: a project
 
 Read Mojang's release manifest, filter to stable releases (`type: release`, no snapshots or prereleases), and order by release time. Patch releases count separately. Each server type has its own maintenance window: the newest three of those releases for which that server has a stable build (see the loader rules below). Nothing is hardcoded; the window is detected on every run. Mod support does not affect the window.
 
-For example, if Mojang's newest releases are `26.3`, `26.2`, `26.1.2`, `26.1.1` and NeoForge has no stable build for `26.3` yet, NeoForge maintains `26.2`, `26.1.2` and `26.1.1`, and reports `26.3` as **upcoming** (pending). Once a stable NeoForge build for `26.3` appears, `26.3` enters the window and `26.1.1` leaves it: its published tag and lock stay frozen, with no further rebuilds. Releases older than the newest supported one that a server skipped are simply not maintained. Pumpkin supports one Minecraft version per commit, so its window has a single entry.
+For example, if Mojang's newest releases are `26.3`, `26.2`, `26.1.2`, `26.1.1` and NeoForge has no stable build for `26.3` yet, NeoForge maintains `26.2`, `26.1.2` and `26.1.1`, and reports `26.3` as **upcoming** (pending). Once a stable NeoForge build for `26.3` appears, `26.3` enters the window and `26.1.1` leaves it: its lock file and status entry are deleted and it is never rebuilt (the registry tag is left as is). Releases older than the newest supported one that a server skipped are simply not maintained. Pumpkin supports one Minecraft version per commit, so its window has a single entry.
 
 Within the active window, each server image needs:
 
@@ -224,7 +224,7 @@ Every stage uses a job matrix, including stages with one entry. Each server work
 
 Use job outputs and `fromJSON` for the dynamic build matrix, following [GitHub's matrix documentation](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations). Transfer images and locks through workflow artifacts so the push job publishes the bytes tested by the build jobs.
 
-Trigger each workflow on a schedule, for example every six hours, manual dispatch, and changes to its own manifests, custom files, active locks, or build/startup code. Shared tooling changes trigger all affected server workflows. Every run plans the three active releases and creates the three target jobs; caching may reuse unchanged verified inputs. Frozen releases never enter a build matrix.
+Trigger each workflow on a schedule, for example every six hours, manual dispatch, and changes to its own manifests, custom files, active locks, or build/startup code. Shared tooling changes trigger all affected server workflows. Every run plans the server's active releases but creates build jobs only for targets whose inputs changed; unchanged and pending targets are passed to `push_image` through `plan.json`. Releases outside the window never enter a build matrix.
 
 Automatically persist validated generated locks and trigger documentation updates without waiting for manual review. Preserve historical locks without refreshing them. Persist only the current workflow's generated lock changes, and coordinate concurrent server workflows so one cannot overwrite another's updates. Avoid workflow loops caused by generated lock commits. The automatic Git update mechanism remains an open decision below.
 
@@ -237,7 +237,7 @@ This covers the update cases:
 - New stable mod/plugin version for a game version → rebuild that version.
 - Changed custom JAR/WASM file → update its checksum and rebuild the affected images.
 - Changed custom source project or build recipe → build and lock the new artifact, then rebuild the affected images.
-- New stable Minecraft release → slide the three-version window, freeze the outgoing release, build available server targets for the incoming release, and move `latest` after successful checks. Mod support does not delay the window shift.
+- New stable Minecraft release → slide the three-version window, delete the outgoing release's lock, build available server targets for the incoming release, and move `latest` after successful checks. Mod support does not delay the window shift.
 
 ## Web image
 
@@ -254,7 +254,7 @@ The web workflow follows the same matrix convention:
 
 Both destinations use the same documentation inputs and per-version catalog metadata. Handle GitHub Pages repository subpaths and self-hosted root paths correctly. Use the [GitHub Pages workflow documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) when implementing artifact upload and deployment. The web image uses `latest`; Minecraft-version tag rules apply to the server images.
 
-- Overview of Fabric, NeoForge, Paper, and Pumpkin images, the three actively maintained releases, pending builds, and older frozen tags.
+- Overview of Fabric, NeoForge, Paper, and Pumpkin images, the three actively maintained releases, and pending builds.
 - Contents per image and Minecraft version: server, loader where applicable, bundled mods or plugins, names, descriptions, authors, exact artifact versions, licenses, and source type. Include upstream, prebuilt, and source-built artifacts. Generate metadata and artifact details from each version's lock file.
 - Per-version supported/selectable catalog with `MODS` or `PLUGINS` examples. Clearly identify bundled unsupported fallbacks and unavailable entries so players know which IDs can be enabled.
 - Usage examples for running the images with Docker and Docker Compose, including image references, ports, selected mod/plugin lists, and the persistent `/data` volume.

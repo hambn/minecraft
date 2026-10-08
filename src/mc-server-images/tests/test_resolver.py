@@ -240,7 +240,7 @@ class PlanTests(unittest.TestCase):
         self.assertTrue((out / "26.3.json").is_file())
         self.assertFalse((out / "26.2.json").exists())
         self.assertEqual(json.loads((out / "plan.json").read_text())["targets"][1]["reason"], "No loader for 26.2")
-        self.assertEqual(len(resolver.matrix(result)["include"]), 3)
+        self.assertEqual([j["minecraft"] for j in resolver.matrix(result)["include"]], ["26.3", "26.1.2"])
 
         # Commit the 26.3 lock and mark it published: next plan reports unchanged.
         lock = locks.read_json(out / "26.3.json")
@@ -272,9 +272,10 @@ class PlanTests(unittest.TestCase):
                 del os.environ["GITHUB_OUTPUT"]
             else:
                 os.environ["GITHUB_OUTPUT"] = old
-        line = out_file.read_text().strip()
+        line, has_builds = out_file.read_text().strip().splitlines()
         self.assertTrue(line.startswith("matrix="))
         self.assertEqual(len(json.loads(line[7:])["include"]), 3)
+        self.assertEqual(has_builds, "has_builds=true")
 
 
 if __name__ == "__main__":

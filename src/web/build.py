@@ -381,7 +381,6 @@ class Site:
 <ul>
 <li>{self.badge("published")} the tag exists in the registry and is rebuilt when its components update.</li>
 <li>{self.badge("pending")} a newer Minecraft release this server has no stable build for yet; not pullable.</li>
-<li>{self.badge("frozen")} the release left this server&rsquo;s maintained window. The tag stays published but is no longer updated.</li>
 </ul>
 <p>Next: {self.link("docs/getting-started/", "getting started")}, {self.link("docs/mods-and-plugins/", "choosing mods and plugins")} or {self.link("docs/tags-and-updates/", "tags and updates")}.</p>
 """

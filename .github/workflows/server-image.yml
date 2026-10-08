@@ -3,11 +3,12 @@
 #   plan        resolve the three newest stable Minecraft releases this server has a stable build for,
 #               plus newer unsupported releases as pending (cli.py plan; the window is per server),
 #               upload the plan + draft locks, emit the dynamic build matrix.
-#   build       one job per planned Minecraft version: build custom artifacts, finalize the lock,
+#   build       one job per Minecraft version whose inputs changed (none when nothing changed): build custom artifacts, finalize the lock,
 #               stage the Docker context, build the image, run the CI checks, upload the image,
 #               lock and results as the artifact build-<server>-<minecraft>. Never pushes to a registry.
 #   push_image  main only: cli.py publish pushes the tested image bytes to the registry, moves
-#               `latest`, and commits the locks and status.json directly to main.
+#               `latest`, deletes locks of versions that left the window, and commits the locks
+#               and status.json directly to main. Runs even when no build job was needed.
 # Callers must grant `contents: write` and `packages: write` (push_image needs them).
 name: server-image
 
@@ -32,6 +33,7 @@ jobs:
     timeout-minutes: 20
     outputs:
       matrix: ${{ steps.plan.outputs.matrix }}
+      has_builds: ${{ steps.plan.outputs.has_builds }}
     steps:
       - uses: actions/checkout@v7
 
@@ -66,9 +68,12 @@ jobs:
           retention-days: 3
           if-no-files-found: error
 
+  # Only targets whose inputs changed get a job; unchanged and pending ones are
+  # handled by push_image straight from plan.json.
   build:
     name: build ${{ matrix.minecraft }}
     needs: plan
+    if: needs.plan.outputs.has_builds == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
@@ -84,56 +89,16 @@ jobs:
           name: plan-${{ inputs.server }}
           path: plan/${{ inputs.server }}
 
-      # Pending targets only report their status; unchanged targets reuse the committed lock.
-      - name: Report pending or unchanged target
-        if: matrix.status != 'build'
-        env:
-          SERVER: ${{ inputs.server }}
-          MINECRAFT: ${{ matrix.minecraft }}
-        run: |
-          python3 - <<'PY'
-          import json, os, pathlib, shutil, sys
-
-          server, mc = os.environ["SERVER"], os.environ["MINECRAFT"]
-          plan = json.load(open(f"plan/{server}/plan.json"))
-          target = next(t for t in plan["targets"] if t["minecraft"] == mc)
-          out = pathlib.Path("out")
-          out.mkdir(exist_ok=True)
-          status = target["status"]
-          inputs_hash = target.get("inputs_hash")
-          if status == "unchanged":
-              lock = pathlib.Path(f"src/mc-server-images/{server}/locks/{mc}.json")
-              if not lock.is_file():
-                  sys.exit(f"{lock} is missing but the plan marked {mc} unchanged")
-              shutil.copy(lock, out / "lock.json")
-              inputs_hash = inputs_hash or json.load(open(lock)).get("inputs_hash")
-          elif status != "pending":
-              sys.exit(f"unexpected status {status!r} for {mc}")
-          result = {
-              "server": server,
-              "minecraft": mc,
-              "status": status,
-              "passed": True,
-              "reason": target.get("reason"),
-              "inputs_hash": inputs_hash,
-          }
-          (out / "result.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
-          print(json.dumps(result))
-          PY
-
       - uses: actions/setup-python@v7
-        if: matrix.status == 'build'
         with:
           python-version-file: .python-version
           cache: pip
           cache-dependency-path: src/mc-server-images/requirements.txt
 
       - name: Install dependencies
-        if: matrix.status == 'build'
         run: pip install -r src/mc-server-images/requirements.txt
 
       - name: Build custom source artifacts
-        if: matrix.status == 'build'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -144,7 +109,6 @@ jobs:
             --out custom
 
       - name: Finalize lock
-        if: matrix.status == 'build'
         run: |
           mkdir -p out
           python src/mc-server-images/cli.py lock \
@@ -155,7 +119,6 @@ jobs:
             --out out/lock.json
 
       - name: Stage Docker build context
-        if: matrix.status == 'build'
         run: |
           python src/mc-server-images/cli.py stage \
             --server "${{ inputs.server }}" \
@@ -164,12 +127,10 @@ jobs:
             --out ctx
 
       - uses: docker/setup-buildx-action@v4
-        if: matrix.status == 'build'
         with:
           driver: docker
 
       - name: Build image
-        if: matrix.status == 'build'
         run: |
           args=()
           while IFS= read -r line || [ -n "$line" ]; do
@@ -188,7 +149,6 @@ jobs:
       # A failing check is recorded in result.json; the job fails after the artifact is uploaded.
       - name: Run CI checks
         id: checks
-        if: matrix.status == 'build'
         run: |
           mkdir -p out
           if python3 src/mc-server-images/common/ci_check.py \
@@ -201,7 +161,6 @@ jobs:
           fi
 
       - name: Export image and results
-        if: matrix.status == 'build'
         env:
           SERVER: ${{ inputs.server }}
           MINECRAFT: ${{ matrix.minecraft }}
@@ -238,18 +197,21 @@ jobs:
           if-no-files-found: error
 
       - name: Fail when CI checks failed
-        if: matrix.status == 'build' && steps.checks.outputs.passed != 'true'
+        if: steps.checks.outputs.passed != 'true'
         run: |
           echo "::error::CI checks failed for ${{ inputs.server }} ${{ matrix.minecraft }}; nothing will be published"
           exit 1
 
   push_image:
     needs: [plan, build]
+    # Also runs when no build job was needed (build skipped): status, pending
+    # targets and removal of locks that left the window still get committed.
     if: >-
-      github.event_name != 'pull_request'
+      !cancelled()
+      && github.event_name != 'pull_request'
       && github.ref == 'refs/heads/main'
       && needs.plan.result == 'success'
-      && needs.build.result == 'success'
+      && (needs.build.result == 'success' || needs.build.result == 'skipped')
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     strategy:
@@ -277,6 +239,12 @@ jobs:
         run: pip install -r src/mc-server-images/requirements.txt
 
       - uses: actions/download-artifact@v8
+        with:
+          name: plan-${{ inputs.server }}
+          path: plan/${{ inputs.server }}
+
+      - uses: actions/download-artifact@v8
+        if: needs.plan.outputs.has_builds == 'true'
         with:
           pattern: build-${{ inputs.server }}-*
           path: artifacts
@@ -316,4 +284,5 @@ jobs:
           python src/mc-server-images/cli.py publish \
             --server "${{ inputs.server }}" \
             --artifacts artifacts \
+            --plan "plan/${{ inputs.server }}" \
             --registry "${{ steps.registry.outputs.namespace }}"

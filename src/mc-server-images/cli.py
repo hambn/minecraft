@@ -55,6 +55,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("publish", help="push images, retag latest, write status.json")
     p.add_argument("--server", required=True, choices=SERVERS)
     p.add_argument("--artifacts", required=True)
+    p.add_argument("--plan", help="plan directory; its pending targets are recorded in status.json")
     p.add_argument("--registry", required=True)
     p.add_argument("--dry-run", action="store_true", dest="dry_run")
     p.add_argument("--no-commit", action="store_true", dest="no_commit")

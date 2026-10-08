@@ -201,7 +201,7 @@ class TestWindow(PublishTestBase):
         code, _ = self.run_publish()
         self.assertEqual(code, 0)
 
-    def test_window_slide_freezes_old_and_keeps_digest(self):
+    def test_window_slide_drops_old_version_and_lock(self):
         self.write_status(window=WINDOW, latest="26.3", targets={
             "26.3": self.pub("26.3"), "26.2": self.pub("26.2"), "26.1.2": self.pub("26.1.2")})
         (self.fabric / "26.1.2.json").write_text("old\n")
@@ -217,8 +217,8 @@ class TestWindow(PublishTestBase):
         self.assertEqual(st["latest"], "26.4")
         self.assertEqual(st["targets"]["26.4"]["state"], "published")
         self.assertEqual(st["targets"]["26.3"], self.pub("26.3"))  # published, no new result
-        self.assertEqual(st["targets"]["26.1.2"], {**self.pub("26.1.2"), "state": "frozen"})
-        self.assertEqual((self.fabric / "26.1.2.json").read_text(), "old\n")
+        self.assertNotIn("26.1.2", st["targets"])
+        self.assertFalse((self.fabric / "26.1.2.json").exists())
         self.assertIn(["skopeo", "copy", "--all", f"docker://{IMAGE}:26.4", f"docker://{IMAGE}:latest"],
                       runner.calls)
         self.assertEqual(st["updated_at"], T1S)
@@ -233,12 +233,17 @@ class TestGating(PublishTestBase):
         self.assertEqual(self.uploads, [])
         self.assertFalse(self.fabric.exists())
 
-    def test_no_results_fails(self):
+    def test_no_build_jobs_only_updates_status(self):
         shutil.rmtree(self.artifacts)
-        self.artifacts.mkdir()
-        code, runner = self.run_publish()
-        self.assertEqual(code, 1)
-        self.assertEqual(runner.calls, [])
+        plan = self.tmp / "plan"
+        plan.mkdir()
+        (plan / "plan.json").write_text(json.dumps({"targets": [
+            {"minecraft": "26.3", "status": "pending", "reason": "no loader"},
+            {"minecraft": "26.2", "status": "unchanged"}]}))
+        code, runner = self.run_publish(plan=str(plan))
+        self.assertEqual(code, 0)
+        self.assertFalse(self.skopeo_pushes(runner))
+        self.assertEqual(self.status()["targets"]["26.3"], {"state": "pending", "reason": "no loader"})
 
     def test_missing_image_tar_is_an_error_but_others_publish(self):
         self.write_artifact("26.2", tar=False)
@@ -307,17 +312,17 @@ class TestStatusTransitions(PublishTestBase):
         st = self.status()
         self.assertEqual(st["latest"], "26.2")
         self.assertTrue(st["latest_outside_window"])
-        self.assertEqual(st["targets"]["26.2"]["state"], "frozen")
+        self.assertNotIn("26.2", st["targets"])
         self.assertFalse([c for c in runner.calls if c[-1].endswith(":latest")])
 
     def test_latest_outside_window_clears_when_published(self):
         self.write_status(latest="26.0", latest_outside_window=True,
-                          targets={"26.0": {**self.pub("26.0"), "state": "frozen"}})
+                          targets={"26.0": self.pub("26.0")})
         self.run_publish()
         st = self.status()
         self.assertEqual(st["latest"], "26.3")
         self.assertFalse(st["latest_outside_window"])
-        self.assertEqual(st["targets"]["26.0"]["state"], "frozen")
+        self.assertNotIn("26.0", st["targets"])
 
 
 class TestNoop(PublishTestBase):
