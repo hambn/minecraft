@@ -1,0 +1,870 @@
+{
+  "entries": [
+    {
+      "artifact": {
+        "filename": "Chunky-Bukkit-1.5.3.jar",
+        "sha512": "43ffecc6e6a734b752da41575bbb316526c124c3f878942437d5133c377bfbd9b78bda975520dc074d7158c15dade58a444ccd0fd8d8a25d165b6fc450140422",
+        "size": 304616,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/MdY6JATr/Chunky-Bukkit-1.5.3.jar"
+      },
+      "build": null,
+      "closure": [
+        "chunky"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "chunky",
+      "identity": {
+        "file_id": null,
+        "project_id": "fALzjamp",
+        "slug": "chunky",
+        "version_id": "MdY6JATr"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "pop4959"
+        ],
+        "description": "Pre-generates chunks, quickly and efficiently",
+        "homepage": "https://modrinth.com/mod/chunky",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "Chunky",
+        "version": "1.5.3"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "bukkit",
+        "paper",
+        "spigot"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "CoreProtect-CE-24.1.jar",
+        "sha512": "76aad727528ddb990bbee5069f8ef3fcd018ae0bcdea89b965be2485e828633eb068672e841be64e550c8474f901a24d8c15c7bd44c2bd6c96244e1e58de0c95",
+        "size": 1113283,
+        "url": "https://cdn.modrinth.com/data/Lu3KuzdV/versions/3sehX6Sg/CoreProtect-CE-24.1.jar"
+      },
+      "build": null,
+      "closure": [
+        "coreprotect"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "coreprotect",
+      "identity": {
+        "file_id": null,
+        "project_id": "Lu3KuzdV",
+        "slug": "coreprotect",
+        "version_id": "3sehX6Sg"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Intelli"
+        ],
+        "description": "CoreProtect is a fast, efficient, data logging and anti-griefing tool. Rollback and restore any amount of damage. Designed with large servers in mind, CoreProtect will record and manage data without impacting your server performance.",
+        "homepage": "https://modrinth.com/mod/coreprotect",
+        "license": "Artistic-2.0",
+        "missing": [],
+        "name": "CoreProtect",
+        "version": "24.1"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "bukkit",
+        "paper",
+        "spigot"
+      ],
+      "supported_minecraft_versions": [
+        "1.16.5",
+        "1.17",
+        "1.17.1",
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "EssentialsX-2.22.0.jar",
+        "sha512": "472ecf71924801723643ca6e1f9931297de5aa0874a544f8a719e2e2f7c81af81ef7bcbd38b6e43f0260a9dae6abe42c97907e70e2430e326ff8cff12ebd61cf",
+        "size": 4861125,
+        "url": "https://cdn.modrinth.com/data/hXiIvTyT/versions/nY6VN1XH/EssentialsX-2.22.0.jar"
+      },
+      "build": null,
+      "closure": [
+        "essentialsx"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "essentialsx",
+      "identity": {
+        "file_id": null,
+        "project_id": "hXiIvTyT",
+        "slug": "essentialsx",
+        "version_id": "nY6VN1XH"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "JRoy",
+          "pop4959",
+          "mdcfe"
+        ],
+        "description": "The essential plugin suite for Paper and Spigot servers.",
+        "homepage": "https://modrinth.com/mod/essentialsx",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "EssentialsX",
+        "version": "2.22.0"
+      },
+      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.2 (paper 132)",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unsupported_fallback",
+      "supported_loaders": [
+        "bukkit",
+        "paper",
+        "spigot"
+      ],
+      "supported_minecraft_versions": [
+        "1.8.8",
+        "1.8.9",
+        "1.9.4",
+        "1.10.2",
+        "1.11.2",
+        "1.12.2",
+        "1.13.2",
+        "1.14.4",
+        "1.15.2",
+        "1.16.5",
+        "1.17.1",
+        "1.18.2",
+        "1.19.4",
+        "1.20.6",
+        "1.21.11",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": null,
+      "build": null,
+      "closure": [
+        "geyser"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "geyser",
+      "identity": {
+        "file_id": null,
+        "project_id": "wKkoqHrH",
+        "slug": "geyser",
+        "version_id": null
+      },
+      "local": null,
+      "metadata": {
+        "authors": [],
+        "description": "A bridge/proxy allowing you to connect to Minecraft: Java Edition servers with Minecraft: Bedrock Edition.",
+        "homepage": "https://modrinth.com/mod/geyser",
+        "license": "MIT",
+        "missing": [
+          "authors"
+        ],
+        "name": "Geyser",
+        "version": null
+      },
+      "reason": "no stable paper release found for Minecraft 26.2 or any other version",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
+    },
+    {
+      "artifact": {
+        "filename": "GriefPrevention.jar",
+        "sha512": "c9bc692253ba3860327e5c38767ce3dc66c798264fe650a08b4ae888337ff75bc16e9bd1db7b39a514a275bf2cc2a3f1f8cd95cf080b89ae42a0f684fc2bfc66",
+        "size": 380232,
+        "url": "https://cdn.modrinth.com/data/O4o4mKaq/versions/dGfCZHqk/GriefPrevention.jar"
+      },
+      "build": null,
+      "closure": [
+        "griefprevention"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "griefprevention",
+      "identity": {
+        "file_id": null,
+        "project_id": "O4o4mKaq",
+        "slug": "griefprevention",
+        "version_id": "dGfCZHqk"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "QarthO",
+          "Jikoo",
+          "RoboMWM"
+        ],
+        "description": "The self-service anti-griefing Bukkit plugin for Minecraft servers since 2011.",
+        "homepage": "https://modrinth.com/mod/griefprevention",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "GriefPrevention",
+        "version": "16.18.7"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "bukkit",
+        "paper",
+        "spigot"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "LuckPerms-Bukkit-5.5.71.jar",
+        "sha512": "188a91f0a543d23bfda32385fca6db63d61e49c8a422bd452a260bd9cbc6a7d7fe45071199e9fca8f3ce43c2b41ee84fd315bd15464577028ff3951a7d4fab27",
+        "size": 1501521,
+        "url": "https://cdn.modrinth.com/data/Vebnzrzj/versions/b0mk8uS6/LuckPerms-Bukkit-5.5.71.jar"
+      },
+      "build": null,
+      "closure": [
+        "luckperms"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "luckperms",
+      "identity": {
+        "file_id": null,
+        "project_id": "Vebnzrzj",
+        "slug": "luckperms",
+        "version_id": "b0mk8uS6"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "lucko"
+        ],
+        "description": "A permissions plugin/mod for Minecraft servers.",
+        "homepage": "https://modrinth.com/mod/luckperms",
+        "license": "MIT",
+        "missing": [],
+        "name": "LuckPerms",
+        "version": "v5.5.71-bukkit"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "bukkit",
+        "paper",
+        "spigot"
+      ],
+      "supported_minecraft_versions": [
+        "1.8.9",
+        "1.9",
+        "1.9.1",
+        "1.9.2",
+        "1.9.3",
+        "1.9.4",
+        "1.10",
+        "1.10.1",
+        "1.10.2",
+        "1.11",
+        "1.11.1",
+        "1.11.2",
+        "1.12",
+        "1.12.1",
+        "1.12.2",
+        "1.13",
+        "1.13.1",
+        "1.13.2",
+        "1.14",
+        "1.14.1",
+        "1.14.2",
+        "1.14.3",
+        "1.14.4",
+        "1.15",
+        "1.15.1",
+        "1.15.2",
+        "1.16",
+        "1.16.1",
+        "1.16.2",
+        "1.16.3",
+        "1.16.4",
+        "1.16.5",
+        "1.17",
+        "1.17.1",
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "PlaceholderAPI-2.12.3.jar",
+        "sha512": "f048d55b633fd816c08e2e4472bd54a75fc4d13534682e6e7745408253d2f393706efdc389d12ca2cf28d4dc035a9afdda3eed9ecde51c7e332831391d9b6479",
+        "size": 1160690,
+        "url": "https://cdn.modrinth.com/data/lKEzGugV/versions/pIvQcXW8/PlaceholderAPI-2.12.3.jar"
+      },
+      "build": null,
+      "closure": [
+        "placeholderapi"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "placeholderapi",
+      "identity": {
+        "file_id": null,
+        "project_id": "lKEzGugV",
+        "slug": "placeholderapi",
+        "version_id": "pIvQcXW8"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [],
+        "description": "A resource that allows information from your favourite plugins be shown practically anywhere!",
+        "homepage": "https://modrinth.com/mod/placeholderapi",
+        "license": "GPL-3.0-only",
+        "missing": [
+          "authors"
+        ],
+        "name": "PlaceholderAPI",
+        "version": "2.12.3"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "bukkit",
+        "paper",
+        "spigot"
+      ],
+      "supported_minecraft_versions": [
+        "1.8",
+        "1.8.1",
+        "1.8.2",
+        "1.8.3",
+        "1.8.4",
+        "1.8.5",
+        "1.8.6",
+        "1.8.7",
+        "1.8.8",
+        "1.8.9",
+        "1.9",
+        "1.9.1",
+        "1.9.2",
+        "1.9.3",
+        "1.9.4",
+        "1.10",
+        "1.10.1",
+        "1.10.2",
+        "1.11",
+        "1.11.1",
+        "1.11.2",
+        "1.12",
+        "1.12.1",
+        "1.12.2",
+        "1.13",
+        "1.13.1",
+        "1.13.2",
+        "1.14",
+        "1.14.1",
+        "1.14.2",
+        "1.14.3",
+        "1.14.4",
+        "1.15",
+        "1.15.1",
+        "1.15.2",
+        "1.16",
+        "1.16.1",
+        "1.16.2",
+        "1.16.3",
+        "1.16.4",
+        "1.16.5",
+        "1.17",
+        "1.17.1",
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "ViaBackwards-5.12.0.jar",
+        "sha512": "dba076b3283eb5987e3d37a63b57802e7946cf8a2d3b6f68ff57ddbc4eb648e2084decd212fef2cd0cde5187bc6565959c31b496bfb38000e67e3ffab4c290b3",
+        "size": 1430897,
+        "url": "https://cdn.modrinth.com/data/NpvuJQoq/versions/SxGhdsPK/ViaBackwards-5.12.0.jar"
+      },
+      "build": null,
+      "closure": [
+        "viabackwards",
+        "viaversion"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [
+        {
+          "id": "viaversion",
+          "kind": "required"
+        }
+      ],
+      "id": "viabackwards",
+      "identity": {
+        "file_id": null,
+        "project_id": "NpvuJQoq",
+        "slug": "viabackwards",
+        "version_id": "SxGhdsPK"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "creeper123123321",
+          "florianreuth",
+          "kennytv"
+        ],
+        "description": "Allow older Java Edition clients to connect to newer servers.",
+        "homepage": "https://modrinth.com/mod/viabackwards",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "ViaBackwards",
+        "version": "5.12.0"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "paper"
+      ],
+      "supported_minecraft_versions": [
+        "1.10",
+        "1.10.1",
+        "1.10.2",
+        "1.11",
+        "1.11.1",
+        "1.11.2",
+        "1.12",
+        "1.12.1",
+        "1.12.2",
+        "1.13",
+        "1.13.1",
+        "1.13.2",
+        "1.14",
+        "1.14.1",
+        "1.14.2",
+        "1.14.3",
+        "1.14.4",
+        "1.15",
+        "1.15.1",
+        "1.15.2",
+        "1.16",
+        "1.16.1",
+        "1.16.2",
+        "1.16.3",
+        "1.16.4",
+        "1.16.5",
+        "1.17",
+        "1.17.1",
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "ViaVersion-5.12.0.jar",
+        "sha512": "2dfe562109179f08685dc84a66aedf7c810592223b5287b6355ba1e741d1737d015ca0c444b4bc01e5db2a4b10549d5028bf2e3f3337219ded709e44b579a4d8",
+        "size": 6503775,
+        "url": "https://cdn.modrinth.com/data/P1OZGk5p/versions/FaishMnD/ViaVersion-5.12.0.jar"
+      },
+      "build": null,
+      "closure": [
+        "viaversion"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "viaversion",
+      "identity": {
+        "file_id": null,
+        "project_id": "P1OZGk5p",
+        "slug": "viaversion",
+        "version_id": "FaishMnD"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "creeper123123321",
+          "florianreuth",
+          "kennytv"
+        ],
+        "description": "Allow newer Java Edition clients to connect to older servers.",
+        "homepage": "https://modrinth.com/mod/viaversion",
+        "license": "GPL-3.0-or-later",
+        "missing": [],
+        "name": "ViaVersion",
+        "version": "5.12.0"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "paper"
+      ],
+      "supported_minecraft_versions": [
+        "1.8.9",
+        "1.9",
+        "1.9.1",
+        "1.9.2",
+        "1.9.3",
+        "1.9.4",
+        "1.10",
+        "1.10.1",
+        "1.10.2",
+        "1.11",
+        "1.11.1",
+        "1.11.2",
+        "1.12",
+        "1.12.1",
+        "1.12.2",
+        "1.13",
+        "1.13.1",
+        "1.13.2",
+        "1.14",
+        "1.14.1",
+        "1.14.2",
+        "1.14.3",
+        "1.14.4",
+        "1.15",
+        "1.15.1",
+        "1.15.2",
+        "1.16",
+        "1.16.1",
+        "1.16.2",
+        "1.16.3",
+        "1.16.4",
+        "1.16.5",
+        "1.17",
+        "1.17.1",
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "worldedit-bukkit-7.4.5.jar",
+        "sha512": "a383492fac6bfb4d43a257dfa7b5fc076aae503a71151b463de4fe80e6f3d5fc11209eaf4097baa115f3febf0adc40ca0a1ecda227b8439b429d0a4ba3a63a4f",
+        "size": 7708742,
+        "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/F5ea2ov3/worldedit-bukkit-7.4.5.jar"
+      },
+      "build": null,
+      "closure": [
+        "worldedit"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "worldedit",
+      "identity": {
+        "file_id": null,
+        "project_id": "1u6JkXh5",
+        "slug": "worldedit",
+        "version_id": "F5ea2ov3"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "me4502",
+          "wizjany",
+          "octylFractal"
+        ],
+        "description": "A Minecraft Map Editor... that runs in-game!\nWith selections, schematics, copy and paste, brushes, and scripting.\nUse it in creative, or use it temporarily in survival.",
+        "homepage": "https://modrinth.com/mod/worldedit",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "WorldEdit",
+        "version": "7.4.5"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "bukkit",
+        "paper",
+        "spigot"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "worldguard-bukkit-7.0.19.jar",
+        "sha512": "e9ad7ad53c93a07a7d5c3af3d844a677abbe894de4d7ff69fc03397daae5e8532217d57de23a3cddbe0d94ae81ee7acde6c78384b9596aa1eb3001bb37087d41",
+        "size": 1199021,
+        "url": "https://cdn.modrinth.com/data/DKY9btbd/versions/TtfwTyi6/worldguard-bukkit-7.0.19.jar"
+      },
+      "build": null,
+      "closure": [
+        "worldguard"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "worldguard",
+      "identity": {
+        "file_id": null,
+        "project_id": "DKY9btbd",
+        "slug": "worldguard",
+        "version_id": "TtfwTyi6"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "me4502",
+          "wizjany"
+        ],
+        "description": "WorldGuard lets you and players guard areas of land against griefers and undesirables as well as tweak and disable various gameplay features of Minecraft.",
+        "homepage": "https://modrinth.com/mod/worldguard",
+        "license": "LGPL-3.0-only",
+        "missing": [],
+        "name": "WorldGuard",
+        "version": "7.0.19"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "bukkit",
+        "paper",
+        "spigot"
+      ],
+      "supported_minecraft_versions": [
+        "26.2",
+        "26.3"
+      ]
+    }
+  ],
+  "image": "minecraft-server-paper",
+  "inputs_hash": "sha256:d4469c888b179f65fd640ce800ea6192868db19dacefb3e07f518c527f89df79",
+  "minecraft_version": "26.2",
+  "runtime": {
+    "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",
+    "base_image": "eclipse-temurin:25-jre",
+    "java_major": 25
+  },
+  "schema": 1,
+  "server": "paper",
+  "server_build": {
+    "details": {
+      "build": 132,
+      "channel": "STABLE",
+      "downloads": {
+        "paper": {
+          "sha256": "5ab560a769c1ab413cb7f637dd0dc697974571f2db0a667cfbac511422e51b26",
+          "url": "https://fill-data.papermc.io/v1/objects/5ab560a769c1ab413cb7f637dd0dc697974571f2db0a667cfbac511422e51b26/paper-26.2-132.jar"
+        }
+      }
+    },
+    "loader_version": "132",
+    "reason": null,
+    "status": "available"
+  }
+}

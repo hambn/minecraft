@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "server": "paper",
+  "image": "ghcr.io/hambn/minecraft-server-paper",
+  "updated_at": "2026-10-08T12:14:00Z",
+  "window": [
+    "26.3",
+    "26.2",
+    "26.1.2"
+  ],
+  "latest": "26.2",
+  "latest_outside_window": false,
+  "targets": {
+    "26.3": {
+      "state": "pending",
+      "reason": "No STABLE Paper build for Minecraft 26.3 yet"
+    },
+    "26.2": {
+      "state": "published",
+      "digest": "sha256:7c084f3fd3d88520f4071c1517a3223a66a4a7b259486595cbdbe972d7dcbdd7",
+      "published_at": "2026-10-08T12:14:00Z",
+      "lock": "26.2.json"
+    },
+    "26.1.2": {
+      "state": "published",
+      "digest": "sha256:90776dfdc92b170bf8002ae1a18db97f24a58062c5874852c11903dc910e5522",
+      "published_at": "2026-10-08T12:14:00Z",
+      "lock": "26.1.2.json"
+    }
+  }
+}
