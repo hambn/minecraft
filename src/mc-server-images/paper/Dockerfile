@@ -15,7 +15,8 @@ COPY downloads/paper.jar /opt/server/paper.jar
 # paperclip.patchonly=true: build cache/ (patched + vanilla jars), libraries/ and
 # versions/ next to paper.jar, then exit without starting the server.
 RUN java -Dpaperclip.patchonly=true -jar paper.jar; \
-    ls /opt/server/cache/patched_*.jar >/dev/null; \
+    find /opt/server -maxdepth 4 -not -path '/opt/server/libraries/*' | sort; \
+    { compgen -G '/opt/server/cache/patched_*.jar' || compgen -G '/opt/server/versions/*/*.jar'; } >/dev/null; \
     test -d /opt/server/libraries; \
     find /opt/server -maxdepth 1 -name '*.log' -delete; \
     rm -rf /opt/server/logs; \

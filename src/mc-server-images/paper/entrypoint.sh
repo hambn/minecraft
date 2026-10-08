@@ -14,7 +14,8 @@ catalog_activate "${PLUGINS:-}" /data/plugins PLUGINS
 maybe_exit_after_activation
 
 [[ -f /opt/server/paper.jar ]] || die "Paper launcher not found: /opt/server/paper.jar"
-compgen -G '/opt/server/cache/patched_*.jar' >/dev/null || die "Patched Paper jar not found in /opt/server/cache (broken image)"
+{ compgen -G '/opt/server/cache/patched_*.jar' || compgen -G '/opt/server/versions/*/*.jar'; } >/dev/null \
+    || die "Patched Paper jar not found in /opt/server/{cache,versions} (broken image)"
 
 # Intentional word splitting (no globbing) for the memory flags and JVM_OPTS.
 read -r -a mem_args <<< "$(java_memory_args)"
