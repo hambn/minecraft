@@ -1,0 +1,953 @@
+{
+  "entries": [
+    {
+      "artifact": {
+        "filename": "c2me-fabric-mc1.21.11-0.3.6.0.0.jar",
+        "sha512": "c9b11100572fb71c3080ff11b011467624e8013b9942aade09a5c77eb62b3289667bad70501ddea8f35deb0a5d26884b79f76d4ed112d32342471ca7384b788a",
+        "size": 4687147,
+        "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/olrVZpJd/c2me-fabric-mc1.21.11-0.3.6.0.0.jar"
+      },
+      "build": null,
+      "closure": [
+        "c2me-fabric"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "c2me-fabric",
+      "identity": {
+        "file_id": null,
+        "project_id": "VSNURh3q",
+        "slug": "c2me-fabric",
+        "version_id": "olrVZpJd"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "duplexsystem",
+          "ishland"
+        ],
+        "description": "A Fabric mod designed to improve the chunk performance of Minecraft.",
+        "homepage": "https://modrinth.com/mod/c2me-fabric",
+        "license": "MIT",
+        "missing": [],
+        "name": "Concurrent Chunk Management Engine (Fabric)",
+        "version": "0.3.6.0.0"
+      },
+      "reason": "supports Minecraft 1.21.11 (fabric); this image is Minecraft 26.1.2 (fabric 0.19.5)",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unsupported_fallback",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "1.21.11"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "Chunky-Fabric-1.5.3.jar",
+        "sha512": "b83bfe7b218d0aa6232af977ae741dc1f82b10e50cd12bb759f65cf416b8b62beccb543e587ef0b9670abe03815660f8e091bc6823624d65cf07300571573516",
+        "size": 354095,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/4Eotm6ov/Chunky-Fabric-1.5.3.jar"
+      },
+      "build": null,
+      "closure": [
+        "chunky",
+        "fabric-api"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [
+        {
+          "id": "fabric-api",
+          "kind": "required"
+        }
+      ],
+      "id": "chunky",
+      "identity": {
+        "file_id": null,
+        "project_id": "fALzjamp",
+        "slug": "chunky",
+        "version_id": "4Eotm6ov"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "pop4959"
+        ],
+        "description": "Pre-generates chunks, quickly and efficiently",
+        "homepage": "https://modrinth.com/mod/chunky",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "Chunky",
+        "version": "1.5.3"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "cloth-config-26.1.154.jar",
+        "sha512": "8bfb75f2cac0a9910316c6a368a228c0f8f1261ac6f03dec5fba594e1619ac04334a3df4fb29778d61d0b8290d55949371a523d722b35501bf9a2902956d3b17",
+        "size": 1135373,
+        "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/GFM8zh9J/cloth-config-26.1.154.jar"
+      },
+      "build": null,
+      "closure": [
+        "cloth-config"
+      ],
+      "conflicts": [],
+      "declared": false,
+      "dependencies": [],
+      "id": "cloth-config",
+      "identity": {
+        "file_id": null,
+        "project_id": "9s6osm5g",
+        "slug": "cloth-config",
+        "version_id": "GFM8zh9J"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "shedaniel"
+        ],
+        "description": "Configuration Library for Minecraft Mods",
+        "homepage": "https://modrinth.com/mod/cloth-config",
+        "license": "LGPL-3.0-only",
+        "missing": [],
+        "name": "Cloth Config API",
+        "version": "26.1.154+fabric"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "Clumps-fabric-26.1.2-26.1.2.1.jar",
+        "sha512": "369c20d8887c36c9fd4569a7c8dac1ffc51be036bb58763605535034a5aebd9fbb35de43cc0cc8c774d8dd02b2ab1776f90be1657f3796b38107f779edb4a77a",
+        "size": 19956,
+        "url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/RXNrUIjA/Clumps-fabric-26.1.2-26.1.2.1.jar"
+      },
+      "build": null,
+      "closure": [
+        "clumps",
+        "fabric-api"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [
+        {
+          "id": "fabric-api",
+          "kind": "required"
+        }
+      ],
+      "id": "clumps",
+      "identity": {
+        "file_id": null,
+        "project_id": "Wnxd13zP",
+        "slug": "clumps",
+        "version_id": "RXNrUIjA"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "jaredlll08"
+        ],
+        "description": "Clumps XP orbs together to reduce lag",
+        "homepage": "https://modrinth.com/mod/clumps",
+        "license": "MIT",
+        "missing": [],
+        "name": "Clumps",
+        "version": "26.1.2.1"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "cristellib-fabric-26.1.2-3.1.13.jar",
+        "sha512": "747e346398875fdf4666205eb7735eaff830307c11213901204fbdf7822812491762e1800b3192219ff35036a846a9caaa6675d20f3d763bacbb589b95cfcdaf",
+        "size": 588318,
+        "url": "https://cdn.modrinth.com/data/cl223EMc/versions/JDTs3eQM/cristellib-fabric-26.1.2-3.1.13.jar"
+      },
+      "build": null,
+      "closure": [
+        "cloth-config",
+        "cristel-lib",
+        "fabric-api"
+      ],
+      "conflicts": [],
+      "declared": false,
+      "dependencies": [
+        {
+          "id": "cloth-config",
+          "kind": "required"
+        },
+        {
+          "id": "fabric-api",
+          "kind": "required"
+        }
+      ],
+      "id": "cristel-lib",
+      "identity": {
+        "file_id": null,
+        "project_id": "cl223EMc",
+        "slug": "cristel-lib",
+        "version_id": "JDTs3eQM"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Cristelknight"
+        ],
+        "description": "A Library mod for easy structure config and runtime datapacks.",
+        "homepage": "https://modrinth.com/mod/cristel-lib",
+        "license": "CC-BY-NC-ND-4.0",
+        "missing": [],
+        "name": "Cristel Lib",
+        "version": "fabric-26.1.2-3.1.13"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "fabric-api-0.155.3+26.1.2.jar",
+        "sha512": "fa0308b42e9cd0dc3ff946f246d199d74547e0c946d7e3c9780a2537155307baf25129f69bd1349273babf879ffb4608b7e4af0740938f9c0f7b371b1c67d6ca",
+        "size": 2521340,
+        "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/3dM0X6ou/fabric-api-0.155.3%2B26.1.2.jar"
+      },
+      "build": null,
+      "closure": [
+        "fabric-api"
+      ],
+      "conflicts": [],
+      "declared": false,
+      "dependencies": [],
+      "id": "fabric-api",
+      "identity": {
+        "file_id": null,
+        "project_id": "P7dR8mSH",
+        "slug": "fabric-api",
+        "version_id": "3dM0X6ou"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Player7457",
+          "modmuss50"
+        ],
+        "description": "Lightweight and modular API providing common hooks and intercompatibility measures utilized by mods using the Fabric toolchain.",
+        "homepage": "https://modrinth.com/mod/fabric-api",
+        "license": "Apache-2.0",
+        "missing": [],
+        "name": "Fabric API",
+        "version": "0.155.3+26.1.2"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "ferritecore-9.0.0-fabric.jar",
+        "sha512": "d81fa97e11784c19d42f89c2f433831d007603dd7193cee45fa177e4a6a9c52b384b198586e04a0f7f63cd996fed713322578bde9a8db57e1188854ae5cbe584",
+        "size": 72677,
+        "url": "https://cdn.modrinth.com/data/uXXizFIs/versions/d5ddUdiB/ferritecore-9.0.0-fabric.jar"
+      },
+      "build": null,
+      "closure": [
+        "ferrite-core"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "ferrite-core",
+      "identity": {
+        "file_id": null,
+        "project_id": "uXXizFIs",
+        "slug": "ferrite-core",
+        "version_id": "d5ddUdiB"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "malte0811"
+        ],
+        "description": "Memory usage optimizations",
+        "homepage": "https://modrinth.com/mod/ferrite-core",
+        "license": "MIT",
+        "missing": [],
+        "name": "FerriteCore",
+        "version": "9.0.0-fabric"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "Jade-mc26.1-Fabric-26.1.9.jar",
+        "sha512": "6b38ad22b3888057c619aeb89eaa78ade68c03dbba8d3758c65b32ad34471378cf222dc1b9108c3107d9739eeeb385476e760c14ccd68afde754660f63cedcce",
+        "size": 1022883,
+        "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/fW2xykin/Jade-mc26.1-Fabric-26.1.9.jar"
+      },
+      "build": null,
+      "closure": [
+        "fabric-api",
+        "jade"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [
+        {
+          "id": "fabric-api",
+          "kind": "required"
+        }
+      ],
+      "id": "jade",
+      "identity": {
+        "file_id": null,
+        "project_id": "nvQzSEkH",
+        "slug": "jade",
+        "version_id": "fW2xykin"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Snownee"
+        ],
+        "description": "Shows information about what you are looking at. (Hwyla/Waila fork for Minecraft 1.16+)",
+        "homepage": "https://modrinth.com/mod/jade",
+        "license": "CC-BY-NC-SA-4.0",
+        "missing": [],
+        "name": "Jade 🔍",
+        "version": "26.1.9+fabric"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "jei-26.1.2-fabric-29.34.0.90.jar",
+        "sha512": "0a1637844872b6bfe2af14c6db071aa8ffdd841ed729907b16732ce79f587a0750842988fa30d943646105aaeb38f3a63b159a69e4d58dff740d0e63aa246716",
+        "size": 1838568,
+        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/jZ7OgHsw/jei-26.1.2-fabric-29.34.0.90.jar"
+      },
+      "build": null,
+      "closure": [
+        "jei"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "jei",
+      "identity": {
+        "file_id": null,
+        "project_id": "u6dRKJwZ",
+        "slug": "jei",
+        "version_id": "jZ7OgHsw"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "mezz"
+        ],
+        "description": "View Items and Recipes",
+        "homepage": "https://modrinth.com/mod/jei",
+        "license": "MIT",
+        "missing": [],
+        "name": "Just Enough Items (JEI)",
+        "version": "29.34.0.90"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "ketket-graves-2.4.jar",
+        "sha512": "2b479b06771b08e179a7192c814453b582ee8173375361e3a36da778ef6bbdb80de8ea1e87147b0f228f39a730c3283b86eb42a880bfe7d69b1082b2f79a5dfc",
+        "size": 236382,
+        "url": "https://cdn.modrinth.com/data/bYcfmIoG/versions/jHdsuNot/ketket-graves-2.4.jar"
+      },
+      "build": null,
+      "closure": [
+        "ketket-graves"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "ketket-graves",
+      "identity": {
+        "file_id": null,
+        "project_id": "bYcfmIoG",
+        "slug": "ketket-graves",
+        "version_id": "jHdsuNot"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "efeketket"
+        ],
+        "description": "This datapack creates a grave when a player dies, safely storing their items. Retrieve your belongings without worrying about losing them!",
+        "homepage": "https://modrinth.com/mod/ketket-graves",
+        "license": "MIT",
+        "missing": [],
+        "name": "Graves",
+        "version": "2.4+mod"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "krypton-0.3.0.jar",
+        "sha512": "14233210283a76f3cf435a3b8ddbcbd65a858d2b1a10b88ff643c0a01486dfd2bf1843bd3456cd4fb86cbb3b06f2dea0c4e663b1976a48e96de16d3b5a707ec9",
+        "size": 268664,
+        "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/kYAGItyj/krypton-0.3.0.jar"
+      },
+      "build": null,
+      "closure": [
+        "krypton"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "krypton",
+      "identity": {
+        "file_id": null,
+        "project_id": "fQEb0iXm",
+        "slug": "krypton",
+        "version_id": "kYAGItyj"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "astei"
+        ],
+        "description": "A mod to optimize the Minecraft networking stack",
+        "homepage": "https://modrinth.com/mod/krypton",
+        "license": "LGPL-3.0-only",
+        "missing": [],
+        "name": "Krypton",
+        "version": "0.3.0"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "lithium-fabric-0.24.7+mc26.1.2.jar",
+        "sha512": "37240bdbf93c19fdc6aa632d89223639f0ef9d923ee1793b33d624946b0482cc972834049ed07d71db3494e16c9de68e755937aac7c4ac5d7291bd38c1425899",
+        "size": 912821,
+        "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/Oqq8TOAV/lithium-fabric-0.24.7%2Bmc26.1.2.jar"
+      },
+      "build": null,
+      "closure": [
+        "lithium"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "lithium",
+      "identity": {
+        "file_id": null,
+        "project_id": "gvQqBUqZ",
+        "slug": "lithium",
+        "version_id": "Oqq8TOAV"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "jellysquid3",
+          "2No2Name"
+        ],
+        "description": "No-compromises game logic optimization mod, useful for both single-player games and multi-player servers.",
+        "homepage": "https://modrinth.com/mod/lithium",
+        "license": "LGPL-3.0-only",
+        "missing": [],
+        "name": "Lithium",
+        "version": "mc26.1.2-0.24.7-fabric"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "lithostitched-1.8.0-fabric-26.1.jar",
+        "sha512": "1f3552e4b22318d981dfc3079d32b3f633f5b69fc68ef31f1701ba8b47279dca68b5b73e58b89fd72379f92bb45b6aa7353c68674dd1b28745c75f7081936d55",
+        "size": 1016827,
+        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/4IMaWZpJ/lithostitched-1.8.0-fabric-26.1.jar"
+      },
+      "build": null,
+      "closure": [
+        "fabric-api",
+        "lithostitched"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [
+        {
+          "id": "fabric-api",
+          "kind": "required"
+        }
+      ],
+      "id": "lithostitched",
+      "identity": {
+        "file_id": null,
+        "project_id": "XaDC71GB",
+        "slug": "lithostitched",
+        "version_id": "4IMaWZpJ"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Apollo"
+        ],
+        "description": "Library mod with new configurability and compatibility enhancements for worldgen",
+        "homepage": "https://modrinth.com/mod/lithostitched",
+        "license": "MIT",
+        "missing": [],
+        "name": "Lithostitched",
+        "version": "1.8.0-fabric-26.1"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "lootr-fabric-26.1.2-1.23.38.123.jar",
+        "sha512": "e2119696bbf0578cee6616bf74019e083439f10b1bef7fedb3fcc9131cff9eb32df8e28ec303dd2a45a5dd8685f1482ebb06732f3eaf03fd223381a025fe4cc7",
+        "size": 1571034,
+        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/RjolbdhC/lootr-fabric-26.1.2-1.23.38.123.jar"
+      },
+      "build": null,
+      "closure": [
+        "fabric-api",
+        "lootr"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [
+        {
+          "id": "fabric-api",
+          "kind": "required"
+        }
+      ],
+      "id": "lootr",
+      "identity": {
+        "file_id": null,
+        "project_id": "EltpO5cN",
+        "slug": "lootr",
+        "version_id": "RjolbdhC"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "embeddedt",
+          "ZestyBlaze",
+          "noobanidus"
+        ],
+        "description": "A mod that makes it so nobody misses out on Loot! All loot chests are instanced per player and visually unique.",
+        "homepage": "https://modrinth.com/mod/lootr",
+        "license": "MIT",
+        "missing": [],
+        "name": "Lootr",
+        "version": "1.23.38.123"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "monsters_in_the_closet_reborn-1.0.3+26.1.x-fabric.jar",
+        "sha512": "99117f88c846d4044f336beccdbe3baddbab3a58339bb9d39125bc9c72ad517793b1b4d1ad7712a7afde780a10bb86b396383d29546c9c0bb9db3ca72d823f94",
+        "size": 14348,
+        "url": "https://cdn.modrinth.com/data/uA5LOlSs/versions/CO8ilXMj/monsters_in_the_closet_reborn-1.0.3%2B26.1.x-fabric.jar"
+      },
+      "build": null,
+      "closure": [
+        "monsters-in-the-closet-reborn"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "monsters-in-the-closet-reborn",
+      "identity": {
+        "file_id": null,
+        "project_id": "uA5LOlSs",
+        "slug": "monsters-in-the-closet-reborn",
+        "version_id": "CO8ilXMj"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "KoroWin"
+        ],
+        "description": "Highlights the mobs that are preventing you from sleeping.",
+        "homepage": "https://modrinth.com/mod/monsters-in-the-closet-reborn",
+        "license": "MIT",
+        "missing": [],
+        "name": "Monsters in the Closet Reborn",
+        "version": "1.0.3"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "servercore-fabric-1.5.19+26.1.2.jar",
+        "sha512": "056d56d74508bf34f25ded9323a721be915b9273796100ee81c4a867717364539285b4ae9749e360d6699d485e3fba0561502a8c94979684b0cf79ce8e80afcd",
+        "size": 920689,
+        "url": "https://cdn.modrinth.com/data/4WWQxlQP/versions/H6TboTA2/servercore-fabric-1.5.19%2B26.1.2.jar"
+      },
+      "build": null,
+      "closure": [
+        "servercore"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "servercore",
+      "identity": {
+        "file_id": null,
+        "project_id": "4WWQxlQP",
+        "slug": "servercore",
+        "version_id": "H6TboTA2"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Wesley1808"
+        ],
+        "description": "A mod that aims to optimize the minecraft server.",
+        "homepage": "https://modrinth.com/mod/servercore",
+        "license": "MIT",
+        "missing": [],
+        "name": "ServerCore",
+        "version": "1.5.19+26.1.2"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1.2"
+      ]
+    },
+    {
+      "artifact": {
+        "filename": "spark-1.10.187-fabric.jar",
+        "sha512": "c74bf5d5a16b2445ec6ea717eac756412b272a8015e91f91a7bf5a27e6f2f99c4a11878d434510f941f37b0344b3a7d1ba0dd6c34e80642762c48fb6e9a93894",
+        "size": 3838499,
+        "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/e3hsPc1o/spark-1.10.187-fabric.jar"
+      },
+      "build": null,
+      "closure": [
+        "spark"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "spark",
+      "identity": {
+        "file_id": null,
+        "project_id": "l6YH9Als",
+        "slug": "spark",
+        "version_id": "e3hsPc1o"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "lucko"
+        ],
+        "description": "spark is a performance profiler for Minecraft clients, servers and proxies.",
+        "homepage": "https://modrinth.com/mod/spark",
+        "license": "GPL-3.0-only",
+        "missing": [],
+        "name": "spark",
+        "version": "1.10.187-fabric"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "artifact": null,
+      "build": null,
+      "closure": [
+        "terralith"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [],
+      "id": "terralith",
+      "identity": {
+        "file_id": null,
+        "project_id": "8oi3bsk5",
+        "slug": "terralith",
+        "version_id": null
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Apollo",
+          "catter1",
+          "Starmute"
+        ],
+        "description": "Explore almost 100 new biomes consisting of both realism and light fantasy, using just Vanilla blocks. Complete with several immersive structures to compliment the overhauled terrain.",
+        "homepage": "https://modrinth.com/mod/terralith",
+        "license": "LicenseRef-Stardust-Labs-License",
+        "missing": [],
+        "name": "Terralith",
+        "version": null
+      },
+      "reason": "license 'LicenseRef-Stardust-Labs-License' is not on the redistribution allowlist (licenses.yml); no author permission recorded",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
+    },
+    {
+      "artifact": {
+        "filename": "t_and_t-fabric-neoforge-1.13.11.jar",
+        "sha512": "e318ec6ea4c15b456c188fdaec3447b8ae875efa21961be5fc365a50aacf4bd7b6b939950a48707a20764a78c42eea37e19052e3cc55c843e147dfb788c2e959",
+        "size": 3566810,
+        "url": "https://cdn.modrinth.com/data/DjLobEOy/versions/eN3WLQ3P/t_and_t-fabric-neoforge-1.13.11.jar"
+      },
+      "build": null,
+      "closure": [
+        "cloth-config",
+        "cristel-lib",
+        "fabric-api",
+        "towns-and-towers"
+      ],
+      "conflicts": [],
+      "declared": true,
+      "dependencies": [
+        {
+          "id": "cristel-lib",
+          "kind": "required"
+        }
+      ],
+      "id": "towns-and-towers",
+      "identity": {
+        "file_id": null,
+        "project_id": "DjLobEOy",
+        "slug": "towns-and-towers",
+        "version_id": "eN3WLQ3P"
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "Biban_Auriu",
+          "Kubek",
+          "Cristelknight"
+        ],
+        "description": "Spice up your world with new villages, pillager outposts, and even new ships!",
+        "homepage": "https://modrinth.com/mod/towns-and-towers",
+        "license": "CC-BY-NC-SA-4.0",
+        "missing": [],
+        "name": "Towns and Towers",
+        "version": "1.13.11"
+      },
+      "reason": null,
+      "selectable": true,
+      "source": "modrinth",
+      "status": "compatible",
+      "supported_loaders": [
+        "fabric"
+      ],
+      "supported_minecraft_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2"
+      ]
+    }
+  ],
+  "image": "minecraft-server-fabric",
+  "inputs_hash": "sha256:90c78c61cac726ea1a19fccf2ab077507084b1ffcd02d3ffc56978c4952d7f61",
+  "minecraft_version": "26.1.2",
+  "runtime": {
+    "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",
+    "base_image": "eclipse-temurin:25-jre",
+    "java_major": 25
+  },
+  "schema": 1,
+  "server": "fabric",
+  "server_build": {
+    "details": {
+      "downloads": {
+        "installer": {
+          "sha1": "74685b5a0178c4dabd4be741a276d35c59b5ec96",
+          "url": "https://maven.fabricmc.net/net/fabricmc/fabric-installer/1.1.2/fabric-installer-1.1.2.jar"
+        },
+        "server": {
+          "sha1": "97ccd4c0ed3f81bbb7bfacddd1090b0c56f9bc51",
+          "url": "https://piston-data.mojang.com/v1/objects/97ccd4c0ed3f81bbb7bfacddd1090b0c56f9bc51/server.jar"
+        }
+      },
+      "installer_version": "1.1.2"
+    },
+    "loader_version": "0.19.5",
+    "reason": null,
+    "status": "available"
+  }
+}

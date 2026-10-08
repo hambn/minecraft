@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "server": "fabric",
+  "image": "ghcr.io/hambn/minecraft-server-fabric",
+  "updated_at": "2026-10-08T12:12:38Z",
+  "window": [
+    "26.3",
+    "26.2",
+    "26.1.2"
+  ],
+  "latest": "26.3",
+  "latest_outside_window": false,
+  "targets": {
+    "26.3": {
+      "state": "published",
+      "digest": "sha256:a784fe6ace14e83b68f429b783186e01548ac01ee87b2dd53056931ae6f61542",
+      "published_at": "2026-10-08T12:12:38Z",
+      "lock": "26.3.json"
+    },
+    "26.2": {
+      "state": "published",
+      "digest": "sha256:d75cbc135029c424d988dc326100a272402870c8d980a05b8e9bc29b882a4763",
+      "published_at": "2026-10-08T12:12:38Z",
+      "lock": "26.2.json"
+    },
+    "26.1.2": {
+      "state": "published",
+      "digest": "sha256:52bb6a52ec1e90cbf6af9e4ecaf63e7729d9bbdf53c997cda5f0d320f002943f",
+      "published_at": "2026-10-08T12:12:38Z",
+      "lock": "26.1.2.json"
+    }
+  }
+}
