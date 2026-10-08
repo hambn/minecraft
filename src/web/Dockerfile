@@ -1,48 +1,36 @@
 # minecraft-web: the documentation site served by an unprivileged nginx on port 8080.
-# The site is generated here with base path "/", so the build context is the repository root.
+# Built from the repository root, because the site is generated from the server locks:
 #
 #   docker build -f src/web/Dockerfile -t minecraft-web:local .
 #   docker run --rm -p 8080:8080 minecraft-web:local      # http://localhost:8080/
 
-FROM python:3-slim AS builder
-# The generator uses only the standard library; no pip install needed.
-# The repository layout is kept so its default paths resolve.
+# 1. Export loaders, status and locks as the site's input (standard library only).
+FROM python:3-slim AS data
 WORKDIR /build
-COPY .github/scripts/website/ .github/scripts/website/
-COPY src/web/ src/web/
-# Every server dir is copied; the generator only reads <server>/locks/*.json.
+COPY .github/scripts/server_images/ .github/scripts/server_images/
 COPY src/mc-server-images/ src/mc-server-images/
 # Owner/name for image refs and links; CI passes --build-arg REPO=$GITHUB_REPOSITORY.
 ARG REPO=hambn/minecraft
-RUN PYTHONPATH=.github/scripts python -m website --out /site --base-path / --repo "$REPO" \
-    && test -s /site/index.html
+RUN PYTHONPATH=.github/scripts python -m server_images site-data --repo "$REPO" --out /site-data.json
 
+# 2. Build the static site, served from "/".
+FROM node:24-slim AS build
+ENV PNPM_HOME=/pnpm PATH=/pnpm:$PATH
+RUN corepack enable
+WORKDIR /web
+COPY src/web/package.json src/web/pnpm-lock.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+COPY src/web/ ./
+COPY --from=data /site-data.json src/data/site-data.json
+# Canonical public URL (the GitHub Pages site), so self-hosted copies point search engines there.
+ARG SITE_URL=
+ENV SITE_URL=$SITE_URL BASE_PATH=/
+RUN pnpm build && test -s dist/index.html
+
+# 3. Serve it.
 FROM nginxinc/nginx-unprivileged:stable-alpine
-# Replace the default server block: static files, 404 page, caching.
-RUN printf '%s\n' \
-    'server {' \
-    '    listen 8080;' \
-    '    server_name _;' \
-    '    root /usr/share/nginx/html;' \
-    '    index index.html;' \
-    '    absolute_redirect off;' \
-    '    server_tokens off;' \
-    '    error_page 404 /404.html;' \
-    '    add_header X-Content-Type-Options nosniff always;' \
-    '    add_header Referrer-Policy no-referrer always;' \
-    '    location / {' \
-    '        try_files $uri $uri/ =404;' \
-    '        add_header Cache-Control "no-cache" always;' \
-    '        add_header X-Content-Type-Options nosniff always;' \
-    '        add_header Referrer-Policy no-referrer always;' \
-    '    }' \
-    '    location /static/ {' \
-    '        add_header Cache-Control "public, max-age=31536000, immutable" always;' \
-    '        add_header X-Content-Type-Options nosniff always;' \
-    '        add_header Referrer-Policy no-referrer always;' \
-    '    }' \
-    '}' > /etc/nginx/conf.d/default.conf
-COPY --from=builder /site/ /usr/share/nginx/html/
+COPY src/web/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /web/dist/ /usr/share/nginx/html/
 EXPOSE 8080
 # The base image already runs as the unprivileged "nginx" user (UID 101).
 USER 101

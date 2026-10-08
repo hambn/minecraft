@@ -13,7 +13,7 @@ Interfaces shared between the parts of this repository. `plan.md` says *what* to
 
 ## Python layout (`.github/scripts/`)
 
-Python 3.12, `PyYAML` (pinned in `.github/scripts/requirements.txt`), otherwise stdlib. Two packages, run with `.github/scripts` on `PYTHONPATH` (the workflows set it): `python -m server_images <command>` and `python -m website`. Tests live in `.github/scripts/tests/`, run offline with `python -m unittest discover -s .github/scripts/tests -t .github/scripts` (the `scripts.yml` workflow runs them).
+Python 3.12, `PyYAML` (pinned in `.github/scripts/requirements.txt`), otherwise stdlib. One package, run with `.github/scripts` on `PYTHONPATH` (the workflows set it): `python -m server_images <command>`. Tests live in `.github/scripts/tests/`, run offline with `python -m unittest discover -s .github/scripts/tests -t .github/scripts` (the `scripts.yml` workflow runs them).
 
 ```text
 .github/scripts/
@@ -33,7 +33,7 @@ Python 3.12, `PyYAML` (pinned in `.github/scripts/requirements.txt`), otherwise 
     mc_status.py      standalone status ping, mounted into a python container by ci_check
     sources/          upstream API clients (http, models, mojang, modrinth, curseforge, registry, github)
     loaders/          __init__.py: shared base, window detection, get_loader; <server>.py: rules, module-level LOADER
-  website/            site generator (__main__.py) + markdown_lite.py
+    site_data.py      site-data command: the website's only input (see "Website")
   tests/
 src/mc-server-images/   data read by the tooling, unchanged by it except locks/
   licenses.yml      redistribution allowlist (SPDX ids) and per-project permissions
@@ -273,4 +273,25 @@ custom/       build-custom output dir incl. results.json   (only when built)
 
 `push_image` runs `python -m server_images publish`, which: rechecks the window; refuses to publish when any `built` target has `passed: false`; for each passed built target in the window, pushes `image.tar` with `skopeo copy docker-archive:… docker://<registry>/<image>:<mc>` and records the digest; uploads new custom artifacts to the `custom-artifacts` release; moves `latest` (`skopeo copy docker://…:<mc> docker://…:latest`) to the newest published window target when it changed or was rebuilt; copies final locks into `<server>/locks/`, rewrites `status.json`; then commits `chore(<server>): update locks for <versions>` as `github-actions[bot]` and pushes to `main` with rebase retries (skipped with `--no-commit`).
 
-`web.yml` builds the site with `PYTHONPATH=.github/scripts python -m website --out site --base-path <path>` (`/minecraft/` for Pages, `/` for the image).
+## Website
+
+`src/web/` is an Astro + Tailwind CSS + shadcn/ui static site. Its only data input is `src/web/src/data/site-data.json` (generated, not committed), written by `PYTHONPATH=.github/scripts python -m server_images site-data --out <file> [--repo owner/name]` (`pnpm site-data` in `src/web`):
+
+```json
+{
+  "schema": 1, "repo": "hambn/minecraft", "owner": "hambn", "window_size": 3, "updated_at": "<max status updated_at>",
+  "servers": [{
+    "id": "paper", "title": "Paper", "description": "...", "homepage": "https://papermc.io",
+    "image": "ghcr.io/<owner>/minecraft-server-paper", "loader_label": "Paper build",
+    "catalog": {"kind": "plugins", "env": "PLUGINS", "dir": "/data/plugins"}, "eula": true,
+    "manifest_dir": "src/mc-server-images/paper/plugins",
+    "window": [...], "upcoming": [...], "latest": "26.2", "latest_outside_window": false, "updated_at": "...",
+    "versions": [{"minecraft": "26.2", "state": "published|pending|frozen|unlisted", "maintained": true,
+                  "digest": "sha256:...", "published_at": "...", "reason": null, "lock": {<lock file> | null}}]
+  }]
+}
+```
+
+Servers come from `loaders.SERVERS`; presentation fields are `Loader` class attributes (`title`, `description`, `homepage`, `loader_label`, `catalog_dir`, `eula`). `versions` is newest first; `maintained` means published and in the window (rebuilt automatically). TypeScript types for this shape live in `src/web/src/lib/site-data.ts`; change both together.
+
+`web.yml` runs `pnpm site-data`, `pnpm check` and `pnpm build` with `SITE_URL` (public Pages URL from `actions/configure-pages`, used for canonical links, sitemap and social cards) and `BASE_PATH` (`/minecraft/` for Pages). The web image builds the same site with `BASE_PATH=/` and the Pages `SITE_URL`, so self-hosted copies point search engines at the public site.

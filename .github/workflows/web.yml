@@ -1,12 +1,14 @@
 # Documentation site pipeline. Stages (each uses a job matrix):
-#   plan           snapshot the website sources, its generator and committed server locks, pin the commit,
-#                  emit the build targets (pages with the repository sub-path, docker at /).
-#   build          one job per target: generate the site and check it. `pages` produces the
-#                  Pages deployment artifact; `docker` builds src/web/Dockerfile, smoke-tests the
-#                  container and exports the tested image as an artifact.
+#   plan           snapshot the website sources, the site-data exporter and committed server locks, pin the
+#                  commit, resolve the public Pages URL, emit the build targets (pages with the repository
+#                  sub-path, docker at /).
+#   build          one job per target: export site data, build the Astro site and check it. `pages`
+#                  produces the Pages deployment artifact; `docker` builds src/web/Dockerfile, smoke-tests
+#                  the container and exports the tested image as an artifact.
 #   publish_pages  main only: deploy the Pages artifact (github-pages environment).
 #   push_image     main only: push the tested image archive to ghcr.io/<owner>/minecraft-web:latest.
-# Runs again after any server workflow succeeds so the site reflects newly published locks.
+# Runs again after any server workflow succeeds so the site reflects newly published locks. All page
+# content comes from `python -m server_images site-data`, so image changes need no web edits.
 name: web
 
 on:
@@ -16,13 +18,13 @@ on:
     paths:
       - "src/web/**"
       - "src/mc-server-images/*/locks/**"
-      - ".github/scripts/website/**"
+      - ".github/scripts/server_images/**"
       - ".github/workflows/web.yml"
   pull_request:
     paths:
       - "src/web/**"
       - "src/mc-server-images/*/locks/**"
-      - ".github/scripts/website/**"
+      - ".github/scripts/server_images/**"
       - ".github/workflows/web.yml"
   workflow_run:
     workflows: [fabric, neoforge, paper, pumpkin]
@@ -58,19 +60,29 @@ jobs:
           sha="$(git rev-parse HEAD)"
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
           mkdir -p snapshot
-          tar -czf snapshot/inputs.tar.gz src/web .github/scripts/website src/mc-server-images/*/locks
+          tar -czf snapshot/inputs.tar.gz src/web .github/scripts/server_images src/mc-server-images/*/locks
           {
             echo "commit $sha"
-            find src/web .github/scripts/website src/mc-server-images/*/locks -type f -print0 | sort -z | xargs -0 sha256sum
+            find src/web .github/scripts/server_images src/mc-server-images/*/locks -type f -print0 | sort -z | xargs -0 sha256sum
           } > snapshot/inputs.sha256
+
+      # Public URL of the Pages site (handles custom domains). Pull requests fall back to
+      # https://<owner>.github.io/<repo>/, derived by astro.config.ts.
+      - uses: actions/configure-pages@v6
+        id: pages
+        if: github.event_name != 'pull_request'
 
       - name: Emit build targets
         id: targets
         env:
           REPO_NAME: ${{ github.event.repository.name }}
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
         run: |
-          targets="$(jq -cn --arg repo "$REPO_NAME" \
-            '{include: [{target: "pages", base_path: ("/" + $repo + "/")}, {target: "docker", base_path: "/"}]}')"
+          site_url="${SITE_URL:+${SITE_URL%/}/}"
+          base_path="/$REPO_NAME/"
+          if [ -n "$site_url" ]; then base_path="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.urlsplit(sys.argv[1]).path or "/")' "$site_url")"; fi
+          targets="$(jq -cn --arg site "$site_url" --arg base "$base_path" \
+            '{include: [{target: "pages", base_path: $base, site_url: $site}, {target: "docker", base_path: "/", site_url: $site}]}')"
           echo "targets=$targets" >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@v7
@@ -99,25 +111,41 @@ jobs:
         with:
           python-version-file: .python-version
 
-      # The generator uses only the standard library.
+      - uses: pnpm/action-setup@v6
+        if: matrix.target == 'pages'
+        with:
+          package_json_file: src/web/package.json
+
+      - uses: actions/setup-node@v7
+        if: matrix.target == 'pages'
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: src/web/pnpm-lock.yaml
+
+      # site-data uses only the standard library, so no pip install is needed.
       - name: Generate site for GitHub Pages
         if: matrix.target == 'pages'
+        working-directory: src/web
         env:
-          PYTHONPATH: .github/scripts
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SITE_URL: ${{ matrix.site_url }}
+          BASE_PATH: ${{ matrix.base_path }}
+          # Optional repository variable: the content of Google Search Console's verification meta tag.
+          PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
         run: |
-          python -m website \
-            --out site \
-            --repo "${{ github.repository }}" \
-            --base-path "${{ matrix.base_path }}"
-          test -s site/index.html
-
-      - uses: actions/configure-pages@v6
-        if: matrix.target == 'pages' && github.event_name != 'pull_request'
+          pnpm install --frozen-lockfile
+          pnpm run site-data
+          pnpm run check
+          pnpm run format:check
+          pnpm run build
+          test -s dist/index.html
+          test -s dist/sitemap.xml
 
       - uses: actions/upload-pages-artifact@v5
         if: matrix.target == 'pages'
         with:
-          path: site
+          path: src/web/dist
           retention-days: 3
 
       - uses: docker/setup-buildx-action@v4
@@ -125,13 +153,14 @@ jobs:
         with:
           driver: docker
 
-      # The Dockerfile builds the site itself with base path "/" from the repository root.
+      # The Dockerfile exports the site data and builds the site with base path "/" from the repository root.
       - name: Build web image
         if: matrix.target == 'docker'
         run: |
           docker build \
             -f src/web/Dockerfile \
             --build-arg "REPO=${{ github.repository }}" \
+            --build-arg "SITE_URL=${{ matrix.site_url }}" \
             --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
             --label "org.opencontainers.image.revision=${{ needs.plan.outputs.sha }}" \
             -t local/minecraft-web:latest .
@@ -143,6 +172,9 @@ jobs:
           case "$user" in ''|0|root|0:*|root:*) echo "::error::image runs as root"; exit 1 ;; esac
           docker run -d --name web-smoke -p 8080:8080 local/minecraft-web:latest
           curl -fsS --retry 15 --retry-delay 1 --retry-all-errors http://127.0.0.1:8080/ | grep -qi '<html'
+          curl -fsS http://127.0.0.1:8080/docs/ | grep -qi '<html'
+          curl -fsS -o /dev/null http://127.0.0.1:8080/sitemap.xml
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/does-not-exist)" = 404
 
       - name: Show container logs on failure
         if: failure() && matrix.target == 'docker'

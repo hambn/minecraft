@@ -1,0 +1,91 @@
+---
+import { getCollection } from "astro:content";
+import { ChevronDownIcon } from "lucide-react";
+import BaseLayout from "@/layouts/base-layout.astro";
+import type { Props as SeoProps } from "@/components/seo.astro";
+import { url } from "@/lib/site";
+
+interface Props extends SeoProps {
+  /** Current doc id; undefined on the docs index. */
+  current?: string;
+  headings?: { depth: number; slug: string; text: string }[];
+}
+
+const { current, headings = [], ...seo } = Astro.props;
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+const toc = headings.filter((h) => h.depth === 2);
+const items = [
+  { href: "docs/", title: "Overview", current: current === undefined },
+  ...docs.map((d) => ({ href: `docs/${d.id}/`, title: d.data.title, current: d.id === current })),
+];
+const currentTitle = items.find((i) => i.current)?.title ?? "Overview";
+---
+
+<BaseLayout {...seo}>
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-10 sm:px-6 md:grid-cols-[12rem_minmax(0,1fr)] md:py-14 xl:grid-cols-[12rem_minmax(0,1fr)_12rem]">
+    <aside class="md:sticky md:top-24 md:self-start">
+      {/* Phones: a collapsible menu showing the current page. */}
+      <details class="group rounded-lg border md:hidden">
+        <summary class="flex cursor-pointer list-none items-center justify-between px-3 py-2.5 text-sm [&::-webkit-details-marker]:hidden">
+          <span>
+            <span class="text-muted-foreground">Documentation:</span> <span class="font-medium">{currentTitle}</span>
+          </span>
+          <ChevronDownIcon className="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
+        </summary>
+        <ul class="border-t p-1">
+          {items.map((item) => (
+            <li>
+              <a
+                href={url(item.href)}
+                aria-current={item.current ? "page" : undefined}
+                class="block rounded-md px-2.5 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground aria-[current=page]:bg-muted aria-[current=page]:font-medium aria-[current=page]:text-foreground"
+              >
+                {item.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+      <nav aria-label="Documentation" class="hidden md:block">
+        <p class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Documentation</p>
+        <ul class="flex flex-col gap-1">
+          {items.map((item) => (
+            <li>
+              <a
+                href={url(item.href)}
+                aria-current={item.current ? "page" : undefined}
+                class="block rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:bg-muted aria-[current=page]:font-medium aria-[current=page]:text-foreground"
+              >
+                {item.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="min-w-0">
+      <slot />
+    </div>
+
+    {toc.length > 0 && (
+      <aside class="hidden xl:sticky xl:top-24 xl:block xl:self-start">
+        <nav aria-label="On this page">
+          <p class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">On this page</p>
+          <ul class="space-y-2 border-l text-sm">
+            {toc.map((h) => (
+              <li>
+                <a
+                  href={`#${h.slug}`}
+                  class="-ml-px block border-l border-transparent pl-3 text-muted-foreground hover:border-foreground hover:text-foreground"
+                >
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    )}
+  </div>
+</BaseLayout>

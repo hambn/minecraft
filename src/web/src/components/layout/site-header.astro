@@ -1,0 +1,63 @@
+---
+import { MenuIcon } from "lucide-react";
+import Logo from "@/components/logo.astro";
+import GithubIcon from "@/components/layout/github-icon.astro";
+import ThemeToggle from "@/components/layout/theme-toggle.astro";
+import { servers } from "@/lib/site-data";
+import { REPO_URL, SITE_NAME, sitePath, url } from "@/lib/site";
+
+const current = sitePath(Astro.url.pathname);
+const links = [...servers.map((s) => ({ href: `images/${s.id}/`, label: s.title })), { href: "docs/", label: "Docs" }];
+const isActive = (href: string) => current.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+  <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
+    <a href={url()} class="flex items-center gap-2 font-semibold tracking-tight">
+      <Logo class="size-6" />
+      <span class="hidden sm:inline">{SITE_NAME}</span>
+      <span class="sm:hidden">MC Images</span>
+    </a>
+    <nav aria-label="Main" class="ml-4 hidden items-center gap-1 md:flex">
+      {links.map((l) => (
+        <a
+          href={url(l.href)}
+          aria-current={isActive(l.href) ? "page" : undefined}
+          class="rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:bg-muted aria-[current=page]:text-foreground"
+        >
+          {l.label}
+        </a>
+      ))}
+    </nav>
+    <div class="ml-auto flex items-center gap-1">
+      <a
+        href={REPO_URL}
+        rel="noopener"
+        aria-label="GitHub repository"
+        class="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+      >
+        <GithubIcon class="size-4" />
+      </a>
+      <ThemeToggle />
+      <details class="group relative md:hidden">
+        <summary
+          aria-label="Menu"
+          class="inline-flex size-8 cursor-pointer list-none items-center justify-center rounded-md text-muted-foreground hover:bg-muted [&::-webkit-details-marker]:hidden"
+        >
+          <MenuIcon className="size-4" />
+        </summary>
+        <nav aria-label="Mobile" class="absolute right-0 mt-2 flex w-48 flex-col rounded-lg border bg-popover p-1 shadow-lg">
+          {links.map((l) => (
+            <a
+              href={url(l.href)}
+              aria-current={isActive(l.href) ? "page" : undefined}
+              class="rounded-md px-3 py-2 text-sm hover:bg-muted aria-[current=page]:font-medium"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>

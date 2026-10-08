@@ -1,0 +1,18 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  description?: string;
+}
+const { id, title, description } = Astro.props;
+---
+
+<div class="mb-6 space-y-1.5">
+  <h2 id={id} class="scroll-mt-20 text-2xl font-semibold tracking-tight">
+    <a href={`#${id}`} class="hover:underline hover:underline-offset-4">
+      {title}
+    </a>
+  </h2>
+  {description && <p class="max-w-3xl text-muted-foreground">{description}</p>}
+  <slot />
+</div>

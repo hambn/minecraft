@@ -1,0 +1,19 @@
+---
+/** A highlighted, copyable code block (the copy button comes from scripts/copy-code.ts). */
+import { highlight, type CodeLang } from "@/lib/highlight";
+
+interface Props {
+  code: string;
+  lang?: CodeLang;
+  class?: string;
+}
+
+const { code, lang = "sh", class: className } = Astro.props;
+const html = await highlight(code, lang);
+---
+
+<div
+  data-copyable
+  class:list={["overflow-hidden rounded-xl border bg-card text-[13px] leading-relaxed [&_pre]:overflow-x-auto [&_pre]:p-4", className]}
+  set:html={html}
+/>

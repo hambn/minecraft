@@ -1,0 +1,87 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import Breadcrumbs from "@/components/breadcrumbs.astro";
+import DocsLayout from "@/layouts/docs-layout.astro";
+import { data } from "@/lib/site-data";
+import { REPO_URL, canonical, url } from "@/lib/site";
+
+export const getStaticPaths = (async () => {
+  const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+  return docs.map((doc, i) => ({ params: { id: doc.id }, props: { doc, prev: docs[i - 1], next: docs[i + 1] } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  doc: CollectionEntry<"docs">;
+  prev?: CollectionEntry<"docs">;
+  next?: CollectionEntry<"docs">;
+}
+
+const { doc, prev, next } = Astro.props;
+const { Content, headings } = await render(doc);
+---
+
+<DocsLayout
+  title={doc.data.title}
+  description={doc.data.description}
+  image={`og/docs-${doc.id}.png`}
+  type="article"
+  current={doc.id}
+  headings={headings}
+  jsonLd={[
+    {
+      "@type": "TechArticle",
+      headline: doc.data.title,
+      description: doc.data.description,
+      url: canonical(`docs/${doc.id}/`),
+      dateModified: data.updated_at ?? undefined,
+    },
+  ]}
+>
+  <article>
+    <Breadcrumbs
+      items={[
+        ["Docs", "docs/"],
+        [doc.data.title, `docs/${doc.id}/`],
+      ]}
+    />
+    <header class="mb-8 space-y-3 border-b pb-8">
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">{doc.data.title}</h1>
+      <p class="text-lg text-muted-foreground">{doc.data.description}</p>
+    </header>
+    <div class="prose-site" data-copyable>
+      <Content />
+    </div>
+    <footer class="mt-14 space-y-6 border-t pt-6">
+      <nav aria-label="Pages" class="grid gap-3 sm:grid-cols-2">
+        {prev && (
+          <a href={url(`docs/${prev.id}/`)} class="group rounded-xl border p-4 transition-colors hover:bg-muted/40">
+            <span class="flex items-center gap-1 text-xs text-muted-foreground">
+              <ArrowLeftIcon className="size-3" /> Previous
+            </span>
+            <span class="font-medium">{prev.data.title}</span>
+          </a>
+        )}
+        {next && (
+          <a
+            href={url(`docs/${next.id}/`)}
+            class="group rounded-xl border p-4 text-right transition-colors hover:bg-muted/40 sm:col-start-2"
+          >
+            <span class="flex items-center justify-end gap-1 text-xs text-muted-foreground">
+              Next <ArrowRightIcon className="size-3" />
+            </span>
+            <span class="font-medium">{next.data.title}</span>
+          </a>
+        )}
+      </nav>
+      <a
+        class="inline-block text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+        href={`${REPO_URL}/edit/main/src/web/src/content/docs/${doc.id}.md`}
+        rel="noopener"
+      >
+        Edit this page on GitHub
+      </a>
+    </footer>
+  </article>
+</DocsLayout>

@@ -1,4 +1,4 @@
-# Offline unit tests for the build tooling in .github/scripts (server_images, website).
+# Offline unit tests for the build tooling in .github/scripts (server_images).
 name: scripts
 
 on:
@@ -40,9 +40,10 @@ jobs:
       - name: Run unit tests
         run: python -m unittest discover -s .github/scripts/tests -t .github/scripts -v
 
-      - name: Generate the site
+      # The website's only input; web.yml builds the site from it.
+      - name: Export the site data
         env:
           PYTHONPATH: .github/scripts
         run: |
-          python -m website --out site --base-path /
-          test -s site/index.html
+          python -m server_images site-data --out site-data.json
+          python -c 'import json; d = json.load(open("site-data.json")); assert d["servers"], "no servers"'

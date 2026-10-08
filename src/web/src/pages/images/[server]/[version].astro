@@ -1,0 +1,237 @@
+---
+import type { GetStaticPaths } from "astro";
+import { TriangleAlertIcon } from "lucide-react";
+import Breadcrumbs from "@/components/breadcrumbs.astro";
+import { CatalogTable } from "@/components/catalog-table";
+import { CodeTabs } from "@/components/code-tabs";
+import SectionHeading from "@/components/section-heading.astro";
+import { StateBadge } from "@/components/status";
+import BaseLayout from "@/layouts/base-layout.astro";
+import { snippet } from "@/lib/highlight";
+import { groupEntries, hasPage, servers, type Lock, type Server, type ServerVersion } from "@/lib/site-data";
+import { canonical, formatDate, url } from "@/lib/site";
+import { composeFile, dockerRun, pullCommands } from "@/lib/snippets";
+
+export const getStaticPaths = (() =>
+  servers.flatMap((server) =>
+    server.versions
+      .filter(hasPage)
+      .map((version) => ({ params: { server: server.id, version: version.minecraft }, props: { server, version } })),
+  )) satisfies GetStaticPaths;
+
+const { server, version } = Astro.props as { server: Server; version: ServerVersion & { lock: Lock } };
+const lock = version.lock;
+const mc = version.minecraft;
+const kind = server.catalog.kind;
+const groups = groupEntries(lock);
+const example = groups.selectable.slice(0, 3).map((e) => e.id);
+
+const snippets = [
+  await snippet("docker", "docker run", dockerRun(server, mc, { selection: example }), "sh"),
+  await snippet("compose", "compose.yaml", composeFile(server, mc, { selection: example }), "yaml"),
+  await snippet("pull", "docker pull", pullCommands(server, mc, version.digest), "sh"),
+];
+
+/** Flatten nested server_build details into label/value rows. */
+function flatten(value: unknown, prefix = ""): [string, string][] {
+  if (value === null || value === undefined) return [];
+  if (Array.isArray(value)) return [[prefix, value.join(", ")]];
+  if (typeof value === "object") {
+    return Object.entries(value as Record<string, unknown>)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .flatMap(([k, v]) => flatten(v, prefix ? `${prefix} ${k}` : k));
+  }
+  return [[prefix, String(value)]];
+}
+
+const { downloads, ...details } = lock.server_build.details as { downloads?: Record<string, Record<string, string>> };
+const facts: [string, string | null, boolean][] = [
+  ["Minecraft version", mc, true],
+  [server.loader_label, lock.server_build.loader_version, true],
+  ["Java", lock.runtime.java_major ? String(lock.runtime.java_major) : null, false],
+  ["Base image", lock.runtime.base_image, true],
+  ["Base image digest", lock.runtime.base_digest, true],
+  ["Image digest", version.digest, true],
+  ["Published", formatDate(version.published_at), false],
+  ["Inputs hash", lock.inputs_hash, true],
+  ...Object.entries(downloads ?? {}).map(([name, d]): [string, string | null, boolean] => {
+    const algo = ["sha512", "sha256", "sha1"].find((a) => d[a]);
+    return [`Download ${name} ${algo ?? ""}`.trim(), algo ? d[algo] : null, true];
+  }),
+  ...flatten(details).map(([k, v]): [string, string, boolean] => [k.replaceAll("_", " "), v, true]),
+];
+
+const count = (n: number, word: string) => `${n} ${word}`;
+const title = `${server.title} ${mc} Minecraft Server Image`;
+const description = `What is inside ${server.image}:${mc}: ${server.loader_label} ${lock.server_build.loader_version?.slice(0, 12) ?? ""}, ${count(groups.selectable.length, `selectable ${kind}`)}, checksums and ready-to-run Docker and Compose examples.`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={`og/${server.id}.png`}
+  type="article"
+  jsonLd={[
+    {
+      "@type": "TechArticle",
+      headline: title,
+      description,
+      url: canonical(`images/${server.id}/${mc}/`),
+      dateModified: version.published_at ?? undefined,
+      about: { "@type": "SoftwareApplication", name: `${server.title} Minecraft server Docker image`, softwareVersion: mc },
+    },
+  ]}
+>
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-14">
+    <Breadcrumbs
+      items={[
+        [`${server.title} image`, `images/${server.id}/`],
+        [mc, `images/${server.id}/${mc}/`],
+      ]}
+    />
+
+    <header class="max-w-3xl space-y-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+          {server.title} {mc}
+        </h1>
+        <StateBadge version={version} />
+      </div>
+      <p class="text-lg text-muted-foreground">
+        The {server.title} server for Minecraft {mc} with {count(groups.selectable.length, `selectable ${kind}`)} baked in. Everything is
+        inactive until you list it in{" "}
+        <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">{server.catalog.env}</code>.
+      </p>
+    </header>
+
+    {version.state === "frozen" && (
+      <div class="mt-6 flex max-w-3xl gap-3 rounded-xl border border-warning/40 bg-warning/10 p-4 text-sm">
+        <TriangleAlertIcon className="size-4 shrink-0 text-warning" />
+        <p>This release left the image's maintained window. The tag stays published, but it is frozen and no longer updated.</p>
+      </div>
+    )}
+
+    <div class="mt-8 max-w-3xl">
+      <CodeTabs client:visible snippets={snippets} />
+      {server.eula && (
+        <p class="mt-2 px-1 text-xs text-muted-foreground">
+          <code>EULA=TRUE</code> means you accept the{" "}
+          <a class="underline underline-offset-4" href="https://www.minecraft.net/en-us/eula" rel="noopener">
+            Minecraft EULA
+          </a>
+          . More in{" "}
+          <a class="underline underline-offset-4" href={url("docs/docker-compose/")}>
+            Docker Compose
+          </a>{" "}
+          and{" "}
+          <a class="underline underline-offset-4" href={url("docs/configuration/")}>
+            configuration
+          </a>
+          .
+        </p>
+      )}
+    </div>
+
+    <div class="mt-16 space-y-16">
+      <section>
+        <SectionHeading
+          id="catalog"
+          title={`Bundled ${kind}`}
+          description={`Baked into the image and inactive by default. Activate them with ${server.catalog.env}, a comma-separated list of IDs; required dependencies are added automatically.`}
+        >
+          <p class="flex flex-wrap gap-2 pt-2 text-xs text-muted-foreground">
+            <span class="rounded-full border px-2 py-0.5">{groups.selectable.length} selectable</span>
+            {groups.fallbacks.length > 0 && (
+              <span class="rounded-full border px-2 py-0.5">{groups.fallbacks.length} unsupported fallback</span>
+            )}
+            {groups.unavailable.length > 0 && <span class="rounded-full border px-2 py-0.5">{groups.unavailable.length} unavailable</span>}
+            {groups.dependencies.length > 0 && (
+              <span class="rounded-full border px-2 py-0.5">{groups.dependencies.length} dependency-only</span>
+            )}
+          </p>
+        </SectionHeading>
+
+        {groups.selectable.length ? (
+          <CatalogTable server={server} entries={groups.selectable} columns={["requires"]} />
+        ) : (
+          <p class="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+            No {kind} are selectable in this image.
+          </p>
+        )}
+
+        {groups.blocked.length > 0 && (
+          <div class="mt-10 space-y-3">
+            <h3 id="blocked" class="font-semibold">
+              Compatible but not selectable
+            </h3>
+            <p class="text-sm text-muted-foreground">Compatible with this release, but a dependency prevents activation.</p>
+            <CatalogTable server={server} entries={groups.blocked} columns={["reason"]} />
+          </div>
+        )}
+        {groups.fallbacks.length > 0 && (
+          <div class="mt-10 space-y-3">
+            <h3 id="fallbacks" class="font-semibold">
+              Unsupported fallbacks
+            </h3>
+            <p class="text-sm text-muted-foreground">
+              No release compatible with Minecraft {mc} exists, so the newest stable release for the same loader is kept for reference.
+              These are <strong>not</strong> compatible; selecting one makes the container refuse to start.
+            </p>
+            <CatalogTable server={server} entries={groups.fallbacks} columns={["supported", "reason"]} />
+          </div>
+        )}
+        {groups.unavailable.length > 0 && (
+          <div class="mt-10 space-y-3">
+            <h3 id="unavailable" class="font-semibold">
+              Unavailable
+            </h3>
+            <p class="text-sm text-muted-foreground">Not bundled in this image, with the reason for each.</p>
+            <CatalogTable server={server} entries={groups.unavailable} columns={["reason"]} />
+          </div>
+        )}
+        {groups.other.length > 0 && (
+          <div class="mt-10 space-y-3">
+            <h3 id="other" class="font-semibold">
+              Other entries
+            </h3>
+            <CatalogTable server={server} entries={groups.other} columns={["status", "reason"]} />
+          </div>
+        )}
+        {groups.dependencies.length > 0 && (
+          <div class="mt-10 space-y-3">
+            <h3 id="dependencies" class="font-semibold">
+              Dependency-only
+            </h3>
+            <p class="text-sm text-muted-foreground">
+              Pulled in automatically when a selected entry requires them. They are not listed in the manifest.
+            </p>
+            <CatalogTable server={server} entries={groups.dependencies} columns={["status", "reason"]} />
+          </div>
+        )}
+      </section>
+
+      <section>
+        <SectionHeading id="server" title="Server and runtime" description="Exact inputs of this build, from its lock file." />
+        <dl class="grid overflow-hidden rounded-xl border sm:grid-cols-[14rem_1fr]">
+          {facts
+            .filter(([, value]) => value)
+            .map(([label, value, mono]) => (
+              <>
+                <dt class="border-t bg-muted/40 px-4 pt-3 text-xs font-medium text-muted-foreground first:border-t-0 sm:py-3 sm:[&:nth-child(1)]:border-t-0">
+                  {label}
+                </dt>
+                <dd
+                  class:list={[
+                    "min-w-0 px-4 pb-3 text-sm break-all sm:border-t sm:pt-3 sm:[&:nth-child(2)]:border-t-0",
+                    mono && "font-mono text-xs",
+                  ]}
+                >
+                  {value}
+                </dd>
+              </>
+            ))}
+        </dl>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

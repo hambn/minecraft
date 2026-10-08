@@ -1,0 +1,63 @@
+---
+/**
+ * Everything search engines and link previews read: title, description, canonical
+ * URL (always the public site, also on self-hosted copies), Open Graph / Twitter
+ * cards and JSON-LD structured data.
+ */
+import { REPO_URL, SITE_NAME, SITE_TAGLINE, canonical, sitePath } from "@/lib/site";
+
+export interface Props {
+  /** Page title; the site name is appended. */
+  title?: string;
+  /** Complete <title> used as is, for the home page. */
+  fullTitle?: string;
+  description: string;
+  /** Social card, relative to the site root, e.g. "og/paper.png". */
+  image?: string;
+  type?: "website" | "article";
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, fullTitle: full, description, image = "og/home.png", type = "website", jsonLd = [], noindex = false } = Astro.props;
+const fullTitle = full ?? (title ? `${title} | ${SITE_NAME}` : SITE_NAME);
+const pageUrl = canonical(sitePath(Astro.url.pathname));
+const imageUrl = canonical(image);
+const verification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+
+const website = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: canonical(),
+  description: SITE_TAGLINE,
+  publisher: { "@type": "Organization", name: SITE_NAME, url: canonical(), sameAs: [REPO_URL] },
+};
+// Escape "<" so data can never close the script element.
+const ld = (value: unknown) => JSON.stringify(value).replaceAll("<", "\\u003c");
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={pageUrl} />
+<meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large"} />
+{verification && <meta name="google-site-verification" content={verification} />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:title" content={title ?? SITE_NAME} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={pageUrl} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title ?? SITE_NAME} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+<script is:inline type="application/ld+json" set:html={ld(website)} />
+{jsonLd.map((item) => (
+  <script is:inline type="application/ld+json" set:html={ld({ "@context": "https://schema.org", ...item })} />
+))}

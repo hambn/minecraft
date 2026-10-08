@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import { ArrowRightIcon } from "lucide-react";
+import Breadcrumbs from "@/components/breadcrumbs.astro";
+import DocsLayout from "@/layouts/docs-layout.astro";
+import { url } from "@/lib/site";
+
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<DocsLayout
+  title="Documentation"
+  description="How to run, configure and update the prebuilt Minecraft server Docker images: Docker and Compose setup, environment variables, mods, plugins and tags."
+>
+  <Breadcrumbs items={[["Docs", "docs/"]]} />
+  <header class="mb-10 space-y-3">
+    <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Documentation</h1>
+    <p class="text-lg text-muted-foreground">How to run, configure and update the server images.</p>
+  </header>
+  <div class="grid gap-4 sm:grid-cols-2">
+    {docs.map((d) => (
+      <a href={url(`docs/${d.id}/`)} class="group rounded-xl border p-5 transition-colors hover:bg-muted/40">
+        <h2 class="flex items-center justify-between font-medium">
+          {d.data.title}
+          <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+        </h2>
+        <p class="mt-2 text-sm text-muted-foreground">{d.data.description}</p>
+      </a>
+    ))}
+  </div>
+</DocsLayout>

@@ -10,7 +10,7 @@ Working plan for this repository. Update it as decisions are made; the README st
 
 ## Repository layout
 
-The Python build tooling lives in `.github/scripts/` (`server_images` and the `website` generator). Mod/plugin lists, custom artifacts and source projects, Dockerfiles, startup scripts, and generated locks live together in `src/mc-server-images/`. Website pages, templates and its Dockerfile live in `src/web/`.
+The Python build tooling lives in `.github/scripts/` (`server_images`, which also exports the website's data). Mod/plugin lists, custom artifacts and source projects, Dockerfiles, startup scripts, and generated locks live together in `src/mc-server-images/`. Website pages, templates and its Dockerfile live in `src/web/`.
 
 ```text
 .github/
@@ -18,7 +18,6 @@ The Python build tooling lives in `.github/scripts/` (`server_images` and the `w
     server_images/ # Build tooling: plan, lock, stage, CI checks, publish
       loaders/     # Server-specific version and support rules
       sources/     # Upstream API clients
-    website/       # Documentation site generator
     tests/
   workflows/
     fabric.yml
@@ -63,11 +62,13 @@ src/
         plugins.yml
         wasm/      # Custom prebuilt WASM plugins
         src/       # Custom plugin source projects
-  web/
-    Dockerfile
-    docs/          # Server usage and configuration documentation
-    templates/
-    static/
+  web/             # Astro site: Dockerfile, nginx.conf, package.json
+    src/
+      content/docs/  # Server usage and configuration documentation (Markdown)
+      components/    # UI components (shadcn/ui in components/ui/)
+      layouts/
+      lib/           # site-data types, snippets, SEO helpers
+      pages/         # Routes: overview, images/<server>/<version>, docs, sitemap, social cards
 ```
 
 Each server keeps one YAML manifest beside its custom artifacts and source projects: `mods/mods.yml` for Fabric and NeoForge, or `plugins/plugins.yml` for Paper and Pumpkin. Each manifest has `modrinth`, `curseforge`, `custom_build`, and `prebuilt` sections. Paths inside a manifest are relative to the directory containing that manifest. Bundle declared entries and their resolved dependencies; dropping an undeclared file into a directory does not add it to an image. The resolver generates and commits locks under `src/mc-server-images/<server>/locks/`; both server builds and website generation consume those files.
@@ -241,7 +242,7 @@ This covers the update cases:
 
 ## Web image
 
-`minecraft-web`: a static documentation site served by an unprivileged web server. Its sources and Dockerfile live in `src/web/`; the site builds from those documentation sources and the locks in `src/mc-server-images/<server>/locks/`.
+`minecraft-web`: a static documentation site served by an unprivileged web server. Its sources and Dockerfile live in `src/web/`; the site builds from those documentation sources and the `server_images site-data` export of the loaders and the locks in `src/mc-server-images/<server>/locks/`, so it never hard-codes image data.
 
 `.github/workflows/web.yml` publishes the documentation to GitHub Pages and packages it into `ghcr.io/hambn/minecraft-web` for self-hosting. `src/web/Dockerfile` must also support a documented local build and run without requiring GitHub Pages hosting.
 

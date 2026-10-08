@@ -1,0 +1,15 @@
+---
+/** Isometric grass block; the same artwork as public/favicon.svg. */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <path d="M16 2.5 28.5 9.5 16 16.5 3.5 9.5z" fill="#4caf50"></path>
+  <path d="M3.5 9.5 16 16.5v13L3.5 22.5z" fill="#7a5230"></path>
+  <path d="M28.5 9.5 16 16.5v13l12.5-7z" fill="#5e3e24"></path>
+  <path d="M3.5 9.5 16 16.5v3.2L3.5 12.7z" fill="#3e8e41"></path>
+  <path d="M28.5 9.5 16 16.5v3.2l12.5-7z" fill="#2f7a33"></path>
+</svg>

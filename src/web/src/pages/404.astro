@@ -1,0 +1,23 @@
+---
+import { buttonVariants } from "@/components/ui/button";
+import BaseLayout from "@/layouts/base-layout.astro";
+import { url } from "@/lib/site";
+---
+
+<BaseLayout title="Page not found" description="The page you asked for does not exist on this site." noindex>
+  <div class="mx-auto flex max-w-xl flex-col items-center px-4 py-32 text-center">
+    <p class="font-mono text-sm text-muted-foreground">404</p>
+    <h1 class="mt-2 text-3xl font-semibold tracking-tight">Page not found</h1>
+    <p class="mt-3 text-muted-foreground">
+      The page does not exist. Versions that left an image's window are no longer listed here, but their tags stay pullable.
+    </p>
+    <div class="mt-8 flex gap-2">
+      <a href={url()} class={buttonVariants()}>
+        Back to the overview
+      </a>
+      <a href={url("docs/")} class={buttonVariants({ variant: "outline" })}>
+        Documentation
+      </a>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+import { MoonIcon, SunIcon } from "lucide-react";
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  aria-label="Toggle dark mode"
+  class="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+>
+  <SunIcon className="size-4 dark:hidden" />
+  <MoonIcon className="hidden size-4 dark:block" />
+</button>
+
+<script>
+  for (const button of document.querySelectorAll("[data-theme-toggle]")) {
+    button.addEventListener("click", () => {
+      const dark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", dark ? "dark" : "light");
+    });
+  }
+</script>

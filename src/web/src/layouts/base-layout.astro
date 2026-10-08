@@ -1,0 +1,48 @@
+---
+import "@/styles/globals.css";
+import SiteFooter from "@/components/layout/site-footer.astro";
+import SiteHeader from "@/components/layout/site-header.astro";
+import Seo, { type Props as SeoProps } from "@/components/seo.astro";
+import { url } from "@/lib/site";
+
+type Props = SeoProps;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href={url("favicon.svg")} />
+    <link rel="apple-touch-icon" href={url("apple-touch-icon.png")} />
+    <link rel="sitemap" type="application/xml" href={url("sitemap.xml")} />
+    <meta name="generator" content={Astro.generator} />
+    <Seo {...Astro.props} />
+    <script is:inline>
+      // Before first paint, so there is no flash of the wrong theme.
+      const stored = localStorage.getItem("theme");
+      if (stored === "dark" || (!stored && matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+  </head>
+  <body class="min-h-dvh antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:ring-2"
+    >
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script>
+      import "@/scripts/copy-code";
+    </script>
+  </body>
+</html>

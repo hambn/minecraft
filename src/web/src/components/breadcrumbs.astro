@@ -1,0 +1,37 @@
+---
+/** Visible breadcrumb trail plus the matching BreadcrumbList structured data. */
+import { ChevronRightIcon } from "lucide-react";
+import { canonical, url } from "@/lib/site";
+
+interface Props {
+  /** [label, path relative to the site root]; the last item is the current page. */
+  items: [string, string][];
+}
+
+const trail: [string, string][] = [["Home", ""], ...Astro.props.items];
+const ld = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: trail.map(([name, path], i) => ({ "@type": "ListItem", position: i + 1, name, item: canonical(path) })),
+};
+---
+
+<nav aria-label="Breadcrumb" class="mb-6 text-sm text-muted-foreground">
+  <ol class="flex flex-wrap items-center gap-1.5">
+    {trail.map(([label, path], i) => (
+      <li class="flex items-center gap-1.5">
+        {i > 0 && <ChevronRightIcon className="size-3.5" aria-hidden="true" />}
+        {i === trail.length - 1 ? (
+          <span aria-current="page" class="text-foreground">
+            {label}
+          </span>
+        ) : (
+          <a href={url(path)} class="transition-colors hover:text-foreground">
+            {label}
+          </a>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(ld).replaceAll("<", "\\u003c")} />

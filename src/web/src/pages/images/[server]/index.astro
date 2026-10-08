@@ -1,0 +1,204 @@
+---
+import type { GetStaticPaths } from "astro";
+import { ArrowRightIcon, ExternalLinkIcon, TriangleAlertIcon } from "lucide-react";
+import Breadcrumbs from "@/components/breadcrumbs.astro";
+import { CatalogMatrix } from "@/components/catalog-matrix";
+import CodeBlock from "@/components/code-block.astro";
+import { CodeTabs } from "@/components/code-tabs";
+import SectionHeading from "@/components/section-heading.astro";
+import { LiveDot } from "@/components/status";
+import { VersionTable } from "@/components/version-table";
+import BaseLayout from "@/layouts/base-layout.astro";
+import { snippet } from "@/lib/highlight";
+import {
+  data,
+  featuredVersion,
+  groupEntries,
+  hasPage,
+  isJava,
+  maintainedVersions,
+  pendingVersions,
+  servers,
+  type Server,
+} from "@/lib/site-data";
+import { canonical, formatDate, url } from "@/lib/site";
+import { composeFile, dockerRun } from "@/lib/snippets";
+
+export const getStaticPaths = (() =>
+  servers.map((server) => ({ params: { server: server.id }, props: { server } }))) satisfies GetStaticPaths;
+
+const { server } = Astro.props as { server: Server };
+const maintained = maintainedVersions(server);
+const pending = pendingVersions(server);
+const featured = featuredVersion(server);
+const kind = server.catalog.kind;
+const Kind = kind === "mods" ? "Mods" : "Plugins";
+
+const title = `${server.title} Minecraft Server Docker Image`;
+const description = `${server.description} ${
+  maintained.length ? `Auto-updated tags for Minecraft ${maintained.map((v) => v.minecraft).join(", ")}.` : ""
+}`.trim();
+
+const quickStart = featured
+  ? [
+      await snippet("docker", "docker run", dockerRun(server, featured.minecraft), "sh"),
+      await snippet("compose", "compose.yaml", composeFile(server, featured.minecraft), "yaml"),
+    ]
+  : [];
+
+const jsonLd = [
+  {
+    "@type": "SoftwareApplication",
+    name: `${server.title} Minecraft server Docker image`,
+    description: server.description,
+    url: canonical(`images/${server.id}/`),
+    applicationCategory: "GameApplication",
+    applicationSubCategory: "Minecraft server",
+    operatingSystem: "Linux (Docker, OCI container)",
+    softwareVersion: featured?.minecraft,
+    dateModified: server.updated_at ?? undefined,
+    downloadUrl: `https://${server.image}`,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  },
+];
+---
+
+<BaseLayout title={title} description={description} image={`og/${server.id}.png`} jsonLd={jsonLd}>
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-14">
+    <Breadcrumbs items={[[`${server.title} image`, `images/${server.id}/`]]} />
+
+    <header class="max-w-3xl space-y-4">
+      <h1 class="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{server.title} Minecraft server image</h1>
+      <p class="text-lg text-muted-foreground">{server.description}</p>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+        <span>
+          Select {kind} with <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">{server.catalog.env}</code>
+        </span>
+        {server.eula && (
+          <span>
+            Requires <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">EULA=TRUE</code>
+          </span>
+        )}
+        {server.homepage && (
+          <a href={server.homepage} rel="noopener" class="inline-flex items-center gap-1 hover:text-foreground">
+            {new URL(server.homepage).host}
+            <ExternalLinkIcon className="size-3" />
+          </a>
+        )}
+        {server.updated_at && <span>Updated {formatDate(server.updated_at)}</span>}
+      </div>
+    </header>
+
+    <CodeBlock class="mt-8 max-w-3xl" code={`docker pull ${server.image}:${featured?.minecraft ?? "latest"}`} />
+
+    {server.latest_outside_window && (
+      <div class="mt-6 flex max-w-3xl gap-3 rounded-xl border border-warning/40 bg-warning/10 p-4 text-sm">
+        <TriangleAlertIcon className="size-4 shrink-0 text-warning" />
+        <p>
+          <code>latest</code> points at a release outside this image's maintained window because no newer target has built yet.
+        </p>
+      </div>
+    )}
+
+    <div class="mt-16 space-y-20">
+      <section>
+        <SectionHeading
+          id="versions"
+          title="Auto-updated versions"
+          description={`The ${data.window_size} newest Minecraft releases with a stable ${server.title} build. Each tag is rebuilt automatically when ${server.title}, the base image or a bundled ${kind.slice(0, -1)} updates.`}
+        />
+        {maintained.length === 0 && (
+          <p class="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+            No published images yet. There is nothing to pull for this server.
+          </p>
+        )}
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {maintained.map((v) => {
+            const lock = v.lock;
+            const selectable = lock ? groupEntries(lock).selectable.length : 0;
+            const href = hasPage(v) ? url(`images/${server.id}/${v.minecraft}/`) : undefined;
+            return (
+              <a
+                href={href}
+                class="group relative flex flex-col gap-4 rounded-xl border border-success/30 bg-gradient-to-b from-success/[0.06] to-transparent p-5 transition-shadow hover:shadow-md"
+              >
+                <div class="flex items-start justify-between">
+                  <div>
+                    <p class="text-xs text-muted-foreground">Minecraft</p>
+                    <p class="text-3xl font-semibold tracking-tight tabular-nums">{v.minecraft}</p>
+                  </div>
+                  <span class="inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-background px-2 py-0.5 text-xs font-medium text-success-foreground">
+                    <LiveDot className="size-1.5 [&>span]:size-1.5" />
+                    {v.minecraft === server.latest ? "Auto-updated · latest" : "Auto-updated"}
+                  </span>
+                </div>
+                <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                  <div>
+                    <dt class="text-xs text-muted-foreground">{server.loader_label}</dt>
+                    <dd class="truncate font-mono text-xs" title={lock?.server_build.loader_version ?? undefined}>
+                      {lock?.server_build.loader_version?.slice(0, 12) ?? "—"}
+                    </dd>
+                  </div>
+                  {isJava(server) && (
+                    <div>
+                      <dt class="text-xs text-muted-foreground">Java</dt>
+                      <dd class="font-mono text-xs">{lock?.runtime.java_major ?? "—"}</dd>
+                    </div>
+                  )}
+                  <div>
+                    <dt class="text-xs text-muted-foreground">{Kind}</dt>
+                    <dd class="text-xs">{selectable} selectable</dd>
+                  </div>
+                  <div>
+                    <dt class="text-xs text-muted-foreground">Published</dt>
+                    <dd class="text-xs">{formatDate(v.published_at) ?? "—"}</dd>
+                  </div>
+                </dl>
+                {href && (
+                  <span class="mt-auto inline-flex items-center gap-1 text-sm font-medium">
+                    View {kind}
+                    <ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                )}
+              </a>
+            );
+          })}
+          {pending.map((v) => (
+            <div class="flex flex-col gap-2 rounded-xl border border-dashed p-5 text-muted-foreground">
+              <p class="text-xs">Upcoming</p>
+              <p class="text-3xl font-semibold tracking-tight tabular-nums">{v.minecraft}</p>
+              <p class="text-sm">{v.reason ?? `No stable ${server.title} build for this release yet.`} The tag appears once one exists.</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {featured && (
+        <section>
+          <SectionHeading
+            id="quick-start"
+            title="Quick start"
+            description={`Run ${server.title} ${featured.minecraft} with a persistent volume. Add ${kind} by listing their IDs in ${server.catalog.env}.`}
+          />
+          <div class="max-w-3xl">
+            <CodeTabs client:visible snippets={quickStart} />
+          </div>
+        </section>
+      )}
+
+      <section>
+        <SectionHeading
+          id="catalog"
+          title={`${Kind} by version`}
+          description={`Every ${kind.slice(0, -1)} in the catalog across the auto-updated versions, with the exact version bundled in each image. Use the ID in ${server.catalog.env}.`}
+        />
+        <CatalogMatrix server={server} />
+      </section>
+
+      <section>
+        <SectionHeading id="tags" title="All tags" description="Every Minecraft version this image has published or is waiting for." />
+        <VersionTable server={server} />
+      </section>
+    </div>
+  </div>
+</BaseLayout>

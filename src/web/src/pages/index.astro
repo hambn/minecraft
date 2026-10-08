@@ -1,0 +1,235 @@
+---
+import { getCollection } from "astro:content";
+import { ArrowRightIcon, BookOpenIcon, BoxIcon, RefreshCwIcon, ShieldCheckIcon, ToggleRightIcon } from "lucide-react";
+import { CodeTabs } from "@/components/code-tabs";
+import GithubIcon from "@/components/layout/github-icon.astro";
+import SectionHeading from "@/components/section-heading.astro";
+import { ServerCard } from "@/components/server-card";
+import { LiveDot, VersionPill } from "@/components/status";
+import { buttonVariants } from "@/components/ui/button";
+import BaseLayout from "@/layouts/base-layout.astro";
+import { snippet } from "@/lib/highlight";
+import { placeholderValue } from "@/lib/markdown-site";
+import {
+  data,
+  featuredVersion,
+  groupEntries,
+  hasPage,
+  maintainedVersions,
+  pendingVersions,
+  servers,
+  totalCatalog,
+  totalMaintained,
+} from "@/lib/site-data";
+import { REPO_URL, SITE_NAME, canonical, formatDate, url } from "@/lib/site";
+import { composeFile, dockerRun } from "@/lib/snippets";
+
+const serverList = placeholderValue(data, "servers")!;
+const description = `Prebuilt ${serverList} Minecraft server Docker images with mods and plugins baked in. The newest ${data.window_size} Minecraft versions are rebuilt automatically.`;
+
+// Hero example: the first server that has a published version, with a couple of its selectable entries.
+const hero = servers.map((s) => ({ s, v: featuredVersion(s) })).find((x) => x.v);
+const heroSelection = hero?.v?.lock
+  ? groupEntries(hero.v.lock)
+      .selectable.slice(0, 2)
+      .map((e) => e.id)
+  : [];
+const heroSnippets = hero?.v
+  ? [
+      await snippet("docker", "docker run", dockerRun(hero.s, hero.v.minecraft, { selection: heroSelection }), "sh"),
+      await snippet("compose", "compose.yaml", composeFile(hero.s, hero.v.minecraft, { selection: heroSelection }), "yaml"),
+    ]
+  : [];
+
+const stats = [
+  { label: "Server images", value: servers.length },
+  { label: "Auto-updated versions", value: totalMaintained },
+  { label: "Bundled mods & plugins", value: totalCatalog },
+  { label: "Last update", value: formatDate(data.updated_at) ?? "—" },
+];
+
+const features = [
+  {
+    icon: BoxIcon,
+    title: "Nothing downloads at startup",
+    text: "Server, loader and every mod or plugin are verified and baked in at build time. Containers even start with --network none.",
+  },
+  {
+    icon: RefreshCwIcon,
+    title: "Always up to date",
+    text: `The newest ${data.window_size} Minecraft versions of each image are rebuilt automatically when Minecraft, the loader, the base image or a bundled mod gets an update.`,
+  },
+  {
+    icon: ToggleRightIcon,
+    title: "One variable for mods",
+    text: "Switch on bundled mods or plugins with MODS or PLUGINS. Dependencies are added for you, and bad selections stop before the server starts.",
+  },
+  {
+    icon: ShieldCheckIcon,
+    title: "Pinned and reproducible",
+    text: "Every file is locked with a sha512 checksum. Pin a tag to stay on one Minecraft version, or a digest to freeze the exact build.",
+  },
+];
+
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order).slice(0, 4);
+
+const jsonLd = [
+  {
+    "@type": "ItemList",
+    name: "Minecraft server Docker images",
+    itemListElement: servers.map((s, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: canonical(`images/${s.id}/`),
+      name: `${s.title} Minecraft server Docker image`,
+    })),
+  },
+];
+---
+
+<BaseLayout
+  fullTitle={`Minecraft Server Docker Images: ${servers.map((s) => s.title).join(", ")}`}
+  description={description}
+  jsonLd={jsonLd}
+>
+  <section class="relative overflow-hidden border-b">
+    <div
+      class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_60%,transparent_100%)] opacity-60"
+      aria-hidden="true"
+    ></div>
+    <div class="mx-auto grid max-w-6xl grid-cols-1 items-start gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+      <div class="space-y-6">
+        <a
+          href="#versions"
+          class="inline-flex items-center gap-2 rounded-full border bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
+        >
+          <LiveDot />
+          {totalMaintained} Minecraft versions updated automatically
+          <ArrowRightIcon className="size-3" />
+        </a>
+        <h1 class="text-4xl font-semibold tracking-tighter text-balance sm:text-5xl lg:text-6xl">
+          Minecraft server Docker images, <span class="text-muted-foreground">ready to run.</span>
+        </h1>
+        <p class="max-w-xl text-lg text-pretty text-muted-foreground">
+          Prebuilt {serverList} images with the server and a curated catalog of mods and plugins already inside. Pick what runs with one
+          environment variable.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <a href="#images" class={buttonVariants({ size: "lg", className: "px-4" })}>
+            Browse images
+          </a>
+          <a href={url("docs/getting-started/")} class={buttonVariants({ size: "lg", variant: "outline", className: "px-4" })}>
+            <BookOpenIcon />
+            Get started
+          </a>
+          <a href={REPO_URL} rel="noopener" class={buttonVariants({ size: "lg", variant: "ghost", className: "px-4" })}>
+            <GithubIcon class="size-4" />
+            GitHub
+          </a>
+        </div>
+      </div>
+      {hero && (
+        <div class="min-w-0 space-y-2">
+          <CodeTabs client:visible snippets={heroSnippets} />
+          <p class="px-1 text-xs text-muted-foreground">
+            {hero.s.title} {hero.v!.minecraft} with two bundled {hero.s.catalog.kind}. Swap the image for any server below.
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section aria-label="Statistics" class="border-b bg-muted/20">
+    <dl class="mx-auto grid max-w-6xl grid-cols-2 px-4 sm:px-6 md:grid-cols-4 md:divide-x">
+      {stats.map((s) => (
+        <div class="py-5 md:px-6 md:py-6 md:first:pl-0">
+          <dt class="text-xs text-muted-foreground">{s.label}</dt>
+          <dd class="mt-1 text-2xl font-semibold tracking-tight">{s.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mx-auto max-w-6xl space-y-24 px-4 pt-20 sm:px-6">
+    <section>
+      <SectionHeading
+        id="images"
+        title="Images"
+        description="One image per server. Each comes with its own catalog of mods or plugins, all inactive until you select them."
+      />
+      <div class="grid gap-4 md:grid-cols-2">
+        {servers.map((s) => (
+          <ServerCard server={s} />
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <SectionHeading
+        id="versions"
+        title="Auto-updated versions"
+        description={`Each image maintains the ${data.window_size} newest stable Minecraft releases it has a stable server build for. These tags are rebuilt automatically whenever a component changes; older tags stay pullable but frozen.`}
+      />
+      <div class="divide-y rounded-xl border">
+        {servers.map((s) => (
+          <div class="grid items-center gap-3 p-4 sm:grid-cols-[10rem_1fr_auto]">
+            <a href={url(`images/${s.id}/`)} class="font-medium hover:underline hover:underline-offset-4">
+              {s.title}
+            </a>
+            <div class="flex flex-wrap gap-1.5">
+              {maintainedVersions(s).map((v) => (
+                <VersionPill version={v} href={hasPage(v) ? url(`images/${s.id}/${v.minecraft}/`) : undefined} />
+              ))}
+              {pendingVersions(s).map((v) => (
+                <VersionPill version={v} />
+              ))}
+              {maintainedVersions(s).length === 0 && <span class="text-sm text-muted-foreground">No published versions yet</span>}
+            </div>
+            {s.latest && (
+              <code class="justify-self-start rounded-md bg-muted px-2 py-1 font-mono text-xs text-muted-foreground sm:justify-self-end">
+                :latest → {s.latest}
+              </code>
+            )}
+          </div>
+        ))}
+      </div>
+      <p class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        <span class="inline-flex items-center gap-1.5">
+          <LiveDot className="size-1.5 [&>span]:size-1.5" /> Auto-updated
+        </span>
+        <span>Dashed: newer release without a stable server build yet</span>
+        <a class="underline underline-offset-4" href={url("docs/tags-and-updates/")}>
+          How tags work
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <SectionHeading id="features" title={`Why ${SITE_NAME}`} />
+      <div class="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2">
+        {features.map((f) => (
+          <div class="space-y-2 bg-background p-6">
+            <f.icon className="size-5 text-success" aria-hidden="true" />
+            <h3 class="font-medium">{f.title}</h3>
+            <p class="text-sm text-muted-foreground">{f.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <SectionHeading id="docs" title="Documentation" description="Everything you need to run, configure and update a server." />
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {docs.map((d) => (
+          <a href={url(`docs/${d.id}/`)} class="group rounded-xl border p-5 transition-colors hover:bg-muted/40">
+            <h3 class="flex items-center justify-between font-medium">
+              {d.data.title}
+              <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            </h3>
+            <p class="mt-2 line-clamp-3 text-sm text-muted-foreground">{d.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

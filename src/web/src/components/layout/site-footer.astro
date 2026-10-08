@@ -1,0 +1,51 @@
+---
+import { getCollection } from "astro:content";
+import Logo from "@/components/logo.astro";
+import { data, servers } from "@/lib/site-data";
+import { REPO_URL, SITE_NAME, formatDate, url } from "@/lib/site";
+
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<footer class="mt-24 border-t">
+  <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-12 sm:px-6 md:grid-cols-[2fr_1fr_1fr]">
+    <div class="space-y-3">
+      <a href={url()} class="flex items-center gap-2 font-semibold">
+        <Logo class="size-5" />
+        {SITE_NAME}
+      </a>
+      <p class="max-w-sm text-sm text-muted-foreground">
+        Generated from the lock files in{" "}
+        <a class="underline underline-offset-4" href={REPO_URL} rel="noopener">
+          {data.repo}
+        </a>
+        {data.updated_at && <>, last updated {formatDate(data.updated_at)}</>}. Not affiliated with Mojang or Microsoft. Minecraft is a
+        trademark of Mojang AB.
+      </p>
+    </div>
+    <nav aria-label="Images" class="space-y-3 text-sm">
+      <h2 class="font-medium">Images</h2>
+      <ul class="space-y-2 text-muted-foreground">
+        {servers.map((s) => (
+          <li>
+            <a class="hover:text-foreground" href={url(`images/${s.id}/`)}>
+              {s.title} server image
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <nav aria-label="Documentation" class="space-y-3 text-sm">
+      <h2 class="font-medium">Documentation</h2>
+      <ul class="space-y-2 text-muted-foreground">
+        {docs.map((d) => (
+          <li>
+            <a class="hover:text-foreground" href={url(`docs/${d.id}/`)}>
+              {d.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</footer>

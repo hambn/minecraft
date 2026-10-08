@@ -33,13 +33,23 @@ Each maintained version bundles the newest compatible stable upstream releases w
 
 `ghcr.io/<owner>/minecraft-web` documents what each server image contains and how to run and configure it. The site covers maintained and upcoming versions, mod/plugin metadata and compatibility, selection IDs and environment variables, startup behavior, persistent storage, and image updates.
 
-The documentation is published to GitHub Pages and packaged as a self-hostable image built with `src/web/Dockerfile`. A dedicated `web.yml` workflow handles both destinations.
+The documentation is published to GitHub Pages and packaged as a self-hostable image built with `src/web/Dockerfile`. A dedicated `web.yml` workflow handles both destinations, and runs again after every server image publication.
+
+The site is an [Astro](https://astro.build) project with Tailwind CSS and shadcn/ui in `src/web/`. It has no hand-written image data. `python -m server_images site-data` exports every server's loader metadata (title, description, selection variable), `status.json` and locks into one JSON file, and every page, version list and mod/plugin table is generated from it. Adding a server, changing a loader description or publishing new locks updates the site without touching web code. Guides live as Markdown in `src/web/src/content/docs/` and can use placeholders such as `{{latest:paper}}` that are filled from the same data.
+
+```sh
+cd src/web
+pnpm install
+pnpm dev          # exports the site data, then serves http://localhost:4321/
+pnpm check        # type check
+pnpm build        # static files in dist/
+```
 
 ## Build automation
 
 Fabric, NeoForge, Paper, and Pumpkin each have their own GitHub Actions workflow. Every stage uses a matrix: `plan` discovers the three newest stable Minecraft releases each server has a stable build for, `build` runs one job per release, and `push_image` currently has one GHCR registry job that publishes the tested images.
 
-The Python tooling behind these workflows lives in `.github/scripts/`: `server_images` plans, builds, checks and publishes the images, and `website` generates the documentation site. Run it from the repository root, for example `PYTHONPATH=.github/scripts python -m server_images window --server paper`. Its offline tests run with `python -m unittest discover -s .github/scripts/tests -t .github/scripts`.
+The Python tooling behind these workflows lives in `.github/scripts/`: `server_images` plans, builds, checks and publishes the images, and exports the data the documentation site is built from (`site-data`). Run it from the repository root, for example `PYTHONPATH=.github/scripts python -m server_images window --server paper`. Its offline tests run with `python -m unittest discover -s .github/scripts/tests -t .github/scripts`.
 
 Updates are fully automatic. After an image passes its checks, the workflow pushes the tags and commits the new locks and `status.json` straight to `main`; there are no update PRs to approve.
 
@@ -48,4 +58,5 @@ Updates are fully automatic. After an image passes its checks, the workflow push
 - **Settings → Pages → Source:** GitHub Actions.
 - **Settings → Actions → General → Workflow permissions:** read and write.
 - **Secret `CURSEFORGE_API_KEY`** (optional): needed for `curseforge` manifest entries. Without it those entries are recorded as unavailable.
+- **Variable `GOOGLE_SITE_VERIFICATION`** (optional): the `content` value of Google Search Console's HTML-tag verification, added to the Pages site. Then submit `sitemap.xml` in Search Console.
 - **Secret `LOCKS_PUSH_TOKEN`** (optional): a token allowed to push to `main`. Needed only if `main` is protected; otherwise `GITHUB_TOKEN` is used.
