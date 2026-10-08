@@ -161,6 +161,13 @@ class PaperTest(Base):
         self.assertEqual(get_loader("paper").resolve_build("26.3").status, "pending")
 
 
+PACKET_RS = (
+    "use pumpkin_util::version::JavaMinecraftVersion;\n"
+    "pub const CURRENT_MC_VERSION: JavaMinecraftVersion =\n"
+    "    pumpkin_util::version::JavaMinecraftVersion::%s;\n"
+)
+
+
 class PumpkinTest(Base):
     SHA = "0123456789abcdef0123456789abcdef01234567"
 
@@ -174,7 +181,7 @@ class PumpkinTest(Base):
 
     def test_supported(self):
         self.files({
-            pumpkin_mod.VERSION_FILE_CANDIDATES[1]: 'pub const CURRENT_MC_VERSION: &str = "26.1.2";',
+            pumpkin_mod.VERSION_FILE_CANDIDATES[0]: PACKET_RS % "V_26_1_2",
             "rust-toolchain.toml": '[toolchain]\nchannel = "1.92"\n',
         })
         build = get_loader("pumpkin").resolve_build("26.1.2")
@@ -188,12 +195,22 @@ class PumpkinTest(Base):
         self.assertEqual(d["supported_minecraft"], "26.1.2")
 
     def test_default_rust_when_no_toolchain(self):
-        self.files({pumpkin_mod.VERSION_FILE_CANDIDATES[0]: 'pub const CURRENT_MC_VERSION: &str = "26.1.2";'})
+        self.files({pumpkin_mod.VERSION_FILE_CANDIDATES[0]: PACKET_RS % "V_26_1_2"})
         d = get_loader("pumpkin").resolve_build("26.1.2").details
         self.assertTrue(d["builder_image"].startswith(f"rust:{pumpkin_mod.DEFAULT_RUST_VERSION}-bookworm@"))
 
+    def test_stable_channel_uses_cargo_rust_version(self):
+        self.files({
+            pumpkin_mod.VERSION_FILE_CANDIDATES[0]: PACKET_RS % "V_26_3",
+            "rust-toolchain.toml": '[toolchain]\nchannel = "stable"\n',
+            "Cargo.toml": '[workspace.package]\nedition = "2024"\nrust-version = "1.96"\n',
+        })
+        build = get_loader("pumpkin").resolve_build("26.3")
+        self.assertEqual(build.details["supported_minecraft"], "26.3")
+        self.assertTrue(build.details["builder_image"].startswith("rust:1.96-bookworm@"))
+
     def test_other_version_pending(self):
-        self.files({pumpkin_mod.VERSION_FILE_CANDIDATES[0]: 'pub const CURRENT_MC_VERSION: &str = "26.1.2";'})
+        self.files({pumpkin_mod.VERSION_FILE_CANDIDATES[0]: PACKET_RS % "V_26_1_2"})
         build = get_loader("pumpkin").resolve_build("26.3")
         self.assertEqual(build.status, "pending")
         self.assertIn("26.1.2", build.reason)

@@ -11,18 +11,20 @@ REPO = "Pumpkin-MC/Pumpkin"
 BRANCH = "master"
 REPO_URL = "https://github.com/Pumpkin-MC/Pumpkin"
 
-# Where the supported Minecraft version is declared; tried in order.
+# Where the supported Minecraft version is declared (generated file; the
+# value is an enum variant such as JavaMinecraftVersion::V_26_3).
 VERSION_FILE_CANDIDATES = [
-    "pumpkin-util/src/lib.rs",
-    "pumpkin-protocol/src/lib.rs",
-    "pumpkin-data/src/lib.rs",
-    "pumpkin-data/src/packet/mod.rs",
+    "crates/pumpkin-data/src/generated/packet.rs",
 ]
-VERSION_RE = re.compile(r'CURRENT_MC_VERSION\s*:\s*&(?:\s*\'static)?\s*str\s*=\s*"([^"]+)"')
+VERSION_RE = re.compile(r"CURRENT_MC_VERSION\s*:\s*JavaMinecraftVersion\s*=\s*(?:[\w:]*::)?V_(\d+(?:_\d+)*)\b")
 
-TOOLCHAIN_FILES = ["rust-toolchain.toml", "rust-toolchain"]
-TOOLCHAIN_RE = re.compile(r'channel\s*=\s*"(\d+\.\d+(?:\.\d+)?)"')
-DEFAULT_RUST_VERSION = "1.90"
+# rust-toolchain.toml only says "stable"; the real minimum is the workspace rust-version.
+TOOLCHAIN_FILES = ["rust-toolchain.toml", "rust-toolchain", "Cargo.toml"]
+TOOLCHAIN_RES = [
+    re.compile(r'channel\s*=\s*"(\d+\.\d+(?:\.\d+)?)"'),
+    re.compile(r'(?m)^\s*rust-version\s*=\s*"(\d+\.\d+(?:\.\d+)?)"'),
+]
+DEFAULT_RUST_VERSION = "1.96"
 DEBIAN = "bookworm"
 RUNTIME_BASE = "debian:bookworm-slim"
 
@@ -40,7 +42,7 @@ def find_supported_minecraft(commit: str) -> str | None:
         if text:
             match = VERSION_RE.search(text)
             if match:
-                return match.group(1)
+                return match.group(1).replace("_", ".")
     return None
 
 
@@ -48,9 +50,10 @@ def find_rust_version(commit: str) -> str:
     for path in TOOLCHAIN_FILES:
         text = _read_optional(commit, path)
         if text:
-            match = TOOLCHAIN_RE.search(text)
-            if match:
-                return match.group(1)
+            for regex in TOOLCHAIN_RES:
+                match = regex.search(text)
+                if match:
+                    return match.group(1)
     return DEFAULT_RUST_VERSION
 
 
