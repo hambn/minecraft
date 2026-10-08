@@ -23,6 +23,12 @@ class FabricLoader(Loader):
     catalog_kind = "mods"
     env_var = "MODS"
     manifest = "fabric/mods/mods.yml"
+    title = "Fabric"
+    description = "Lightweight Fabric loader on the vanilla server, with a curated catalog of server-side performance and gameplay mods."
+    homepage = "https://fabricmc.net"
+    loader_label = "Fabric loader"
+    catalog_dir = "/data/mods"
+    eula = True
     provider_loaders = {"modrinth": ["fabric"], "curseforge": ["Fabric"]}
     artifact_ext = ".jar"
 

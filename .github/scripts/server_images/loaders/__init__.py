@@ -41,6 +41,13 @@ class Loader:
     catalog_kind: ClassVar[str] = ""  # mods | plugins
     env_var: ClassVar[str] = ""  # MODS | PLUGINS
     manifest: ClassVar[str] = ""  # relative to SERVERS_DIR, e.g. "fabric/mods/mods.yml"
+    # Presentation, exported for the website by ``site_data``.
+    title: ClassVar[str] = ""
+    description: ClassVar[str] = ""
+    homepage: ClassVar[str] = ""
+    loader_label: ClassVar[str] = ""  # what loader_version means: "Fabric loader", "Paper build", ...
+    catalog_dir: ClassVar[str] = ""  # where activated files go, e.g. "/data/mods"
+    eula: ClassVar[bool] = True  # the image contains Mojang code and needs EULA=TRUE
     provider_loaders: ClassVar[dict[str, list[str]]] = {}
     artifact_ext: ClassVar[str] = ".jar"
 

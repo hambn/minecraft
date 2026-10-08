@@ -78,6 +78,12 @@ class PumpkinLoader(Loader):
     catalog_kind = "plugins"
     env_var = "PLUGINS"
     manifest = "pumpkin/plugins/plugins.yml"
+    title = "Pumpkin"
+    description = "Pumpkin, a fast Minecraft server written in Rust and built from source with no Mojang code, with WASM plugins."
+    homepage = "https://pumpkinmc.org"
+    loader_label = "Pumpkin commit"
+    catalog_dir = "/data/plugins"
+    eula = False
     provider_loaders = {"modrinth": [], "curseforge": []}
     artifact_ext = ".wasm"
 

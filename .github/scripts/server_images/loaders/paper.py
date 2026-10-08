@@ -14,6 +14,12 @@ class PaperLoader(Loader):
     catalog_kind = "plugins"
     env_var = "PLUGINS"
     manifest = "paper/plugins/plugins.yml"
+    title = "Paper"
+    description = "High-performance Paper server with popular Bukkit and Paper plugins such as LuckPerms, EssentialsX and WorldEdit."
+    homepage = "https://papermc.io"
+    loader_label = "Paper build"
+    catalog_dir = "/data/plugins"
+    eula = True
     provider_loaders = {
         "modrinth": ["paper", "spigot", "bukkit"],
         "curseforge": ["Paper", "Spigot", "Bukkit"],

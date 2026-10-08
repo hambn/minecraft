@@ -3,6 +3,7 @@
 Commands map onto the stages of ``.github/workflows/server-image.yml``:
 ``plan`` -> ``build-custom`` -> ``lock`` -> ``stage`` -> (docker build,
 ``python -m server_images.ci_check``) -> ``result`` -> ``publish``.
+``site-data`` feeds the website built by ``.github/workflows/web.yml``.
 """
 
 from __future__ import annotations
@@ -11,6 +12,7 @@ import argparse
 import json
 import sys
 
+from .config import GITHUB_REPOSITORY, SERVERS_DIR
 from .loaders import SERVERS
 
 
@@ -62,6 +64,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--registry", required=True)
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--no-commit", action="store_true")
+
+    p = sub.add_parser("site-data", help="export loaders, status and locks of every server as the website's JSON input")
+    p.add_argument("--out", required=True)
+    p.add_argument("--repo", default=GITHUB_REPOSITORY, help="GitHub owner/name used for image references")
+    p.add_argument("--servers", default=str(SERVERS_DIR), help="directory holding <server>/locks/")
     return parser
 
 
@@ -101,6 +108,10 @@ def main(argv: list[str] | None = None) -> int:
         from . import publish
 
         return publish.publish_command(args)
+    if args.command == "site-data":
+        from . import site_data
+
+        return site_data.site_data_command(args)
     raise AssertionError(f"unhandled command {args.command}")  # argparse rejects unknown commands
 
 

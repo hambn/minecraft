@@ -35,6 +35,12 @@ class NeoForgeLoader(Loader):
     catalog_kind = "mods"
     env_var = "MODS"
     manifest = "neoforge/mods/mods.yml"
+    title = "NeoForge"
+    description = "NeoForge on the vanilla server for modpack-style setups, with a bundled catalog of server mods."
+    homepage = "https://neoforged.net"
+    loader_label = "NeoForge version"
+    catalog_dir = "/data/mods"
+    eula = True
     provider_loaders = {"modrinth": ["neoforge"], "curseforge": ["NeoForge"]}
     artifact_ext = ".jar"
 
