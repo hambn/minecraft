@@ -514,10 +514,10 @@
     },
     {
       "artifact": {
-        "filename": "ViaBackwards-5.12.0.jar",
-        "sha512": "dba076b3283eb5987e3d37a63b57802e7946cf8a2d3b6f68ff57ddbc4eb648e2084decd212fef2cd0cde5187bc6565959c31b496bfb38000e67e3ffab4c290b3",
-        "size": 1430897,
-        "url": "https://cdn.modrinth.com/data/NpvuJQoq/versions/SxGhdsPK/ViaBackwards-5.12.0.jar"
+        "filename": "ViaBackwards-5.12.1.jar",
+        "sha512": "65752dd113bf1266ef2c3b25a748e79e9808bb67682a3f5fbcf3e2b097d76182786d0871562175af8d491bde7ec6addfeaf97fdb23987cb11b829b0c22f6e5ff",
+        "size": 1436080,
+        "url": "https://cdn.modrinth.com/data/NpvuJQoq/versions/dWw67APC/ViaBackwards-5.12.1.jar"
       },
       "build": null,
       "closure": [
@@ -537,7 +537,7 @@
         "file_id": null,
         "project_id": "NpvuJQoq",
         "slug": "viabackwards",
-        "version_id": "SxGhdsPK"
+        "version_id": "dWw67APC"
       },
       "local": null,
       "metadata": {
@@ -551,7 +551,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "ViaBackwards",
-        "version": "5.12.0"
+        "version": "5.12.1"
       },
       "reason": null,
       "selectable": true,
@@ -625,10 +625,10 @@
     },
     {
       "artifact": {
-        "filename": "ViaVersion-5.12.0.jar",
-        "sha512": "2dfe562109179f08685dc84a66aedf7c810592223b5287b6355ba1e741d1737d015ca0c444b4bc01e5db2a4b10549d5028bf2e3f3337219ded709e44b579a4d8",
-        "size": 6503775,
-        "url": "https://cdn.modrinth.com/data/P1OZGk5p/versions/FaishMnD/ViaVersion-5.12.0.jar"
+        "filename": "ViaVersion-5.12.1.jar",
+        "sha512": "b2e5c03689e2265410613a928640076cfcd576e7a3dc7ca1276a76dbe624f2f5467348c3b3eaf8b5987ed7662afb93cc5cb9373035f4c5512884116e4bb6add9",
+        "size": 6503217,
+        "url": "https://cdn.modrinth.com/data/P1OZGk5p/versions/5WgnasGG/ViaVersion-5.12.1.jar"
       },
       "build": null,
       "closure": [
@@ -642,7 +642,7 @@
         "file_id": null,
         "project_id": "P1OZGk5p",
         "slug": "viaversion",
-        "version_id": "FaishMnD"
+        "version_id": "5WgnasGG"
       },
       "local": null,
       "metadata": {
@@ -656,7 +656,7 @@
         "license": "GPL-3.0-or-later",
         "missing": [],
         "name": "ViaVersion",
-        "version": "5.12.0"
+        "version": "5.12.1"
       },
       "reason": null,
       "selectable": true,
@@ -852,7 +852,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:0ef9ad9bb967dc4986afb65e000f1f81cc18a34519f02576d10196582c671e10",
+  "inputs_hash": "sha256:ae91916bea296ce608bbe90cf5344aa048beb807669033de32a139ce22025e54",
   "minecraft_version": "26.1.2",
   "runtime": {
     "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",
