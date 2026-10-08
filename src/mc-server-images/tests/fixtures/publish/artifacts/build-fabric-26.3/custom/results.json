@@ -1,0 +1,5 @@
+{
+  "custom-source-mod": {"status": "built", "filename": "custom-source-mod.jar", "sha512": "abc", "cache_key": "deadbeef", "path": "custom-source-mod.jar", "uploaded": false, "reason": null},
+  "cached-mod": {"status": "cached", "filename": "cached.jar", "sha512": "def", "cache_key": "cafe", "path": "cached.jar", "uploaded": true, "reason": null},
+  "broken-mod": {"status": "failed", "filename": null, "sha512": null, "cache_key": "bad", "path": null, "uploaded": false, "reason": "build failed"}
+}

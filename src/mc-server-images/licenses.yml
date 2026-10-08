@@ -1,0 +1,61 @@
+# Redistribution allowlist used by the resolver.
+#
+# Bundling a mod or plugin in a public server image is redistribution. An
+# artifact whose license is missing, a LicenseRef-* value (including
+# "All Rights Reserved"), or any identifier not listed under `allowed`, is
+# recorded as `unavailable` in the lock unless a `permissions` entry records
+# the author's permission. SPDX expressions are evaluated: `A OR B` needs one
+# allowed id, `A AND B` needs all, `WITH <exception>` is ignored, a trailing
+# `+` is stripped.
+#
+# permissions: author-granted exceptions.
+#   - provider: modrinth | curseforge | custom   ("custom" covers prebuilt and custom_build entries)
+#     project:  slug or project ID (for custom entries: the manifest id)
+#     note:     where/when the permission was granted
+allowed:
+  - 0BSD
+  - AGPL-3.0
+  - AGPL-3.0-only
+  - AGPL-3.0-or-later
+  - Apache-2.0
+  - Artistic-2.0
+  - BSD-2-Clause
+  - BSD-3-Clause
+  - BSD-3-Clause-Clear
+  - BSL-1.0
+  - CC-BY-3.0
+  - CC-BY-4.0
+  - CC-BY-NC-3.0
+  - CC-BY-NC-4.0
+  - CC-BY-NC-ND-4.0
+  - CC-BY-NC-SA-3.0
+  - CC-BY-NC-SA-4.0
+  - CC-BY-ND-4.0
+  - CC-BY-SA-3.0
+  - CC-BY-SA-4.0
+  - CC0-1.0
+  - EPL-1.0
+  - EPL-2.0
+  - EUPL-1.1
+  - EUPL-1.2
+  - GPL-2.0
+  - GPL-2.0-only
+  - GPL-2.0-or-later
+  - GPL-3.0
+  - GPL-3.0-only
+  - GPL-3.0-or-later
+  - ISC
+  - LGPL-2.1
+  - LGPL-2.1-only
+  - LGPL-2.1-or-later
+  - LGPL-3.0
+  - LGPL-3.0-only
+  - LGPL-3.0-or-later
+  - MIT
+  - MIT-0
+  - MPL-2.0
+  - Unlicense
+  - WTFPL
+  - Zlib
+
+permissions: []
