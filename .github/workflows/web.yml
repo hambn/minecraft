@@ -95,7 +95,7 @@ jobs:
       - uses: actions/setup-python@v7
         if: matrix.target == 'pages'
         with:
-          python-version: "3.12"
+          python-version-file: .python-version
 
       - name: Install site generator dependencies
         if: matrix.target == 'pages'
@@ -110,6 +110,7 @@ jobs:
           python src/web/build.py \
             --servers src/mc-server-images \
             --out site \
+            --repo "${{ github.repository }}" \
             --base-path "${{ matrix.base_path }}"
           test -s site/index.html
 
@@ -133,6 +134,7 @@ jobs:
         run: |
           docker build \
             -f src/web/Dockerfile \
+            --build-arg "REPO=${{ github.repository }}" \
             --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
             --label "org.opencontainers.image.revision=${{ needs.plan.outputs.sha }}" \
             -t local/minecraft-web:latest .

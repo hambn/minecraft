@@ -1,0 +1,43 @@
+# Merges Dependabot PRs without a human: waits for every other check on the PR
+# to finish, then squash-merges when none failed. Needs no branch protection or
+# "Allow auto-merge" setting. A failed check leaves the PR open for a look.
+name: dependabot-automerge
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  automerge:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Wait for checks and merge
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SELF: automerge
+        run: |
+          # Give the PR's workflows time to register their checks.
+          sleep 60
+          while true; do
+            checks=$(gh pr checks "$PR_URL" --json name,bucket \
+              --jq "[.[] | select(.name != env.SELF)]" || echo '[]')
+            failed=$(jq '[.[] | select(.bucket == "fail" or .bucket == "cancel")] | length' <<<"$checks")
+            waiting=$(jq '[.[] | select(.bucket == "pending")] | length' <<<"$checks")
+            if [ "$failed" -gt 0 ]; then
+              jq -r '.[] | select(.bucket == "fail" or .bucket == "cancel") | "::error::check failed: \(.name)"' <<<"$checks"
+              exit 1
+            fi
+            if [ "$waiting" -eq 0 ]; then
+              break
+            fi
+            echo "waiting for $waiting check(s)"
+            sleep 30
+          done
+          gh pr merge --squash --delete-branch "$PR_URL"

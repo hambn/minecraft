@@ -12,7 +12,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-USER_AGENT = "hambn/minecraft (+https://github.com/hambn/minecraft)"
+_REPOSITORY = os.environ.get("GITHUB_REPOSITORY") or "hambn/minecraft"
+USER_AGENT = f"{_REPOSITORY} (+https://github.com/{_REPOSITORY})"
 RETRIES = 4
 BACKOFF = 1.0
 TIMEOUT = 60

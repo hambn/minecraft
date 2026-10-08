@@ -1,0 +1,23 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
+  - package-ecosystem: pip
+    directory: "/src/mc-server-images"
+    schedule:
+      interval: weekly
+    groups:
+      pip:
+        patterns: ["*"]
+  - package-ecosystem: docker
+    directory: "/src/web"
+    schedule:
+      interval: weekly
+    groups:
+      docker:
+        patterns: ["*"]

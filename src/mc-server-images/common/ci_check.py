@@ -2,7 +2,7 @@
 """CI checks for a built server image (stdlib only, runs on the CI host).
 
     ci_check.py --image REF --catalog CTX/catalog/catalog.tsv --out checks.json
-                [--python-image python:3.12-slim] [--timeout 600]
+                [--python-image python:<running version>-slim] [--timeout 600]
 
 Everything goes through the ``docker`` CLI. Server type, catalog env/dir and
 the ready pattern come from the image labels. Containers run with
@@ -106,11 +106,16 @@ class CheckFailure(Exception):
     """Raised inside a check to fail it with a message."""
 
 
+def default_python_image() -> str:
+    """python:<major>.<minor>-slim matching the running interpreter (see /.python-version)."""
+    return f"python:{sys.version_info.major}.{sys.version_info.minor}-slim"
+
+
 @dataclass
 class Checker:
     image: str
     entries: list
-    python_image: str = "python:3.12-slim"
+    python_image: str = field(default_factory=lambda: default_python_image())
     runner: Runner = docker_runner
     ready_timeout: float = 600.0
     status_script: Path = field(default_factory=lambda: Path(__file__).resolve().parent / "mc_status.py")
@@ -487,7 +492,7 @@ def main(argv: list | None = None, runner: Runner = docker_runner) -> int:
     parser.add_argument("--image", required=True)
     parser.add_argument("--catalog", required=True, type=Path)
     parser.add_argument("--out", required=True, type=Path)
-    parser.add_argument("--python-image", default="python:3.12-slim")
+    parser.add_argument("--python-image", default=default_python_image())
     parser.add_argument("--timeout", type=float, default=600.0, help="seconds to wait for the ready pattern")
     args = parser.parse_args(argv)
 

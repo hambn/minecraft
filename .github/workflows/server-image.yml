@@ -1,0 +1,319 @@
+# Reusable server image pipeline, called by fabric.yml, neoforge.yml, paper.yml and pumpkin.yml.
+# Stages (each uses a job matrix):
+#   plan        resolve the three newest stable Minecraft releases this server has a stable build for,
+#               plus newer unsupported releases as pending (cli.py plan; the window is per server),
+#               upload the plan + draft locks, emit the dynamic build matrix.
+#   build       one job per planned Minecraft version: build custom artifacts, finalize the lock,
+#               stage the Docker context, build the image, run the CI checks, upload the image,
+#               lock and results as the artifact build-<server>-<minecraft>. Never pushes to a registry.
+#   push_image  main only: cli.py publish pushes the tested image bytes to the registry, moves
+#               `latest`, and commits the locks and status.json directly to main.
+# Callers must grant `contents: write` and `packages: write` (push_image needs them).
+name: server-image
+
+on:
+  workflow_call:
+    inputs:
+      server:
+        description: Server name (fabric, neoforge, paper, pumpkin)
+        type: string
+        required: true
+      force:
+        description: Rebuild and republish every target even if its inputs are unchanged
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: src/mc-server-images/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r src/mc-server-images/requirements.txt
+
+      - name: Plan the maintained Minecraft versions
+        id: plan
+        env:
+          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          args=()
+          if [ "$FORCE" = "true" ]; then args+=(--force); fi
+          python src/mc-server-images/cli.py plan \
+            --server "${{ inputs.server }}" \
+            --out "plan/${{ inputs.server }}" \
+            --github-output \
+            "${args[@]}"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: plan-${{ inputs.server }}
+          path: plan/${{ inputs.server }}
+          retention-days: 3
+          if-no-files-found: error
+
+  build:
+    name: build ${{ matrix.minecraft }}
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    env:
+      IMAGE: local/minecraft-server-${{ inputs.server }}:${{ matrix.minecraft }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: plan-${{ inputs.server }}
+          path: plan/${{ inputs.server }}
+
+      # Pending targets only report their status; unchanged targets reuse the committed lock.
+      - name: Report pending or unchanged target
+        if: matrix.status != 'build'
+        env:
+          SERVER: ${{ inputs.server }}
+          MINECRAFT: ${{ matrix.minecraft }}
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, shutil, sys
+
+          server, mc = os.environ["SERVER"], os.environ["MINECRAFT"]
+          plan = json.load(open(f"plan/{server}/plan.json"))
+          target = next(t for t in plan["targets"] if t["minecraft"] == mc)
+          out = pathlib.Path("out")
+          out.mkdir(exist_ok=True)
+          status = target["status"]
+          inputs_hash = target.get("inputs_hash")
+          if status == "unchanged":
+              lock = pathlib.Path(f"src/mc-server-images/{server}/locks/{mc}.json")
+              if not lock.is_file():
+                  sys.exit(f"{lock} is missing but the plan marked {mc} unchanged")
+              shutil.copy(lock, out / "lock.json")
+              inputs_hash = inputs_hash or json.load(open(lock)).get("inputs_hash")
+          elif status != "pending":
+              sys.exit(f"unexpected status {status!r} for {mc}")
+          result = {
+              "server": server,
+              "minecraft": mc,
+              "status": status,
+              "passed": True,
+              "reason": target.get("reason"),
+              "inputs_hash": inputs_hash,
+          }
+          (out / "result.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+          print(json.dumps(result))
+          PY
+
+      - uses: actions/setup-python@v7
+        if: matrix.status == 'build'
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: src/mc-server-images/requirements.txt
+
+      - name: Install dependencies
+        if: matrix.status == 'build'
+        run: pip install -r src/mc-server-images/requirements.txt
+
+      - name: Build custom source artifacts
+        if: matrix.status == 'build'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python src/mc-server-images/cli.py build-custom \
+            --server "${{ inputs.server }}" \
+            --minecraft "${{ matrix.minecraft }}" \
+            --plan plan/${{ inputs.server }} \
+            --out custom
+
+      - name: Finalize lock
+        if: matrix.status == 'build'
+        run: |
+          mkdir -p out
+          python src/mc-server-images/cli.py lock \
+            --server "${{ inputs.server }}" \
+            --minecraft "${{ matrix.minecraft }}" \
+            --plan plan/${{ inputs.server }} \
+            --custom custom \
+            --out out/lock.json
+
+      - name: Stage Docker build context
+        if: matrix.status == 'build'
+        run: |
+          python src/mc-server-images/cli.py stage \
+            --server "${{ inputs.server }}" \
+            --lock out/lock.json \
+            --custom custom \
+            --out ctx
+
+      - uses: docker/setup-buildx-action@v4
+        if: matrix.status == 'build'
+        with:
+          driver: docker
+
+      - name: Build image
+        if: matrix.status == 'build'
+        run: |
+          args=()
+          while IFS= read -r line || [ -n "$line" ]; do
+            case "$line" in ''|'#'*) continue ;; esac
+            args+=(--build-arg "$line")
+          done < ctx/build-args.env
+          docker build \
+            "${args[@]}" \
+            --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
+            --label "org.opencontainers.image.version=${{ matrix.minecraft }}" \
+            --label "org.opencontainers.image.revision=${{ github.sha }}" \
+            --label "io.github.hambn.minecraft.server=${{ inputs.server }}" \
+            --tag "$IMAGE" \
+            ctx
+
+      # A failing check is recorded in result.json; the job fails after the artifact is uploaded.
+      - name: Run CI checks
+        id: checks
+        if: matrix.status == 'build'
+        run: |
+          mkdir -p out
+          if python3 src/mc-server-images/common/ci_check.py \
+              --image "$IMAGE" \
+              --catalog ctx/catalog/catalog.tsv \
+              --out out/checks.json; then
+            echo "passed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "passed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Export image and results
+        if: matrix.status == 'build'
+        env:
+          SERVER: ${{ inputs.server }}
+          MINECRAFT: ${{ matrix.minecraft }}
+          PASSED: ${{ steps.checks.outputs.passed }}
+        run: |
+          if [ "$PASSED" = "true" ]; then
+            docker save -o out/image.tar "$IMAGE"
+          fi
+          cp -r custom out/custom
+          python3 - <<'PY'
+          import json, os, pathlib
+
+          server, mc = os.environ["SERVER"], os.environ["MINECRAFT"]
+          passed = os.environ["PASSED"] == "true"
+          lock = json.load(open("out/lock.json"))
+          result = {
+              "server": server,
+              "minecraft": mc,
+              "status": "built",
+              "passed": passed,
+              "reason": None if passed else "CI checks failed (see checks.json)",
+              "inputs_hash": lock.get("inputs_hash"),
+          }
+          pathlib.Path("out/result.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+          print(json.dumps(result))
+          PY
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: build-${{ inputs.server }}-${{ matrix.minecraft }}
+          path: out
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+
+      - name: Fail when CI checks failed
+        if: matrix.status == 'build' && steps.checks.outputs.passed != 'true'
+        run: |
+          echo "::error::CI checks failed for ${{ inputs.server }} ${{ matrix.minecraft }}; nothing will be published"
+          exit 1
+
+  push_image:
+    needs: [plan, build]
+    if: >-
+      github.event_name != 'pull_request'
+      && github.ref == 'refs/heads/main'
+      && needs.plan.result == 'success'
+      && needs.build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        registry: [ghcr]
+    permissions:
+      contents: write
+      packages: write
+    concurrency:
+      group: publish-${{ inputs.server }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.LOCKS_PUSH_TOKEN || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: src/mc-server-images/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r src/mc-server-images/requirements.txt
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: build-${{ inputs.server }}-*
+          path: artifacts
+
+      - name: Select registry
+        id: registry
+        env:
+          REGISTRY: ${{ matrix.registry }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          case "$REGISTRY" in
+            ghcr) host=ghcr.io ;;
+            *) echo "::error::unknown registry $REGISTRY"; exit 1 ;;
+          esac
+          echo "host=$host" >> "$GITHUB_OUTPUT"
+          echo "namespace=$host/${OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to the registry
+        env:
+          REGISTRY: ${{ matrix.registry }}
+          HOST: ${{ steps.registry.outputs.host }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          case "$REGISTRY" in
+            ghcr) skopeo login "$HOST" -u "${{ github.actor }}" --password-stdin <<< "$GITHUB_TOKEN" ;;
+          esac
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Publish images, locks and status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python src/mc-server-images/cli.py publish \
+            --server "${{ inputs.server }}" \
+            --artifacts artifacts \
+            --registry "${{ steps.registry.outputs.namespace }}"
