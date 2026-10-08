@@ -35,13 +35,16 @@ class MojangTests(unittest.TestCase):
         ]
     }
 
-    def test_window_and_details(self):
+    def setUp(self):
+        mojang._manifest.cache_clear()
+
+    def test_releases_and_details(self):
         table = {
             mojang.MANIFEST_URL: self.MANIFEST,
             "u3": {"javaVersion": {"majorVersion": 25}, "downloads": {"server": {"url": "s", "sha1": "a", "size": 3}}},
         }
         with mock.patch.object(http, "get_json", fake_get(table)):
-            self.assertEqual(mojang.maintenance_window(2), ["26.3", "26.2"])
+            self.assertEqual(mojang.release_ids(), ["26.3", "26.2", "26.1"])
             self.assertEqual([v["id"] for v in mojang.stable_releases()], ["26.3", "26.2", "26.1"])
             d = mojang.version_details("26.3")
             self.assertEqual(d, {"java_major": 25, "server_jar": {"url": "s", "sha1": "a", "size": 3}})

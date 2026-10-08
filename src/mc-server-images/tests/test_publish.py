@@ -78,7 +78,7 @@ class PublishTestBase(unittest.TestCase):
                 self.args(**argkw),
                 run=runner,
                 now=lambda: now,
-                window_fn=lambda: list(window or WINDOW),
+                window_fn=lambda: (list(window or WINDOW), []),
                 upload_fn=lambda *a: self.uploads.append(a),
                 sleep=self.sleeps.append,
                 servers_dir=self.servers,
@@ -107,7 +107,7 @@ class PublishTestBase(unittest.TestCase):
     def write_status(self, **status):
         self.fabric.mkdir(parents=True, exist_ok=True)
         base = {"schema": 1, "server": "fabric", "image": IMAGE, "updated_at": "2026-10-01T00:00:00Z",
-                "window": WINDOW, "latest": None, "latest_outside_window": False, "targets": {}}
+                "window": WINDOW, "upcoming": [], "latest": None, "latest_outside_window": False, "targets": {}}
         base.update(status)
         (self.fabric / "status.json").write_text(json.dumps(base))
 
@@ -148,7 +148,7 @@ class TestHappyPath(PublishTestBase):
         self.run_publish()
         self.assertEqual(self.status(), {
             "schema": 1, "server": "fabric", "image": IMAGE, "updated_at": T0S,
-            "window": WINDOW, "latest": "26.3", "latest_outside_window": False,
+            "window": WINDOW, "upcoming": [], "latest": "26.3", "latest_outside_window": False,
             "targets": {
                 "26.3": {"state": "published", "digest": digest("26.3"),
                          "published_at": T0S, "lock": "26.3.json"},
@@ -174,7 +174,7 @@ class TestHappyPath(PublishTestBase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             publish.publish_command(
-                self.args(), run=FakeRunner(), now=lambda: T0, window_fn=lambda: WINDOW,
+                self.args(), run=FakeRunner(), now=lambda: T0, window_fn=lambda: (WINDOW, []),
                 upload_fn=lambda *a: self.uploads.append(a), sleep=lambda s: None,
                 servers_dir=self.servers, repo_root=self.repo, environ={"GITHUB_REPOSITORY": "o/r"})
         self.assertEqual(self.uploads[0][0], "o/r")
@@ -395,7 +395,7 @@ class TestComputeStatus(unittest.TestCase):
     def test_same_digest_keeps_published_at(self):
         prev = {"targets": {"26.3": {"state": "published", "digest": digest("26.3"),
                                      "published_at": T0S, "lock": "26.3.json"}},
-                "updated_at": T0S, "window": ["26.3"], "latest": "26.3", "latest_outside_window": False,
+                "updated_at": T0S, "window": ["26.3"], "upcoming": [], "latest": "26.3", "latest_outside_window": False,
                 "schema": 1, "server": "fabric", "image": IMAGE}
         new = publish.compute_status(prev, server="fabric", image_ref=IMAGE, window=["26.3"],
                                      published={"26.3": {"digest": digest("26.3")}}, pending={}, now=T1S)

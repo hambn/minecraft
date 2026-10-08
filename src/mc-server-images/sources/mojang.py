@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 from typing import Any
 
 from . import http
@@ -9,9 +10,15 @@ from . import http
 MANIFEST_URL = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 
 
+@functools.lru_cache(maxsize=1)
+def _manifest() -> dict:
+    # One fetch per process: the window scan asks for details of several releases.
+    return http.get_json(MANIFEST_URL)
+
+
 def stable_releases() -> list[dict]:
     """Release versions, newest first by release time: ``[{id, release_time, url}]``."""
-    manifest = http.get_json(MANIFEST_URL)
+    manifest = _manifest()
     items = [
         {"id": v["id"], "release_time": v["releaseTime"], "url": v["url"]}
         for v in manifest.get("versions", [])
@@ -21,8 +28,9 @@ def stable_releases() -> list[dict]:
     return items
 
 
-def maintenance_window(count: int = 3) -> list[str]:
-    return [v["id"] for v in stable_releases()[:count]]
+def release_ids() -> list[str]:
+    """Stable release IDs, newest first."""
+    return [v["id"] for v in stable_releases()]
 
 
 def version_details(mc: str) -> dict:

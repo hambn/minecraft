@@ -1,7 +1,7 @@
 """Per-target resolution and the ``plan`` command.
 
-For one server this resolves the maintenance window (three newest stable
-Minecraft releases) into draft lock files: loader build, provider releases with
+For one server this resolves the maintenance window (the three newest stable
+Minecraft releases that server supports) into draft lock files: loader build, provider releases with
 required dependencies, licenses, custom/prebuilt entries.  Provider access is
 injected, so everything here is testable offline.
 """
@@ -517,16 +517,25 @@ def _committed_unchanged(servers_dir: Path, server: str, minecraft: str, inputs_
 
 def plan(server: str, out: str | Path, *, force: bool = False, window: list[str] | None = None,
          loader: Any = None, manifest: Any = None, resolver: Resolver | None = None,
-         servers_dir: str | Path | None = None, base_dir: Path | None = None) -> dict:
-    """Resolve the window and write ``plan.json`` plus draft locks into ``out``."""
+         servers_dir: str | Path | None = None, base_dir: Path | None = None,
+         releases: list[str] | None = None) -> dict:
+    """Resolve the window and write ``plan.json`` plus draft locks into ``out``.
+
+    Without an explicit ``window`` the server's own window is detected from the
+    Mojang releases it has stable builds for; newer unsupported releases become
+    pending targets.
+    """
     if loader is None:
         from loaders import get_loader
 
         loader = get_loader(server)
     if window is None:
-        from sources import mojang
+        from loaders import server_window
 
-        window = list(mojang.maintenance_window())
+        detected = server_window(loader, releases=releases)
+        window, upcoming, builds = detected.window, detected.upcoming, detected.builds
+    else:
+        upcoming, builds = [], {}
     base = Path(base_dir) if base_dir else BASE_DIR
     if manifest is None:
         manifest = manifest_mod.load(base / loader.manifest, artifact_ext=loader.artifact_ext)
@@ -536,8 +545,8 @@ def plan(server: str, out: str | Path, *, force: bool = False, window: list[str]
     out.mkdir(parents=True, exist_ok=True)
 
     targets = []
-    for mc in window:
-        build = loader.resolve_build(mc)
+    for mc in list(upcoming) + list(window):
+        build = builds.get(mc) or loader.resolve_build(mc)
         if build.status != "available":
             targets.append({"minecraft": mc, "status": "pending", "reason": build.reason or "server build pending",
                             "draft": None, "inputs_hash": None})
@@ -548,7 +557,7 @@ def plan(server: str, out: str | Path, *, force: bool = False, window: list[str]
         targets.append({"minecraft": mc, "status": "unchanged" if unchanged else "build",
                         "reason": "inputs unchanged since the published build" if unchanged else None,
                         "draft": f"{mc}.json", "inputs_hash": lock["inputs_hash"]})
-    result = {"server": server, "window": list(window), "targets": targets}
+    result = {"server": server, "window": list(window), "upcoming": list(upcoming), "targets": targets}
     locks.write_json(out / "plan.json", result)
     return result
 

@@ -160,9 +160,9 @@ Using the illustrative maintained window `26.3`, `26.2`, and `26.1.2`: a project
 
 ### Which Minecraft versions get built
 
-Read Mojang's release manifest, filter to stable releases (`type: release`, no snapshots or prereleases), order by release time, and take exactly the newest three distinct release IDs. Patch releases count separately. This is one shared maintenance window for all four server types, not three major/minor families or three versions chosen according to mod support.
+Read Mojang's release manifest, filter to stable releases (`type: release`, no snapshots or prereleases), and order by release time. Patch releases count separately. Each server type has its own maintenance window: the newest three of those releases for which that server has a stable build (see the loader rules below). Nothing is hardcoded; the window is detected on every run. Mod support does not affect the window.
 
-For example, if that window is `26.3`, `26.2`, and `26.1.2`, keep rebuilding those exact tags as their components update. `26.1.1` is outside the window: leave any published tag and its historical lock frozen, with no scheduled rebuilds or updates. When a new stable release enters, the oldest of the three leaves immediately. Do not keep an older fourth version active while waiting for loader or mod support.
+For example, if Mojang's newest releases are `26.3`, `26.2`, `26.1.2`, `26.1.1` and NeoForge has no stable build for `26.3` yet, NeoForge maintains `26.2`, `26.1.2` and `26.1.1`, and reports `26.3` as **upcoming** (pending). Once a stable NeoForge build for `26.3` appears, `26.3` enters the window and `26.1.1` leaves it: its published tag and lock stay frozen, with no further rebuilds. Releases older than the newest supported one that a server skipped are simply not maintained. Pumpkin supports one Minecraft version per commit, so its window has a single entry.
 
 Within the active window, each server image needs:
 
@@ -174,7 +174,7 @@ Within the active window, each server image needs:
 2. **Base image:** the Java runtime satisfies `javaVersion.majorVersion` from the Mojang version manifest for Java servers; use the appropriate pinned runtime base for Pumpkin.
 3. **Server checks:** the baseline server starts offline, answers a status query, and stops cleanly. Mods/plugins remain unselected for this baseline check.
 
-If a loader/server implementation has no usable build for an active release yet, record that pair as pending and retry automatically. Do not invent a server build or replace the target with an older Minecraft release. Keep `latest` on the newest successful active target until a newer one passes. If no active target is available, retain the last published `latest` and explicitly report it as outside the maintained window.
+If a server has no usable build for a Mojang release newer than its window, record that release as upcoming/pending and retry automatically. Do not invent a server build. Keep `latest` on the newest successful active target until a newer one passes. If no active target is available, retain the last published `latest` and explicitly report it as outside the maintained window.
 
 ### Lock files
 
@@ -273,7 +273,7 @@ Both destinations use the same documentation inputs and per-version catalog meta
 File formats, CLI commands, and module interfaces are pinned in [`contracts.md`](contracts.md).
 
 - Mod and plugin lists: NeoForge starts from the `bn0-configs` list; Fabric and Paper use equivalent server-side sets; Pumpkin starts empty.
-- Pumpkin "stable": build from the newest `master` commit that passes the CI checks, tagged by the Minecraft version it supports. Other window versions stay pending.
+- Pumpkin "stable": build from the newest commit of the upstream default branch that passes the CI checks, tagged by the Minecraft version it supports. Its window is that one version. The Rust toolchain comes from the upstream `rust-version` (newest stable Rust if undeclared); the builder and runtime use the current Debian stable codename, falling back to oldstable while no Rust image exists for it.
 - Automatic updates: the publish job commits validated locks and `status.json` directly to `main`, with no PR or approval. Each server writes only its own `<server>/locks/` directory and retries with `git pull --rebase`. Set the `LOCKS_PUSH_TOKEN` secret only if `main` is protected.
 - Custom source-build artifacts: assets of the `custom-artifacts` GitHub Release, named by the build-input cache key.
 - Unchanged targets (same `inputs_hash` as the committed lock) are not rebuilt or re-pushed, so tags only move when something changed.

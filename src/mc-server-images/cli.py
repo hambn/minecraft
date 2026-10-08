@@ -19,7 +19,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="cli.py", description="Minecraft server image tooling")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p = sub.add_parser("window", help="print the maintenance window as a JSON list")
+    p = sub.add_parser("window", help="print a server's maintenance window and upcoming releases as JSON")
+    p.add_argument("--server", required=True, choices=SERVERS)
     p.add_argument("--count", type=int, default=3)
 
     p = sub.add_parser("plan", help="resolve all window targets and write draft locks")
@@ -47,7 +48,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--out", required=True)
     p.add_argument("--custom")
 
-    p = sub.add_parser("check-window", help="exit 0 when the version is in the window, 3 otherwise")
+    p = sub.add_parser("check-window", help="exit 0 when the version is in the server's window, 3 otherwise")
+    p.add_argument("--server", required=True, choices=SERVERS)
     p.add_argument("--minecraft", required=True)
 
     p = sub.add_parser("publish", help="push images, retag latest, write status.json")
@@ -64,14 +66,15 @@ def main(argv: list[str] | None = None) -> int:
     command = args.command
 
     if command == "window":
-        from sources import mojang
+        from loaders import get_loader, server_window
 
-        print(json.dumps(mojang.maintenance_window(args.count)))
+        detected = server_window(get_loader(args.server), args.count)
+        print(json.dumps({"window": detected.window, "upcoming": detected.upcoming}))
         return 0
     if command == "check-window":
-        from sources import mojang
+        from loaders import get_loader, server_window
 
-        return 0 if args.minecraft in mojang.maintenance_window() else 3
+        return 0 if args.minecraft in server_window(get_loader(args.server)).window else 3
     if command == "plan":
         import resolver
 

@@ -107,16 +107,28 @@ def compute_status(
     published: dict[str, dict],
     pending: dict[str, str],
     now: str,
+    upcoming: list[str] | None = None,
 ) -> dict:
     """Compute the new status.json content.
 
     published: {mc: {"digest": str}} for targets pushed in this run.
     pending:   {mc: reason} for targets the plan reported as pending.
+    upcoming:  newer releases the server has no stable build for yet.
     """
     previous = previous or {}
     prev_targets: dict[str, dict] = previous.get("targets") or {}
+    upcoming = [mc for mc in upcoming or [] if mc not in window]
     in_window = set(window)
     targets: dict[str, dict] = {}
+
+    for mc in upcoming:
+        old = prev_targets.get(mc)
+        if old and old.get("digest") and old.get("state") in ("published", "frozen"):
+            continue  # handled with the frozen tags below
+        if mc in pending:
+            targets[mc] = {"state": "pending", "reason": pending[mc]}
+        elif old and old.get("state") == "pending":
+            targets[mc] = dict(old)
 
     for mc in window:
         old = prev_targets.get(mc)
@@ -165,6 +177,7 @@ def compute_status(
         "image": image_ref,
         "updated_at": now,
         "window": list(window),
+        "upcoming": upcoming,
         "latest": latest,
         "latest_outside_window": outside,
         "targets": targets,
@@ -186,11 +199,13 @@ def default_runner(cmd: list[str], cwd: Path | None = None) -> None:
     subprocess.run(cmd, cwd=cwd, check=True)
 
 
-def default_window() -> list[str]:
+def default_window(server: str) -> tuple[list[str], list[str]]:
+    """``(window, upcoming)`` for this server, detected the same way as ``plan``."""
     sys.path.insert(0, str(HERE)) if str(HERE) not in sys.path else None
-    from sources import mojang  # noqa: PLC0415 - lazy: needs network
+    from loaders import get_loader, server_window  # noqa: PLC0415 - lazy: needs network
 
-    return list(mojang.maintenance_window())
+    detected = server_window(get_loader(server))
+    return detected.window, detected.upcoming
 
 
 def default_uploader(repo: str, tag: str, path: Path, name: str) -> None:
@@ -207,7 +222,7 @@ class Publisher:
         *,
         run: Callable[..., None] | None = None,
         now: Callable[[], datetime] | None = None,
-        window_fn: Callable[[], list[str]] | None = None,
+        window_fn: Callable[[], tuple[list[str], list[str]]] | None = None,
         upload_fn: Callable[[str, str, Path, str], None] | None = None,
         sleep: Callable[[float], None] | None = None,
         servers_dir: Path | None = None,
@@ -221,7 +236,7 @@ class Publisher:
         self.no_commit: bool = bool(getattr(args, "no_commit", False))
         self._run = run or default_runner
         self._now = now or (lambda: datetime.now(timezone.utc))
-        self._window_fn = window_fn or default_window
+        self._window_fn = window_fn or (lambda: default_window(self.server))
         self._upload_fn = upload_fn or default_uploader
         self._sleep = sleep or time.sleep
         self.repo_root = Path(repo_root) if repo_root else DEFAULT_REPO_ROOT
@@ -243,8 +258,9 @@ class Publisher:
     # -- main flow ---------------------------------------------------------
 
     def execute(self) -> int:
-        window = [str(v) for v in self._window_fn()]
-        log(f"window: {', '.join(window)}")
+        window, upcoming = self._window_fn()
+        window, upcoming = [str(v) for v in window], [str(v) for v in upcoming]
+        log(f"window: {', '.join(window) or '(none)'}; upcoming: {', '.join(upcoming) or '(none)'}")
         found = read_results(self.artifacts, self.server)
         if not found:
             raise PublishError(f"no result.json found under {self.artifacts}")
@@ -253,10 +269,10 @@ class Publisher:
         pending: dict[str, str] = {}
         for mc, item in sorted(found.items()):
             result = item["result"]
-            if mc not in window:
+            status = result.get("status")
+            if mc not in window and not (status == "pending" and mc in upcoming):
                 log(f"ignoring {mc}: outside the current window (stale job)")
                 continue
-            status = result.get("status")
             if status == "built":
                 built[mc] = item
             elif status == "pending":
@@ -303,6 +319,7 @@ class Publisher:
             published=published,
             pending=pending,
             now=utc_iso(self._now()),
+            upcoming=upcoming,
         )
 
         # 7. Move latest when it changed or was rebuilt.

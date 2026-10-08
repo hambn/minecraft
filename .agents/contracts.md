@@ -5,7 +5,7 @@ Interfaces shared between the parts of this repository. `plan.md` says *what* to
 ## Settled decisions
 
 - **Automatic updates:** bots commit generated locks and status files **directly to `main`** (no PRs). Each server workflow only writes `src/mc-server-images/<server>/locks/`, so concurrent workflows never touch the same files; the push step retries `git pull --rebase` + `git push` up to 5 times. Pushes use `secrets.LOCKS_PUSH_TOKEN` when set (needed only if `main` is protected), otherwise `GITHUB_TOKEN`. Pushes made with `GITHUB_TOKEN` do not trigger workflows, so lock commits cannot loop. `web.yml` is triggered by `workflow_run` of the server workflows instead.
-- **Pumpkin "stable":** build from the newest `master` commit of `Pumpkin-MC/Pumpkin` that passes our CI checks. That commit supports one Minecraft version; only a window version equal to it is buildable, the others are `pending`.
+- **Pumpkin "stable":** build from the newest default-branch commit of `Pumpkin-MC/Pumpkin` that passes our CI checks. That commit supports one Minecraft version, which is Pumpkin's whole window.
 - **Custom source-build artifacts:** stored as assets of a GitHub Release with tag `custom-artifacts`, asset name `<cache_key>-<filename>`. `cache_key` = sha256 of the build inputs (see below). Uploaded by the publish job only.
 - **Packages:** the workflows push to `ghcr.io/hambn/<image>`; package visibility (public/private) is a GHCR setting the owner chooses (see plan constraints about Mojang files).
 - **Stable only:** Modrinth `version_type == "release"`, CurseForge `releaseType == 1`.
@@ -73,7 +73,7 @@ download(url, dest: Path, *, sha1=None, sha256=None, sha512=None) -> str   # ret
 class HttpError(Exception); class HashMismatch(Exception)
 # sources/mojang.py
 stable_releases() -> list[dict]          # [{"id","release_time","url"}], type=="release", newest first by releaseTime
-maintenance_window(count=3) -> list[str] # newest first
+release_ids() -> list[str]               # stable release IDs, newest first
 version_details(mc: str) -> dict         # {"java_major": int, "server_jar": {"url","sha1","size"}}
 # sources/registry.py
 resolve_digest(image: str) -> str        # "eclipse-temurin:25-jre" -> "sha256:..." (Docker Hub, ghcr.io, other v2 registries; anonymous token flow; multi-arch index digest)
@@ -175,7 +175,8 @@ Written by `publish`, read by the website.
   "server": "fabric",
   "image": "ghcr.io/hambn/minecraft-server-fabric",
   "updated_at": "2026-10-08T12:00:00Z",
-  "window": ["26.3", "26.2", "26.1.2"],
+  "window": ["26.2", "26.1.2", "26.1.1"],
+  "upcoming": ["26.3"],
   "latest": "26.3",
   "latest_outside_window": false,
   "targets": {
@@ -192,16 +193,16 @@ Written by `publish`, read by the website.
 
 | Command | Arguments | Effect |
 | --- | --- | --- |
-| `window` | `[--count 3]` | Print the window as a JSON list, newest first. |
+| `window` | `--server S [--count 3]` | Print `{"window": [...], "upcoming": [...]}` for the server, newest first. |
 | `plan` | `--server S --out DIR [--force] [--github-output]` | Resolve all three targets. Write `DIR/plan.json` and a draft lock `DIR/<mc>.json` per non-pending target. With `--github-output`, append `matrix=<json>` to `$GITHUB_OUTPUT`. |
 | `build-custom` | `--server S --minecraft V --plan DIR --out DIR2` | Build or fetch custom source artifacts for that target into `DIR2/`, writing `DIR2/results.json`. |
 | `lock` | `--server S --minecraft V --plan DIR --custom DIR2 --out FILE` | Finalize the draft into the final lock (custom results filled in, `inputs_hash` recomputed). |
 | `stage` | `--server S --lock FILE --out CTX [--custom DIR2]` | Produce the Docker build context described below. |
-| `check-window` | `--minecraft V` | Exit 0 when V is in the current window, 3 otherwise. |
+| `check-window` | `--server S --minecraft V` | Exit 0 when V is in the server's current window, 3 otherwise. |
 | `publish` | `--server S --artifacts DIR --registry ghcr.io/hambn [--dry-run] [--no-commit]` | See "Publish". |
 
-`plan.json`: `{"server", "window": [...], "targets": [{"minecraft", "status": "build"|"unchanged"|"pending", "reason", "draft": "26.3.json"|null, "inputs_hash"|null}]}`.
-Matrix output: `{"include": [{"minecraft": "26.3", "status": "build"}, ...]}` — always exactly the window's three versions.
+`plan.json`: `{"server", "window": [...], "upcoming": [...], "targets": [{"minecraft", "status": "build"|"unchanged"|"pending", "reason", "draft": "26.3.json"|null, "inputs_hash"|null}]}`.
+Matrix output: `{"include": [{"minecraft": "26.3", "status": "build"}, ...]}` — the upcoming (pending) versions followed by the server's window (up to three versions).
 
 `build-custom` `results.json`: `{"<id>": {"status": "built"|"cached"|"failed"|"skipped", "filename", "sha512", "cache_key", "path": "<file in DIR2>"|null, "uploaded": false, "reason"}}`. Builds run `docker run --rm -v <dir>:/src -w /src -e ARTIFACT_VERSION -e MINECRAFT_VERSION -e LOADER -e LOADER_VERSION <builder_image> <command...>`. A failure marks the entry `unavailable`; it never fails the command. Cached artifacts are fetched from the `custom-artifacts` release.
 
