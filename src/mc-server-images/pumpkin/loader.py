@@ -1,14 +1,13 @@
-"""Pumpkin: newest master commit; it supports exactly one Minecraft version."""
+"""Pumpkin: newest default-branch commit; it supports exactly one Minecraft version."""
 
 from __future__ import annotations
 
 import re
 
 from loaders import Loader, ServerBuild, pending
-from sources import github, registry
+from sources import github, http, registry
 
 REPO = "Pumpkin-MC/Pumpkin"
-BRANCH = "master"
 REPO_URL = "https://github.com/Pumpkin-MC/Pumpkin"
 
 # Where the supported Minecraft version is declared (generated file; the
@@ -24,9 +23,12 @@ TOOLCHAIN_RES = [
     re.compile(r'channel\s*=\s*"(\d+\.\d+(?:\.\d+)?)"'),
     re.compile(r'(?m)^\s*rust-version\s*=\s*"(\d+\.\d+(?:\.\d+)?)"'),
 ]
-DEFAULT_RUST_VERSION = "1.96"
-DEBIAN = "bookworm"
-RUNTIME_BASE = "debian:bookworm-slim"
+# Without a declared minimum, the floating "1" tag (newest stable Rust) is used.
+FALLBACK_RUST_VERSION = "1"
+# Debian suites tried in order; the builder and runtime always share one codename.
+DEBIAN_RELEASE = "https://deb.debian.org/debian/dists/{suite}/Release"
+DEBIAN_SUITES = ["stable", "oldstable"]
+_CODENAME_RE = re.compile(r"(?m)^Codename:\s*(\S+)")
 
 
 def _read_optional(commit: str, path: str) -> str | None:
@@ -54,7 +56,20 @@ def find_rust_version(commit: str) -> str:
                 match = regex.search(text)
                 if match:
                     return match.group(1)
-    return DEFAULT_RUST_VERSION
+    return FALLBACK_RUST_VERSION
+
+
+def debian_codenames() -> list[str]:
+    """Codenames of the current Debian stable and oldstable releases."""
+    names = []
+    for suite in DEBIAN_SUITES:
+        try:
+            match = _CODENAME_RE.search(http.get_text(DEBIAN_RELEASE.format(suite=suite)))
+        except http.HttpError:
+            continue
+        if match and match.group(1) not in names:
+            names.append(match.group(1))
+    return names
 
 
 class PumpkinLoader(Loader):
@@ -66,25 +81,41 @@ class PumpkinLoader(Loader):
     provider_loaders = {"modrinth": [], "curseforge": []}
     artifact_ext = ".wasm"
 
+    def __init__(self) -> None:
+        self._cache: dict[str, tuple[str, str | None]] = {}
+
+    def _source(self) -> tuple[str, str | None]:
+        """``(commit, supported Minecraft)``, looked up once per run (the window scan asks repeatedly)."""
+        if "source" not in self._cache:
+            commit = github.latest_commit(REPO, github.default_branch(REPO))
+            self._cache["source"] = (commit, find_supported_minecraft(commit))
+        return self._cache["source"]
+
     def resolve_build(self, minecraft: str) -> ServerBuild:
-        commit = github.latest_commit(REPO, BRANCH)
-        supported = find_supported_minecraft(commit)
+        commit, supported = self._source()
         if supported is None:
             return pending(
                 f"Could not determine the Minecraft version supported by Pumpkin commit {commit[:12]}"
             )
         if supported != minecraft:
             return pending(
-                f"Pumpkin master ({commit[:12]}) supports Minecraft {supported}, not {minecraft}"
+                f"Pumpkin ({commit[:12]}) supports Minecraft {supported}, not {minecraft}"
             )
 
-        builder = f"rust:{find_rust_version(commit)}-{DEBIAN}"
-        builder_image = f"{builder}@{registry.resolve_digest(builder)}"
-        runtime = {
-            "base_image": RUNTIME_BASE,
-            "base_digest": registry.resolve_digest(RUNTIME_BASE),
-            "java_major": None,
-        }
+        rust = find_rust_version(commit)
+        for codename in debian_codenames():
+            builder = f"rust:{rust}-{codename}"
+            runtime_base = f"debian:{codename}-slim"
+            try:
+                builder_image = f"{builder}@{registry.resolve_digest(builder)}"
+                runtime_digest = registry.resolve_digest(runtime_base)
+            except http.HttpError:
+                continue  # no Rust image for this Debian release yet: try the previous one
+            break
+        else:
+            return pending(f"No rust:{rust} builder image found for a current Debian release")
+
+        runtime = {"base_image": runtime_base, "base_digest": runtime_digest, "java_major": None}
         return ServerBuild(
             status="available",
             reason=None,

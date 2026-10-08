@@ -19,9 +19,9 @@ except ImportError:  # pragma: no cover
     sys.modules["sources"] = pkg
     for _name, _funcs in {
         "http": ["get_json", "get_text", "download"],
-        "mojang": ["stable_releases", "maintenance_window", "version_details"],
+        "mojang": ["stable_releases", "release_ids", "version_details"],
         "registry": ["resolve_digest"],
-        "github": ["latest_commit", "file_at", "release_asset_url", "upload_release_asset"],
+        "github": ["default_branch", "latest_commit", "file_at", "release_asset_url", "upload_release_asset"],
     }.items():
         _mod = types.ModuleType(f"sources.{_name}")
         for _f in _funcs:
@@ -171,11 +171,19 @@ PACKET_RS = (
 class PumpkinTest(Base):
     SHA = "0123456789abcdef0123456789abcdef01234567"
 
+    def setUp(self):
+        super().setUp()
+        get_loader("pumpkin")._cache.clear()
+        self.addCleanup(get_loader("pumpkin")._cache.clear)
+        self.debian = {"stable": "Codename: trixie\n", "oldstable": "Codename: bookworm\n"}
+        self.patch("sources.http.get_text", side_effect=lambda url, headers=None: self.debian[url.split("/")[-2]])
+
     def files(self, mapping):
         def file_at(repo, ref, path):
             if path in mapping:
                 return mapping[path]
             raise http.HttpError("404")
+        self.patch("sources.github.default_branch", return_value="master")
         self.patch("sources.github.latest_commit", return_value=self.SHA)
         self.patch("sources.github.file_at", side_effect=file_at)
 
@@ -187,17 +195,25 @@ class PumpkinTest(Base):
         build = get_loader("pumpkin").resolve_build("26.1.2")
         self.assertEqual(build.status, "available")
         self.assertEqual(build.loader_version, self.SHA)
-        self.assertEqual(build.runtime, {"base_image": "debian:bookworm-slim", "base_digest": "sha256:debian-bookworm-slim", "java_major": None})
+        self.assertEqual(build.runtime, {"base_image": "debian:trixie-slim", "base_digest": "sha256:debian-trixie-slim", "java_major": None})
         d = build.details
         self.assertEqual(d["downloads"], {})
         self.assertEqual(d["source"], {"repo": "https://github.com/Pumpkin-MC/Pumpkin", "commit": self.SHA})
-        self.assertEqual(d["builder_image"], "rust:1.92-bookworm@sha256:rust-1.92-bookworm")
+        self.assertEqual(d["builder_image"], "rust:1.92-trixie@sha256:rust-1.92-trixie")
         self.assertEqual(d["supported_minecraft"], "26.1.2")
 
-    def test_default_rust_when_no_toolchain(self):
+    def test_newest_rust_when_no_toolchain(self):
         self.files({pumpkin_mod.VERSION_FILE_CANDIDATES[0]: PACKET_RS % "V_26_1_2"})
         d = get_loader("pumpkin").resolve_build("26.1.2").details
-        self.assertTrue(d["builder_image"].startswith(f"rust:{pumpkin_mod.DEFAULT_RUST_VERSION}-bookworm@"))
+        self.assertTrue(d["builder_image"].startswith("rust:1-trixie@"))
+
+    def test_falls_back_to_oldstable_without_rust_image(self):
+        self.files({pumpkin_mod.VERSION_FILE_CANDIDATES[0]: PACKET_RS % "V_26_1_2"})
+        registry.resolve_digest.side_effect = lambda ref: (_ for _ in ()).throw(http.HttpError("404")) \
+            if "trixie" in ref else digest(ref)
+        build = get_loader("pumpkin").resolve_build("26.1.2")
+        self.assertTrue(build.details["builder_image"].startswith("rust:1-bookworm@"))
+        self.assertEqual(build.runtime["base_image"], "debian:bookworm-slim")
 
     def test_stable_channel_uses_cargo_rust_version(self):
         self.files({
@@ -207,7 +223,7 @@ class PumpkinTest(Base):
         })
         build = get_loader("pumpkin").resolve_build("26.3")
         self.assertEqual(build.details["supported_minecraft"], "26.3")
-        self.assertTrue(build.details["builder_image"].startswith("rust:1.96-bookworm@"))
+        self.assertTrue(build.details["builder_image"].startswith("rust:1.96-trixie@"))
 
     def test_other_version_pending(self):
         self.files({pumpkin_mod.VERSION_FILE_CANDIDATES[0]: PACKET_RS % "V_26_1_2"})

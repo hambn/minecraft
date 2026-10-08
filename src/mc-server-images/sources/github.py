@@ -26,6 +26,10 @@ def _q(value: str, safe: str = "") -> str:
     return urllib.parse.quote(value, safe=safe)
 
 
+def default_branch(repo: str) -> str:
+    return http.get_json(f"{API}/repos/{repo}", headers=_headers())["default_branch"]
+
+
 def latest_commit(repo: str, branch: str) -> str:
     return http.get_json(f"{API}/repos/{repo}/commits/{_q(branch, '/')}", headers=_headers())["sha"]
 
