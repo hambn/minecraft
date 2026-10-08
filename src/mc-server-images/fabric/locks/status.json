@@ -2,12 +2,13 @@
   "schema": 1,
   "server": "fabric",
   "image": "ghcr.io/hambn/minecraft-server-fabric",
-  "updated_at": "2026-10-08T12:12:38Z",
+  "updated_at": "2026-10-08T13:04:40Z",
   "window": [
     "26.3",
     "26.2",
     "26.1.2"
   ],
+  "upcoming": [],
   "latest": "26.3",
   "latest_outside_window": false,
   "targets": {
