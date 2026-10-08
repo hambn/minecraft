@@ -1,0 +1,73 @@
+# NeoForge server mods manifest.
+#
+# Catalog of mods bundled (inactive by default) in this image. Select at
+# runtime with the MODS environment variable, a comma-separated list of the
+# IDs below. IDs must match ^[a-z0-9][a-z0-9-]*$ and be unique in this file.
+# Paths are relative to this file's directory.
+#
+# Sections (all four must be present; use [] when unused):
+#
+#   modrinth:     { id, project }  Upstream Modrinth project (slug or project ID).
+#                 The resolver picks the newest compatible stable release and
+#                 pulls required dependencies automatically; do not list libraries.
+#   curseforge:   { id, project }  Upstream CurseForge project (numeric project ID).
+#   custom_build: mods compiled by CI from a committed source directory.
+#   prebuilt:     ready-made artifacts committed to the repository.
+#
+# Upstream entries carry only identity; metadata and versions come from the
+# provider and are written to the lock files.
+#
+# Commented-out examples of the other two sections:
+#
+# custom_build:
+#   - id: custom-source-mod
+#     directory: src/custom-source-mod
+#     minecraft_versions: ["26.3"]
+#     dependencies: []            # other manifest IDs
+#     metadata:
+#       name: Custom source mod
+#       description: A server mod compiled by CI.
+#       authors: [Example author]
+#       version: "0.1.0"
+#       license: MIT
+#     build:
+#       builder_image: "<builder-image>@sha256:<digest>"
+#       command: ["./gradlew", "--no-daemon", "build"]
+#       output: build/libs/custom-source-mod.jar   # relative to directory
+#
+# prebuilt:
+#   - id: custom-ready-mod
+#     path: jars/custom-ready-mod-1.0.0.jar
+#     minecraft_versions: ["26.3"]
+#     dependencies: []
+#     metadata:
+#       name: Custom ready mod
+#       description: A server mod supplied as a ready artifact.
+#       authors: [Example author]
+#       version: "1.0.0"
+#       license: MIT
+
+modrinth:
+  - { id: chunky, project: chunky }
+  - { id: lithium, project: lithium }
+  - { id: lithostitched, project: lithostitched }
+  - { id: servercore, project: servercore }
+  - { id: spark, project: spark }
+  - { id: sophisticated-backpacks, project: sophisticated-backpacks }
+  - { id: sophisticated-storage, project: sophisticated-storage }
+  - { id: codxlib, project: codxlib }
+  - { id: jade, project: jade }
+  - { id: lootr, project: lootr }
+  - { id: clumps, project: clumps }
+  - { id: monsters-in-the-closet-reborn, project: monsters-in-the-closet-reborn }
+  - { id: jei, project: jei }
+  - { id: mezzconfig, project: mezzconfig }
+  - { id: ferrite-core, project: ferrite-core }
+  - { id: ketket-graves, project: ketket-graves }
+  - { id: towns-and-towers, project: towns-and-towers }
+  - { id: terralith, project: terralith }
+  - { id: simple-backups, project: simple-backups }
+
+curseforge: []
+custom_build: []
+prebuilt: []

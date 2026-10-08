@@ -1,0 +1,60 @@
+# Pumpkin server plugins manifest.
+#
+# Catalog of plugins bundled (inactive by default) in this image. Select at
+# runtime with the PLUGINS environment variable, a comma-separated list of the
+# IDs below. IDs must match ^[a-z0-9][a-z0-9-]*$ and be unique in this file.
+# Paths are relative to this file's directory.
+#
+# Sections (all four must be present; use [] when unused):
+#
+#   modrinth:     { id, project }  Upstream Modrinth project (slug or project ID).
+#                 The resolver picks the newest compatible stable release and
+#                 pulls required dependencies automatically; do not list libraries.
+#   curseforge:   { id, project }  Upstream CurseForge project (numeric project ID).
+#   custom_build: plugins compiled by CI from a committed source directory.
+#   prebuilt:     ready-made artifacts committed to the repository.
+#
+# Upstream entries carry only identity; metadata and versions come from the
+# provider and are written to the lock files.
+#
+# Commented-out examples of the other two sections:
+#
+# custom_build:
+#   - id: custom-source-plugin
+#     directory: src/custom-source-plugin
+#     minecraft_versions: ["26.3"]
+#     dependencies: []            # other manifest IDs
+#     metadata:
+#       name: Custom source plugin
+#       description: A server plugin compiled by CI.
+#       authors: [Example author]
+#       version: "0.1.0"
+#       license: MIT
+#     build:
+#       builder_image: "<builder-image>@sha256:<digest>"
+#       command: ["./gradlew", "--no-daemon", "build"]
+#       output: build/libs/custom-source-plugin.jar   # relative to directory
+#
+# prebuilt:
+#   - id: custom-ready-plugin
+#     path: plugins/custom-ready-plugin-1.0.0.wasm
+#     minecraft_versions: ["26.3"]
+#     dependencies: []
+#     metadata:
+#       name: Custom ready plugin
+#       description: A server plugin supplied as a ready artifact.
+#       authors: [Example author]
+#       version: "1.0.0"
+#       license: MIT
+
+# No upstream provider (Modrinth, CurseForge) hosts Pumpkin WASM plugins, so all
+# four sections are empty for now. To add a plugin:
+#   - prebuilt: commit a ready .wasm file next to this manifest (for example
+#     under plugins/) and add a prebuilt entry (see example above) with
+#     explicit metadata and minecraft_versions.
+#   - custom_build: commit the plugin source (target wasm32-wasip2) and add a
+#     custom_build entry whose build.output is the resulting .wasm file.
+modrinth: []
+curseforge: []
+custom_build: []
+prebuilt: []
