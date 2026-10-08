@@ -26,7 +26,7 @@ The page content reflects the lock files in your checkout, so run `git pull` fir
 The generator needs only a recent Python 3 and the standard library:
 
 ```sh
-python3 src/web/build.py --servers src/mc-server-images --out site --base-path /
+PYTHONPATH=.github/scripts python3 -m website --out site --base-path /
 python3 -m http.server 8080 --directory site
 ```
 

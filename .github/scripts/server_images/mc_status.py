@@ -3,6 +3,9 @@
 
 Usage: mc_status.py HOST PORT [--timeout SECONDS] [--protocol N]
 
+Standalone on purpose: ci_check.py mounts this single file into a stock
+Python container, so it must not import anything outside the standard library.
+
 Sends handshake (next state 1) plus status request, reads the VarInt-framed
 JSON response, prints it and exits 0. Exits 1 (message on stderr) on failure.
 The default protocol -1 means "unknown/ping"; servers answer it with status.

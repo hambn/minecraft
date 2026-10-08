@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """CI checks for a built server image (stdlib only, runs on the CI host).
 
-    ci_check.py --image REF --catalog CTX/catalog/catalog.tsv --out checks.json
-                [--python-image python:<running version>-slim] [--timeout 600]
+    python -m server_images.ci_check --image REF --catalog CTX/catalog/catalog.tsv --out checks.json
+        [--python-image python:<running version>-slim] [--timeout 600]
 
-Everything goes through the ``docker`` CLI. Server type, catalog env/dir and
-the ready pattern come from the image labels. Containers run with
-``--network none``. Result file::
+Everything goes through the ``docker`` CLI; ``mc_status.py`` (next to this
+file) is mounted into a ``--python-image`` container to ping the server.
+Server type, catalog env/dir and the ready pattern come from the image labels.
+Containers run with ``--network none``. Result file::
 
     {"image", "server", "minecraft", "passed", "checks": [{"name", "passed", "blocking", "detail"}]}
 

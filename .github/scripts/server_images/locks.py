@@ -1,31 +1,21 @@
-"""Lock schema helpers: canonical dump, ``inputs_hash``, graph recompute, finalize."""
+"""Lock schema helpers: ``inputs_hash``, dependency graph, finalize (the ``lock`` command)."""
 
 from __future__ import annotations
 
 import copy
 import hashlib
 import json
-import os
+import sys
 from pathlib import Path
 from typing import Any
 
-BASE_DIR = Path(__file__).resolve().parent
+from .config import SERVERS_DIR
+from .util import read_json, write_json
 
-
-def server_locks_dir(server: str, servers_dir: str | Path | None = None) -> Path:
-    """Committed locks and status.json of one server: ``<server>/locks/``."""
-    return Path(servers_dir or BASE_DIR) / server / "locks"
 SCHEMA = 1
 
 # Reason prefix used for failed custom builds; the planner retries these.
 BUILD_FAILED_PREFIX = "custom build failed"
-
-
-# --------------------------------------------------------------------------- io
-
-def canonical_dumps(obj: Any) -> str:
-    """Sorted keys, 2-space indent, trailing newline."""
-    return json.dumps(obj, sort_keys=True, indent=2, ensure_ascii=False) + "\n"
 
 
 def _compact(obj: Any) -> bytes:
@@ -37,18 +27,8 @@ def sort_entries(lock: dict) -> dict:
     return lock
 
 
-def write_json(path: str | Path, obj: Any) -> None:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(canonical_dumps(obj), encoding="utf-8")
-
-
 def write_lock(path: str | Path, lock: dict) -> None:
     write_json(path, sort_entries(lock))
-
-
-def read_json(path: str | Path) -> Any:
-    return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 # ------------------------------------------------------------------ inputs_hash
@@ -90,9 +70,9 @@ def _hash_files(server: str, base_dir: Path) -> list[Path]:
     return sorted(files, key=lambda p: p.as_posix())
 
 
-def compute_inputs_hash(lock: dict, base_dir: str | Path | None = None) -> str:
+def compute_inputs_hash(lock: dict, base_dir: str | Path = SERVERS_DIR) -> str:
     """sha256 over the normalized lock plus Dockerfile, entrypoint.sh and common/*.sh."""
-    base = Path(base_dir) if base_dir else BASE_DIR
+    base = Path(base_dir)
     digest = hashlib.sha256()
     digest.update(_compact(_normalized_for_hash(lock)))
     for rel in _hash_files(lock["server"], base):
@@ -182,7 +162,7 @@ def apply_custom_results(lock: dict, results: dict, custom_dir: str | Path | Non
             build["storage"] = None
 
 
-def finalize(draft: dict, results: dict | None, base_dir: str | Path | None = None,
+def finalize(draft: dict, results: dict | None, base_dir: str | Path = SERVERS_DIR,
              custom_dir: str | Path | None = None) -> dict:
     lock = copy.deepcopy(draft)
     apply_custom_results(lock, results or {}, custom_dir)
@@ -196,16 +176,16 @@ def finalize_command(args) -> int:
     plan_dir = Path(args.plan)
     draft_path = plan_dir / f"{args.minecraft}.json"
     if not draft_path.is_file():
-        print(f"error: no draft lock {draft_path}", file=__import__("sys").stderr)
+        print(f"error: no draft lock {draft_path}", file=sys.stderr)
         return 1
     draft = read_json(draft_path)
     results: dict = {}
-    custom_dir = getattr(args, "custom", None)
+    custom_dir = args.custom
     if custom_dir:
         results_path = Path(custom_dir) / "results.json"
         if results_path.is_file():
             results = read_json(results_path)
-    lock = finalize(draft, results, BASE_DIR, custom_dir)
+    lock = finalize(draft, results, custom_dir=custom_dir)
     write_json(args.out, lock)
     print(f"wrote {args.out} ({len(lock['entries'])} entries, {lock['inputs_hash']})")
     return 0

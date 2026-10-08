@@ -5,9 +5,9 @@ from __future__ import annotations
 import re
 import xml.etree.ElementTree as ET
 
-from loaders import Loader, ServerBuild, java_runtime, pending
-from sources import http, mojang
-from versions import parse
+from . import Loader, ServerBuild, java_runtime, pending
+from ..sources import http, mojang
+from ..versions import parse
 
 MAVEN = "https://maven.neoforged.net/releases/net/neoforged/neoforge"
 METADATA_URL = f"{MAVEN}/maven-metadata.xml"
@@ -21,20 +21,12 @@ def version_prefix(minecraft: str) -> str:
     Legacy scheme (1.A.B):       MC 1.21 -> "21.0.", MC 1.21.1 -> "21.1.".
     """
     parts = parse(minecraft)
-    if parts[0] == 1:
-        if len(parts) < 2:
-            raise ValueError(f"unsupported Minecraft version {minecraft!r}")
-        minor = parts[1]
-        patch = parts[2] if len(parts) > 2 else 0
-        return f"{minor}.{patch}."
     if len(parts) < 2:
         raise ValueError(f"unsupported Minecraft version {minecraft!r}")
     patch = parts[2] if len(parts) > 2 else 0
+    if parts[0] == 1:
+        return f"{parts[1]}.{patch}."
     return f"{parts[0]}.{parts[1]}.{patch}."
-
-
-def _key(version: str) -> tuple[int, ...]:
-    return tuple(int(p) for p in version.split("."))
 
 
 class NeoForgeLoader(Loader):
@@ -57,7 +49,7 @@ class NeoForgeLoader(Loader):
         stable = [v for v in versions if v.startswith(prefix) and _STABLE_RE.match(v)]
         if not stable:
             return pending(f"No stable NeoForge build for Minecraft {minecraft} yet")
-        best = max(stable, key=_key)
+        best = max(stable, key=parse)
 
         details = mojang.version_details(minecraft)
         runtime = java_runtime(details["java_major"])

@@ -5,14 +5,16 @@
 #   docker run --rm -p 8080:8080 minecraft-web:local      # http://localhost:8080/
 
 FROM python:3-slim AS builder
-# build.py and markdown_lite.py use only the standard library; no pip install needed.
+# The generator uses only the standard library; no pip install needed.
+# The repository layout is kept so its default paths resolve.
 WORKDIR /build
-COPY src/web/ ./web/
-# Every server dir is copied; build.py only reads <server>/locks/*.json.
-COPY src/mc-server-images/ ./servers/
+COPY .github/scripts/website/ .github/scripts/website/
+COPY src/web/ src/web/
+# Every server dir is copied; the generator only reads <server>/locks/*.json.
+COPY src/mc-server-images/ src/mc-server-images/
 # Owner/name for image refs and links; CI passes --build-arg REPO=$GITHUB_REPOSITORY.
 ARG REPO=hambn/minecraft
-RUN python web/build.py --servers servers --out /site --base-path / --repo "$REPO" \
+RUN PYTHONPATH=.github/scripts python -m website --out /site --base-path / --repo "$REPO" \
     && test -s /site/index.html
 
 FROM nginxinc/nginx-unprivileged:stable-alpine

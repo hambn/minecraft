@@ -21,12 +21,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-HERE = Path(__file__).resolve().parent
-DEFAULT_REPO_ROOT = HERE.parents[1]
+from .config import CUSTOM_RELEASE_TAG, GITHUB_REPOSITORY, REPO_ROOT, SERVERS_DIR, server_locks_dir
+from .util import canonical_json
 
 SCHEMA = 1
-CUSTOM_RELEASE_TAG = "custom-artifacts"
-DEFAULT_GITHUB_REPOSITORY = "hambn/minecraft"
 BOT_NAME = "github-actions[bot]"
 BOT_EMAIL = "41898282+github-actions[bot]@users.noreply.github.com"
 PUSH_ATTEMPTS = 5
@@ -44,11 +42,6 @@ def log(message: str) -> None:
 
 def utc_iso(moment: datetime) -> str:
     return moment.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
-def canonical_json(data: Any) -> str:
-    """Canonical lock form: sorted keys, 2-space indent, trailing newline."""
-    return json.dumps(data, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
 
 
 def status_json(data: dict) -> str:
@@ -107,6 +100,25 @@ def read_json(path: Path) -> Any:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         raise PublishError(f"cannot read {path}: {exc}") from exc
+
+
+def build_result(server: str, minecraft: str, passed: bool, lock: dict) -> dict:
+    """The ``result.json`` a build job uploads next to its image and lock."""
+    return {
+        "server": server,
+        "minecraft": minecraft,
+        "status": "built",
+        "passed": passed,
+        "reason": None if passed else "CI checks failed (see checks.json)",
+        "inputs_hash": lock.get("inputs_hash"),
+    }
+
+
+def result_command(args: Any) -> int:
+    result = build_result(args.server, args.minecraft, args.passed == "true", read_json(Path(args.lock)))
+    Path(args.out).write_text(canonical_json(result), encoding="utf-8")
+    print(json.dumps(result))
+    return 0
 
 
 # --------------------------------------------------------------------------
@@ -210,16 +222,14 @@ def default_runner(cmd: list[str], cwd: Path | None = None) -> None:
 
 def default_window(server: str) -> tuple[list[str], list[str]]:
     """``(window, upcoming)`` for this server, detected the same way as ``plan``."""
-    sys.path.insert(0, str(HERE)) if str(HERE) not in sys.path else None
-    from loaders import get_loader, server_window  # noqa: PLC0415 - lazy: needs network
+    from .loaders import get_loader, server_window  # lazy: needs network
 
     detected = server_window(get_loader(server))
     return detected.window, detected.upcoming
 
 
 def default_uploader(repo: str, tag: str, path: Path, name: str) -> None:
-    sys.path.insert(0, str(HERE)) if str(HERE) not in sys.path else None
-    from sources import github  # noqa: PLC0415
+    from .sources import github
 
     github.upload_release_asset(repo, tag, path, name)
 
@@ -234,26 +244,24 @@ class Publisher:
         window_fn: Callable[[], tuple[list[str], list[str]]] | None = None,
         upload_fn: Callable[[str, str, Path, str], None] | None = None,
         sleep: Callable[[float], None] | None = None,
-        servers_dir: Path | None = None,
-        repo_root: Path | None = None,
+        servers_dir: Path = SERVERS_DIR,
+        repo_root: Path = REPO_ROOT,
         environ: dict | None = None,
     ) -> None:
         self.server: str = args.server
         self.artifacts = Path(args.artifacts)
         self.registry: str = args.registry.rstrip("/")
-        self.dry_run: bool = bool(getattr(args, "dry_run", False))
-        self.no_commit: bool = bool(getattr(args, "no_commit", False))
-        plan_dir = getattr(args, "plan", None)
-        self.plan_dir: Path | None = Path(plan_dir) if plan_dir else None
+        self.dry_run: bool = args.dry_run
+        self.no_commit: bool = args.no_commit
+        self.plan_dir: Path | None = Path(args.plan) if args.plan else None
         self._run = run or default_runner
         self._now = now or (lambda: datetime.now(timezone.utc))
         self._window_fn = window_fn or (lambda: default_window(self.server))
         self._upload_fn = upload_fn or default_uploader
         self._sleep = sleep or time.sleep
-        self.repo_root = Path(repo_root) if repo_root else DEFAULT_REPO_ROOT
-        self.servers_dir = Path(servers_dir) if servers_dir else HERE
+        self.repo_root = Path(repo_root)
         self.environ = os.environ if environ is None else environ
-        self.server_locks = self.servers_dir / self.server / "locks"
+        self.server_locks = server_locks_dir(self.server, Path(servers_dir))
         self.errors: list[str] = []
 
     # -- command execution -------------------------------------------------
@@ -415,7 +423,7 @@ class Publisher:
         return digest
 
     def _upload_custom(self, directories: list[Path]) -> None:
-        repo = self.environ.get("GITHUB_REPOSITORY") or DEFAULT_GITHUB_REPOSITORY
+        repo = self.environ.get("GITHUB_REPOSITORY") or GITHUB_REPOSITORY
         seen: set[str] = set()
         for directory in directories:
             results_path = directory / "custom" / "results.json"
@@ -540,7 +548,7 @@ class Publisher:
 
 
 def publish_command(args: Any, **injected: Any) -> int:
-    """Entry point used by cli.py. Returns the process exit code."""
+    """Entry point of the ``publish`` command. Returns the process exit code."""
     try:
         return Publisher(args, **injected).execute()
     except (PublishError, subprocess.CalledProcessError) as exc:

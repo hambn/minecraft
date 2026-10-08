@@ -1,0 +1,48 @@
+# Offline unit tests for the build tooling in .github/scripts (server_images, website).
+name: scripts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/scripts/**"
+      - ".github/workflows/scripts.yml"
+      - ".python-version"
+  pull_request:
+    paths:
+      - ".github/scripts/**"
+      - ".github/workflows/scripts.yml"
+      - ".python-version"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scripts-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: .github/scripts/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r .github/scripts/requirements.txt
+
+      - name: Run unit tests
+        run: python -m unittest discover -s .github/scripts/tests -t .github/scripts -v
+
+      - name: Generate the site
+        env:
+          PYTHONPATH: .github/scripts
+        run: |
+          python -m website --out site --base-path /
+          test -s site/index.html

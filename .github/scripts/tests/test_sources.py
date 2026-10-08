@@ -3,16 +3,13 @@
 from __future__ import annotations
 
 import os
-import sys
 import unittest
 from pathlib import Path
 from unittest import mock
 
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))
 
-from sources import curseforge, github, http, modrinth, mojang, registry  # noqa: E402
-from sources.models import ProviderUnavailable  # noqa: E402
+from server_images.sources import curseforge, github, http, modrinth, mojang, registry
+from server_images.sources.models import ProviderUnavailable
 
 
 def fake_get(table):

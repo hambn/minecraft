@@ -10,25 +10,28 @@ Working plan for this repository. Update it as decisions are made; the README st
 
 ## Repository layout
 
-Server automation, mod/plugin lists, custom artifacts and source projects, Dockerfiles, startup scripts, and generated locks live together in `src/mc-server-images/`. Website sources and its Dockerfile live in `src/web/`.
+The Python build tooling lives in `.github/scripts/` (`server_images` and the `website` generator). Mod/plugin lists, custom artifacts and source projects, Dockerfiles, startup scripts, and generated locks live together in `src/mc-server-images/`. Website pages, templates and its Dockerfile live in `src/web/`.
 
 ```text
-.github/workflows/
-  fabric.yml
-  neoforge.yml
-  paper.yml
-  pumpkin.yml
-  web.yml
+.github/
+  scripts/
+    server_images/ # Build tooling: plan, lock, stage, CI checks, publish
+      loaders/     # Server-specific version and support rules
+      sources/     # Upstream API clients
+    website/       # Documentation site generator
+    tests/
+  workflows/
+    fabric.yml
+    neoforge.yml
+    paper.yml
+    pumpkin.yml
+    scripts.yml    # Unit tests for .github/scripts
+    web.yml
 src/
   mc-server-images/
-    cli.py
-    resolver.py
-    locks.py
-    sources/       # Upstream API clients
-    loaders.py     # Shared base for the per-server loader.py rules
-    common/        # Shared image build and startup helpers
+    licenses.yml
+    common/        # Shared startup helpers (lib.sh)
     fabric/
-      loader.py    # Server-specific version and support rules
       locks/       # Generated, committed locks per Minecraft version, plus status.json
       Dockerfile
       entrypoint.sh
@@ -37,7 +40,6 @@ src/
         jars/      # Custom prebuilt mods
         src/       # Custom mod source projects, one directory per project
     neoforge/
-      loader.py    # Server-specific version and support rules
       locks/       # Generated, committed locks per Minecraft version, plus status.json
       Dockerfile
       entrypoint.sh
@@ -46,7 +48,6 @@ src/
         jars/
         src/
     paper/
-      loader.py    # Server-specific version and support rules
       locks/       # Generated, committed locks per Minecraft version, plus status.json
       Dockerfile
       entrypoint.sh
@@ -55,7 +56,6 @@ src/
         jars/      # Custom prebuilt plugins
         src/       # Custom plugin source projects
     pumpkin/
-      loader.py    # Server-specific version and support rules
       locks/       # Generated, committed locks per Minecraft version, plus status.json
       Dockerfile
       entrypoint.sh

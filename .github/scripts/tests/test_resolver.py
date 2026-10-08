@@ -6,19 +6,15 @@ import contextlib
 import io
 import json
 import os
-import sys
 import tempfile
 import unittest
 from argparse import Namespace
 from pathlib import Path
 from types import SimpleNamespace as NS
 
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))
 
-import locks  # noqa: E402
-import manifest as manifest_mod  # noqa: E402
-import resolver  # noqa: E402
+from server_images import locks, resolver, util
+from server_images import manifest as manifest_mod
 
 LICENSES = {"allowed": ["MIT", "LGPL-3.0-only", "Apache-2.0"],
             "permissions": [{"provider": "modrinth", "project": "arr-ok", "note": "granted"}]}
@@ -243,9 +239,9 @@ class PlanTests(unittest.TestCase):
         self.assertEqual([j["minecraft"] for j in resolver.matrix(result)["include"]], ["26.3", "26.1.2"])
 
         # Commit the 26.3 lock and mark it published: next plan reports unchanged.
-        lock = locks.read_json(out / "26.3.json")
+        lock = util.read_json(out / "26.3.json")
         locks.write_lock(self.root / "fabric" / "locks" / "26.3.json", lock)
-        locks.write_json(self.root / "fabric" / "locks" / "status.json", {"targets": {"26.3": {"state": "published"}}})
+        util.write_json(self.root / "fabric" / "locks" / "status.json", {"targets": {"26.3": {"state": "published"}}})
         again = self.run_plan(fake_loader("pending"))
         states = {t["minecraft"]: t["status"] for t in again["targets"]}
         self.assertEqual(states["26.3"], "unchanged")

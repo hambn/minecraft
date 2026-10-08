@@ -2,16 +2,11 @@
 
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))
 
-import test_loaders  # noqa: E402,F401 - installs offline stubs for the sources package when needed
-from loaders import ServerBuild, empty_runtime, pending, server_window  # noqa: E402
-import publish  # noqa: E402
+from server_images import publish
+from server_images.loaders import ServerBuild, empty_runtime, pending, server_window
 
 
 class FakeLoader:

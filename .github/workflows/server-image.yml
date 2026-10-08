@@ -1,14 +1,15 @@
 # Reusable server image pipeline, called by fabric.yml, neoforge.yml, paper.yml and pumpkin.yml.
 # Stages (each uses a job matrix):
 #   plan        resolve the three newest stable Minecraft releases this server has a stable build for,
-#               plus newer unsupported releases as pending (cli.py plan; the window is per server),
+#               plus newer unsupported releases as pending (`plan`; the window is per server),
 #               upload the plan + draft locks, emit the dynamic build matrix.
 #   build       one job per Minecraft version whose inputs changed (none when nothing changed): build custom artifacts, finalize the lock,
 #               stage the Docker context, build the image, run the CI checks, upload the image,
 #               lock and results as the artifact build-<server>-<minecraft>. Never pushes to a registry.
-#   push_image  main only: cli.py publish pushes the tested image bytes to the registry, moves
+#   push_image  main only: `publish` pushes the tested image bytes to the registry, moves
 #               `latest`, deletes locks of versions that left the window, and commits the locks
 #               and status.json directly to main. Runs even when no build job was needed.
+# The tooling is the server_images package in .github/scripts (python -m server_images <command>).
 # Callers must grant `contents: write` and `packages: write` (push_image needs them).
 name: server-image
 
@@ -27,6 +28,9 @@ on:
 permissions:
   contents: read
 
+env:
+  PYTHONPATH: ${{ github.workspace }}/.github/scripts
+
 jobs:
   plan:
     runs-on: ubuntu-24.04
@@ -41,10 +45,10 @@ jobs:
         with:
           python-version-file: .python-version
           cache: pip
-          cache-dependency-path: src/mc-server-images/requirements.txt
+          cache-dependency-path: .github/scripts/requirements.txt
 
       - name: Install dependencies
-        run: pip install -r src/mc-server-images/requirements.txt
+        run: pip install -r .github/scripts/requirements.txt
 
       - name: Plan the maintained Minecraft versions
         id: plan
@@ -55,7 +59,7 @@ jobs:
         run: |
           args=()
           if [ "$FORCE" = "true" ]; then args+=(--force); fi
-          python src/mc-server-images/cli.py plan \
+          python -m server_images plan \
             --server "${{ inputs.server }}" \
             --out "plan/${{ inputs.server }}" \
             --github-output \
@@ -93,16 +97,16 @@ jobs:
         with:
           python-version-file: .python-version
           cache: pip
-          cache-dependency-path: src/mc-server-images/requirements.txt
+          cache-dependency-path: .github/scripts/requirements.txt
 
       - name: Install dependencies
-        run: pip install -r src/mc-server-images/requirements.txt
+        run: pip install -r .github/scripts/requirements.txt
 
       - name: Build custom source artifacts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python src/mc-server-images/cli.py build-custom \
+          python -m server_images build-custom \
             --server "${{ inputs.server }}" \
             --minecraft "${{ matrix.minecraft }}" \
             --plan plan/${{ inputs.server }} \
@@ -111,7 +115,7 @@ jobs:
       - name: Finalize lock
         run: |
           mkdir -p out
-          python src/mc-server-images/cli.py lock \
+          python -m server_images lock \
             --server "${{ inputs.server }}" \
             --minecraft "${{ matrix.minecraft }}" \
             --plan plan/${{ inputs.server }} \
@@ -120,7 +124,7 @@ jobs:
 
       - name: Stage Docker build context
         run: |
-          python src/mc-server-images/cli.py stage \
+          python -m server_images stage \
             --server "${{ inputs.server }}" \
             --lock out/lock.json \
             --custom custom \
@@ -151,7 +155,7 @@ jobs:
         id: checks
         run: |
           mkdir -p out
-          if python3 src/mc-server-images/common/ci_check.py \
+          if python -m server_images.ci_check \
               --image "$IMAGE" \
               --catalog ctx/catalog/catalog.tsv \
               --out out/checks.json; then
@@ -162,31 +166,18 @@ jobs:
 
       - name: Export image and results
         env:
-          SERVER: ${{ inputs.server }}
-          MINECRAFT: ${{ matrix.minecraft }}
           PASSED: ${{ steps.checks.outputs.passed }}
         run: |
           if [ "$PASSED" = "true" ]; then
             docker save -o out/image.tar "$IMAGE"
           fi
           cp -r custom out/custom
-          python3 - <<'PY'
-          import json, os, pathlib
-
-          server, mc = os.environ["SERVER"], os.environ["MINECRAFT"]
-          passed = os.environ["PASSED"] == "true"
-          lock = json.load(open("out/lock.json"))
-          result = {
-              "server": server,
-              "minecraft": mc,
-              "status": "built",
-              "passed": passed,
-              "reason": None if passed else "CI checks failed (see checks.json)",
-              "inputs_hash": lock.get("inputs_hash"),
-          }
-          pathlib.Path("out/result.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
-          print(json.dumps(result))
-          PY
+          python -m server_images result \
+            --server "${{ inputs.server }}" \
+            --minecraft "${{ matrix.minecraft }}" \
+            --lock out/lock.json \
+            --passed "$PASSED" \
+            --out out/result.json
 
       - uses: actions/upload-artifact@v7
         with:
@@ -233,10 +224,10 @@ jobs:
         with:
           python-version-file: .python-version
           cache: pip
-          cache-dependency-path: src/mc-server-images/requirements.txt
+          cache-dependency-path: .github/scripts/requirements.txt
 
       - name: Install dependencies
-        run: pip install -r src/mc-server-images/requirements.txt
+        run: pip install -r .github/scripts/requirements.txt
 
       - uses: actions/download-artifact@v8
         with:
@@ -272,16 +263,11 @@ jobs:
             ghcr) skopeo login "$HOST" -u "${{ github.actor }}" --password-stdin <<< "$GITHUB_TOKEN" ;;
           esac
 
-      - name: Configure git identity
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
       - name: Publish images, locks and status
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python src/mc-server-images/cli.py publish \
+          python -m server_images publish \
             --server "${{ inputs.server }}" \
             --artifacts artifacts \
             --plan "plan/${{ inputs.server }}" \

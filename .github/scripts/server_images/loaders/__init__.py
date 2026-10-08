@@ -1,11 +1,9 @@
-"""Shared base for the server-specific version and support rules.
+"""Server-specific version and support rules.
 
-Each server's rules live in ``<server>/loader.py`` next to its Dockerfile and
-expose a module-level ``LOADER``.
-
-Each loader decides, for one exact Minecraft release, whether a stable server
-build exists and which downloads/base image it needs.  Missing builds are
-reported as ``pending``.
+Each server's rules live in ``loaders/<server>.py`` and expose a module-level
+``LOADER``.  A loader decides, for one exact Minecraft release, whether a
+stable server build exists and which downloads/base image it needs.  Missing
+builds are reported as ``pending``.
 
 The maintenance window is per server: the newest ``WINDOW_SIZE`` stable
 Minecraft releases that the server has a stable build for.  Newer releases the
@@ -14,15 +12,15 @@ server does not support yet are reported as ``upcoming`` (pending).
 
 from __future__ import annotations
 
-import importlib.util
-import sys
+import importlib
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import ClassVar
 
-from sources import registry
+from ..config import SERVERS_DIR
+from ..sources import registry
 
 SERVERS = ["fabric", "neoforge", "paper", "pumpkin"]
-BASE_DIR = Path(__file__).resolve().parent
 WINDOW_SIZE = 3
 # How many of the newest Mojang releases are checked when looking for supported ones.
 MAX_SCAN = 15
@@ -38,13 +36,18 @@ class ServerBuild:
 
 
 class Loader:
-    server: str = ""
-    image: str = ""
-    catalog_kind: str = ""
-    env_var: str = ""
-    manifest: str = ""
-    provider_loaders: dict = {}
-    artifact_ext: str = ".jar"
+    server: ClassVar[str] = ""
+    image: ClassVar[str] = ""
+    catalog_kind: ClassVar[str] = ""  # mods | plugins
+    env_var: ClassVar[str] = ""  # MODS | PLUGINS
+    manifest: ClassVar[str] = ""  # relative to SERVERS_DIR, e.g. "fabric/mods/mods.yml"
+    provider_loaders: ClassVar[dict[str, list[str]]] = {}
+    artifact_ext: ClassVar[str] = ".jar"
+
+    @property
+    def manifest_dir(self) -> Path:
+        """Directory the manifest's relative paths (prebuilt files, sources) resolve against."""
+        return SERVERS_DIR / Path(self.manifest).parent
 
     def resolve_build(self, minecraft: str) -> ServerBuild:
         raise NotImplementedError
@@ -60,7 +63,7 @@ class ServerWindow:
 def server_window(loader: Loader, count: int = WINDOW_SIZE, releases: list[str] | None = None) -> ServerWindow:
     """Find the newest ``count`` Mojang releases this server has a stable build for."""
     if releases is None:
-        from sources import mojang
+        from ..sources import mojang
 
         releases = mojang.release_ids()
     window: list[str] = []
@@ -93,7 +96,6 @@ def pending(reason: str, runtime: dict | None = None) -> ServerBuild:
         reason=reason,
         loader_version=None,
         runtime=runtime if runtime is not None else empty_runtime(),
-        details={},
     )
 
 
@@ -110,15 +112,4 @@ def java_runtime(java_major: int) -> dict:
 def get_loader(server: str) -> Loader:
     if server not in SERVERS:
         raise ValueError(f"unknown server {server!r}; expected one of {SERVERS}")
-    return load_module(server).LOADER
-
-
-def load_module(server: str):
-    """Import ``<server>/loader.py`` (server dirs are not packages) as ``<server>_loader``."""
-    name = f"{server}_loader"
-    if name not in sys.modules:
-        spec = importlib.util.spec_from_file_location(name, BASE_DIR / server / "loader.py")
-        module = importlib.util.module_from_spec(spec)
-        sys.modules[name] = module
-        spec.loader.exec_module(module)
-    return sys.modules[name]
+    return importlib.import_module(f".{server}", __name__).LOADER

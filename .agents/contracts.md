@@ -11,25 +11,34 @@ Interfaces shared between the parts of this repository. `plan.md` says *what* to
 - **Stable only:** Modrinth `version_type == "release"`, CurseForge `releaseType == 1`.
 - **No churn:** locks contain no timestamps. A target whose `inputs_hash` equals the committed lock's and which is already published is `unchanged` and is not rebuilt or re-pushed (manual dispatch with `force: true` overrides).
 
-## Python layout (`src/mc-server-images/`)
+## Python layout (`.github/scripts/`)
 
-Python 3.12, `PyYAML` (pinned in `requirements.txt`), otherwise stdlib. The directory name contains a hyphen, so modules import each other as top-level modules: `cli.py` inserts its own directory into `sys.path`. Tests live in `tests/` and run offline with `python -m unittest discover -s src/mc-server-images/tests -t src/mc-server-images`.
+Python 3.12, `PyYAML` (pinned in `.github/scripts/requirements.txt`), otherwise stdlib. Two packages, run with `.github/scripts` on `PYTHONPATH` (the workflows set it): `python -m server_images <command>` and `python -m website`. Tests live in `.github/scripts/tests/`, run offline with `python -m unittest discover -s .github/scripts/tests -t .github/scripts` (the `scripts.yml` workflow runs them).
 
 ```text
-cli.py            argparse entry point, dispatches to the modules below
-manifest.py       load + validate mods.yml / plugins.yml
-versions.py       Minecraft version parsing, ordering, family expansion ("26.1.x")
-resolver.py       per-target resolution, plan command
-locks.py          lock schema, inputs_hash, read/write, finalize (lock command)
-custom_build.py   build-custom command
-staging.py        stage command (Docker build context)
-publish.py        publish command (push images, retag latest, write status.json, commit locks)
-licenses.yml      redistribution allowlist (SPDX ids) and per-project permissions
-requirements.txt
-sources/          upstream API clients (http, models, mojang, modrinth, curseforge, registry, github)
-loaders.py        shared loader base; get_loader imports <server>/loader.py
-<server>/loader.py  server-specific rules (fabric, neoforge, paper, pumpkin), module-level LOADER
-common/           files baked into images + CI check tooling
+.github/scripts/
+  requirements.txt
+  server_images/
+    __main__.py       argparse entry point, dispatches to the modules below
+    config.py         repository paths (SERVERS_DIR = src/mc-server-images, licenses.yml), GITHUB_REPOSITORY
+    util.py           JSON read/write (canonical form), sha512 of files
+    manifest.py       load + validate mods.yml / plugins.yml
+    versions.py       Minecraft version parsing, ordering, family expansion ("26.1.x")
+    resolver.py       per-target resolution, plan command
+    locks.py          lock schema, inputs_hash, finalize (lock command)
+    custom_build.py   build-custom command
+    staging.py        stage command (Docker build context)
+    publish.py        result + publish commands (push images, retag latest, write status.json, commit locks)
+    ci_check.py       CI checks for a built image (python -m server_images.ci_check)
+    mc_status.py      standalone status ping, mounted into a python container by ci_check
+    sources/          upstream API clients (http, models, mojang, modrinth, curseforge, registry, github)
+    loaders/          __init__.py: shared base, window detection, get_loader; <server>.py: rules, module-level LOADER
+  website/            site generator (__main__.py) + markdown_lite.py
+  tests/
+src/mc-server-images/   data read by the tooling, unchanged by it except locks/
+  licenses.yml      redistribution allowlist (SPDX ids) and per-project permissions
+  common/lib.sh     shared entrypoint helpers, baked into images
+  <server>/Dockerfile, <server>/entrypoint.sh, <server>/{mods,plugins}/
 <server>/locks/<minecraft>.json, <server>/locks/status.json
 ```
 
@@ -84,7 +93,7 @@ release_asset_url(repo: str, tag: str, asset: str) -> str | None
 upload_release_asset(repo: str, tag: str, path: Path, name: str) -> None   # creates the release if missing
 ```
 
-### `loaders.py` and `<server>/loader.py`
+### `loaders/`
 
 ```python
 @dataclass
@@ -105,7 +114,7 @@ class Loader:
     artifact_ext: str           # ".jar" | ".wasm"
     def resolve_build(self, minecraft: str) -> ServerBuild
 
-def get_loader(server: str) -> Loader      # loaders.py, loads <server>/loader.py as module <server>_loader
+def get_loader(server: str) -> Loader      # imports server_images.loaders.<server>
 SERVERS = ["fabric", "neoforge", "paper", "pumpkin"]
 ```
 
@@ -188,7 +197,7 @@ Written by `publish`, read by the website.
 
 `updated_at` changes only when something else in the file changes. A version that leaves the window is removed from `targets` and its lock file is deleted; its registry tag is left as is. A previously published version whose new build is pending stays `published`.
 
-## CLI (`python src/mc-server-images/cli.py <command>`)
+## CLI (`python -m server_images <command>`)
 
 | Command | Arguments | Effect |
 | --- | --- | --- |
@@ -198,7 +207,8 @@ Written by `publish`, read by the website.
 | `lock` | `--server S --minecraft V --plan DIR --custom DIR2 --out FILE` | Finalize the draft into the final lock (custom results filled in, `inputs_hash` recomputed). |
 | `stage` | `--server S --lock FILE --out CTX [--custom DIR2]` | Produce the Docker build context described below. |
 | `check-window` | `--server S --minecraft V` | Exit 0 when V is in the server's current window, 3 otherwise. |
-| `publish` | `--server S --artifacts DIR --registry ghcr.io/hambn [--dry-run] [--no-commit]` | See "Publish". |
+| `result` | `--server S --minecraft V --lock FILE --passed true\|false --out FILE` | Write the build job's `result.json` (see "Workflows"). |
+| `publish` | `--server S --artifacts DIR --registry ghcr.io/hambn [--plan DIR] [--dry-run] [--no-commit]` | See "Publish". |
 
 `plan.json`: `{"server", "window": [...], "upcoming": [...], "targets": [{"minecraft", "status": "build"|"unchanged"|"pending", "reason", "draft": "26.3.json"|null, "inputs_hash"|null}]}`.
 Matrix output: `{"include": [{"minecraft": "26.3", "status": "build"}, ...]}` — the upcoming (pending) versions followed by the server's window (up to three versions).
@@ -211,7 +221,7 @@ Matrix output: `{"include": [{"minecraft": "26.3", "status": "build"}, ...]}` �
 CTX/
   Dockerfile               copied from <server>/Dockerfile
   entrypoint.sh            copied from <server>/entrypoint.sh
-  common/                  copied from common/ (*.sh and mc_status.py)
+  common/                  copied from common/ (*.sh)
   downloads/<name>.<ext>   verified server_build.details.downloads
   catalog/files/<filename> every entry with an artifact (compatible + unsupported_fallback), sha512-verified
   catalog/catalog.tsv
@@ -245,9 +255,9 @@ lithium	compatible	yes	declared	lithium-fabric-0.18.0.jar	fabric-api,lithium	-	-
   - Image version info read from `/opt/catalog/catalog.json` or build-time env `MINECRAFT_VERSION`/`LOADER_VERSION`.
 - Entrypoints end with `exec` so SIGTERM reaches the server and it saves and stops cleanly.
 
-## CI checks (`common/ci_check.py`, stdlib, runs on the CI host)
+## CI checks (`server_images/ci_check.py`, stdlib, runs on the CI host)
 
-`python3 src/mc-server-images/common/ci_check.py --image REF --catalog CTX/catalog/catalog.tsv --out checks.json [--python-image python:3.12-slim]`. Reads the server type, catalog env/dir, and ready pattern from the image labels. Blocking checks: baseline boot with `--network none` until the ready pattern, status ping (via `docker run --network container:<id> <python-image> python mc_status.py 127.0.0.1 25565`), clean stop with `docker stop -t 120`; empty selection leaves the catalog inactive; `ACTIVATE_ONLY` for each selectable entry on a reused volume (stale files removed when the selection changes, unrelated files kept); unknown ID rejected; unsupported fallback rejected when one exists. Non-blocking: boot with all selectable entries. Output `{"image", "server", "minecraft", "passed": bool, "checks": [{"name", "passed", "blocking", "detail"}]}`; exit 1 if a blocking check failed.
+`python -m server_images.ci_check --image REF --catalog CTX/catalog/catalog.tsv --out checks.json [--python-image python:3.12-slim]`. Reads the server type, catalog env/dir, and ready pattern from the image labels. Blocking checks: baseline boot with `--network none` until the ready pattern, status ping (via `docker run --network container:<id> <python-image> python mc_status.py 127.0.0.1 25565`), clean stop with `docker stop -t 120`; empty selection leaves the catalog inactive; `ACTIVATE_ONLY` for each selectable entry on a reused volume (stale files removed when the selection changes, unrelated files kept); unknown ID rejected; unsupported fallback rejected when one exists. Non-blocking: boot with all selectable entries. Output `{"image", "server", "minecraft", "passed": bool, "checks": [{"name", "passed", "blocking", "detail"}]}`; exit 1 if a blocking check failed.
 
 ## Workflows
 
@@ -261,6 +271,6 @@ checks.json   ci_check output                             (only when built)
 custom/       build-custom output dir incl. results.json   (only when built)
 ```
 
-`push_image` runs `cli.py publish`, which: rechecks the window; refuses to publish when any `built` target has `passed: false`; for each passed built target in the window, pushes `image.tar` with `skopeo copy docker-archive:… docker://<registry>/<image>:<mc>` and records the digest; uploads new custom artifacts to the `custom-artifacts` release; moves `latest` (`skopeo copy docker://…:<mc> docker://…:latest`) to the newest published window target when it changed or was rebuilt; copies final locks into `<server>/locks/`, rewrites `status.json`; then commits `chore(<server>): update locks for <versions>` as `github-actions[bot]` and pushes to `main` with rebase retries (skipped with `--no-commit`).
+`push_image` runs `python -m server_images publish`, which: rechecks the window; refuses to publish when any `built` target has `passed: false`; for each passed built target in the window, pushes `image.tar` with `skopeo copy docker-archive:… docker://<registry>/<image>:<mc>` and records the digest; uploads new custom artifacts to the `custom-artifacts` release; moves `latest` (`skopeo copy docker://…:<mc> docker://…:latest`) to the newest published window target when it changed or was rebuilt; copies final locks into `<server>/locks/`, rewrites `status.json`; then commits `chore(<server>): update locks for <versions>` as `github-actions[bot]` and pushes to `main` with rebase retries (skipped with `--no-commit`).
 
-`web.yml` builds the site with `python src/web/build.py --servers src/mc-server-images --out site --base-path <path>` (`/minecraft/` for Pages, `/` for the image).
+`web.yml` builds the site with `PYTHONPATH=.github/scripts python -m website --out site --base-path <path>` (`/minecraft/` for Pages, `/` for the image).
