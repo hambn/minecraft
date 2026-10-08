@@ -8,7 +8,7 @@ updates:
       github-actions:
         patterns: ["*"]
   - package-ecosystem: pip
-    directory: "/src/mc-server-images"
+    directory: "/.github/scripts"
     schedule:
       interval: weekly
     groups:

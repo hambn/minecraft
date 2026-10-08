@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from loaders import Loader, ServerBuild, java_runtime, pending
-from sources import http, mojang
+from . import Loader, ServerBuild, java_runtime, pending
+from ..sources import http, mojang
 
 META = "https://meta.fabricmc.net/v2/versions"
 MAVEN = "https://maven.fabricmc.net/net/fabricmc/fabric-installer"

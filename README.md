@@ -13,7 +13,7 @@ Prebuilt Minecraft server images and a documentation website. Every server image
 | `ghcr.io/<owner>/minecraft-server-paper` | Paper |
 | `ghcr.io/<owner>/minecraft-server-pumpkin` | Pumpkin |
 
-Each server keeps one manifest beside its custom files, for example `src/mc-server-images/fabric/mods/mods.yml` or `src/mc-server-images/paper/plugins/plugins.yml`. It has `modrinth` and `curseforge` for automatic stable updates, `custom_build` for source projects compiled by CI, and `prebuilt` for ready JAR or WASM files. Metadata and versions for upstream entries are fetched automatically; custom entries declare them explicitly. Exact versions, metadata, and checksums for each Minecraft target are recorded in `src/mc-server-images/locks/`.
+Each server keeps one manifest beside its custom files, for example `src/mc-server-images/fabric/mods/mods.yml` or `src/mc-server-images/paper/plugins/plugins.yml`. It has `modrinth` and `curseforge` for automatic stable updates, `custom_build` for source projects compiled by CI, and `prebuilt` for ready JAR or WASM files. Metadata and versions for upstream entries are fetched automatically; custom entries declare them explicitly. Exact versions, metadata, and checksums for each Minecraft target are recorded in `src/mc-server-images/<server>/locks/`.
 
 ### Tags
 
@@ -38,6 +38,8 @@ The documentation is published to GitHub Pages and packaged as a self-hostable i
 ## Build automation
 
 Fabric, NeoForge, Paper, and Pumpkin each have their own GitHub Actions workflow. Every stage uses a matrix: `plan` discovers the three newest stable Minecraft releases each server has a stable build for, `build` runs one job per release, and `push_image` currently has one GHCR registry job that publishes the tested images.
+
+The Python tooling behind these workflows lives in `.github/scripts/`: `server_images` plans, builds, checks and publishes the images, and `website` generates the documentation site. Run it from the repository root, for example `PYTHONPATH=.github/scripts python -m server_images window --server paper`. Its offline tests run with `python -m unittest discover -s .github/scripts/tests -t .github/scripts`.
 
 Updates are fully automatic. After an image passes its checks, the workflow pushes the tags and commits the new locks and `status.json` straight to `main`; there are no update PRs to approve.
 

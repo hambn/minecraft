@@ -7,14 +7,16 @@ context; unavailable entries (no artifact) are skipped.
 
 from __future__ import annotations
 
-import hashlib
 import shutil
 import sys
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-from locks import BASE_DIR, read_json, write_json
+from .config import SERVERS_DIR
+from .loaders import get_loader
+from .sources import http
+from .util import read_json, sha512_file, write_json
 
 HASH_KEYS = ("sha512", "sha256", "sha1")
 TSV_HEADER = "#id\tstatus\tselectable\tkind\tfilename\tclosure\tconflicts\treason"
@@ -26,24 +28,6 @@ class StageError(Exception):
 
 def log(message: str) -> None:
     print(f"stage: {message}", flush=True)
-
-
-def _download(url: str, dest: Path, **hashes: str) -> str:
-    from sources import http
-    return http.download(url, dest, **hashes)
-
-
-def _sha512(path: Path) -> str:
-    digest = hashlib.sha512()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1 << 20), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def _manifest_dir(server: str) -> Path:
-    from loaders import get_loader
-    return BASE_DIR / Path(get_loader(server).manifest).parent
 
 
 # ------------------------------------------------------------------ catalog.tsv
@@ -110,7 +94,7 @@ def render_build_args(args: dict[str, str]) -> str:
 def _verified_copy(src: Path, dest: Path, sha512: str, what: str) -> None:
     if not src.is_file():
         raise StageError(f"{what}: file not found: {src}")
-    actual = _sha512(src)
+    actual = sha512_file(src)
     if actual != sha512:
         raise StageError(f"{what}: sha512 mismatch for {src} (expected {sha512}, got {actual})")
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -126,11 +110,11 @@ def _stage_downloads(lock: dict, ctx: Path) -> None:
             raise StageError(f"download {name}: no hash in lock")
         dest = ctx / "downloads" / f"{name}{suffix}"
         dest.parent.mkdir(parents=True, exist_ok=True)
-        _download(spec["url"], dest, **hashes)
+        http.download(spec["url"], dest, **hashes)
         log(f"downloaded {dest.name}")
 
 
-def _stage_catalog_files(lock: dict, ctx: Path, custom: Path | None, manifest_dir: Path | None) -> None:
+def _stage_catalog_files(lock: dict, ctx: Path, custom: Path | None, manifest_dir: Path) -> None:
     files = ctx / "catalog" / "files"
     files.mkdir(parents=True, exist_ok=True)
     for entry in lock.get("entries", []):
@@ -142,10 +126,9 @@ def _stage_catalog_files(lock: dict, ctx: Path, custom: Path | None, manifest_di
         sha512 = artifact["sha512"]
         local, build = entry.get("local"), entry.get("build")
         if artifact.get("url"):
-            _download(artifact["url"], dest, sha512=sha512)
+            http.download(artifact["url"], dest, sha512=sha512)
         elif local:
-            base = manifest_dir or _manifest_dir(lock["server"])
-            _verified_copy(base / local["path"], dest, sha512, what)
+            _verified_copy(manifest_dir / local["path"], dest, sha512, what)
         elif build:
             if custom is None:
                 raise StageError(f"{what}: custom artifact needs --custom")
@@ -164,22 +147,23 @@ def _custom_name(entry: dict, custom: Path) -> str:
     return f"{build['cache_key']}-{entry['artifact']['filename']}"
 
 
-def _copy_common(ctx: Path, base: Path, server: str) -> None:
+def _copy_server_files(ctx: Path, base: Path, server: str) -> None:
     shutil.copyfile(base / server / "Dockerfile", ctx / "Dockerfile")
     shutil.copyfile(base / server / "entrypoint.sh", ctx / "entrypoint.sh")
     (ctx / "common").mkdir(parents=True, exist_ok=True)
-    for path in sorted((base / "common").iterdir()):
-        if path.is_file() and (path.name.endswith(".sh") or path.name == "mc_status.py"):
-            shutil.copyfile(path, ctx / "common" / path.name)
+    for path in sorted((base / "common").glob("*.sh")):
+        shutil.copyfile(path, ctx / "common" / path.name)
 
 
-def stage(lock: dict, ctx: Path, custom: Path | None = None, base_dir: Path | None = None,
+def stage(lock: dict, ctx: Path, custom: Path | None = None, base_dir: Path = SERVERS_DIR,
           manifest_dir: Path | None = None) -> None:
-    base = Path(base_dir) if base_dir else BASE_DIR
+    """Write the build context for ``lock`` into ``ctx`` (replaced)."""
+    base = Path(base_dir)
+    manifest_dir = manifest_dir or get_loader(lock["server"]).manifest_dir
     if ctx.exists():
         shutil.rmtree(ctx)
     ctx.mkdir(parents=True)
-    _copy_common(ctx, base, lock["server"])
+    _copy_server_files(ctx, base, lock["server"])
     (ctx / "downloads").mkdir()
     _stage_downloads(lock, ctx)
     _stage_catalog_files(lock, ctx, custom, manifest_dir)
@@ -200,11 +184,6 @@ def stage_command(args) -> int:
     if lock.get("server") != args.server:
         print(f"error: lock is for {lock.get('server')!r}, not {args.server!r}", file=sys.stderr)
         return 1
-    custom = Path(args.custom) if getattr(args, "custom", None) else None
-    manifest_dir = getattr(args, "manifest_dir", None)
-    base_dir = getattr(args, "base_dir", None)
-    stage(lock, Path(args.out), custom,
-          Path(base_dir) if base_dir else None,
-          Path(manifest_dir) if manifest_dir else None)
+    stage(lock, Path(args.out), Path(args.custom) if args.custom else None)
     log(f"context ready: {args.out}")
     return 0

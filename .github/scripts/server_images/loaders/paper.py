@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from loaders import Loader, ServerBuild, java_runtime, pending
-from sources import http, mojang
+from . import Loader, ServerBuild, java_runtime, pending
+from ..sources import http, mojang
 
 API = "https://fill.papermc.io/v3/projects/paper/versions"
 

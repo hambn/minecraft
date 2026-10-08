@@ -4,16 +4,14 @@ from __future__ import annotations
 
 import hashlib
 import json
-import sys
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
 
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))
 
-import staging  # noqa: E402
+from server_images import staging
 
 
 def sha512(data: bytes) -> str:
@@ -88,15 +86,14 @@ class BuildArgsTest(unittest.TestCase):
 class StageTest(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
-        self.addCleanup(lambda: __import__("shutil").rmtree(self.tmp, ignore_errors=True))
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         base = self.tmp / "base"
         (base / "fabric").mkdir(parents=True)
         (base / "common").mkdir()
         (base / "fabric" / "Dockerfile").write_text("FROM x\n")
         (base / "fabric" / "entrypoint.sh").write_text("#!/bin/sh\n")
         (base / "common" / "lib.sh").write_text("# lib\n")
-        (base / "common" / "mc_status.py").write_text("# py\n")
-        (base / "common" / "ci_check.py").write_text("# not copied\n")
+        (base / "common" / "notes.txt").write_text("# not copied\n")
         self.base = base
         self.manifest_dir = self.tmp / "mods"
         (self.manifest_dir / "jars").mkdir(parents=True)
@@ -125,7 +122,7 @@ class StageTest(unittest.TestCase):
         ]
         lock = make_lock(entries)
         ctx = self.tmp / "ctx"
-        with mock.patch.object(staging, "_download", self.fake_download):
+        with mock.patch.object(staging.http, "download", self.fake_download):
             staging.stage(lock, ctx, self.custom, self.base, self.manifest_dir)
 
         self.assertEqual(self.downloaded[0], ("https://x.test/fabric-installer-1.0.1.jar", {"sha512": "aa"}))
@@ -135,7 +132,7 @@ class StageTest(unittest.TestCase):
         self.assertEqual(sorted(p.name for p in files.iterdir()), ["c.jar", "p.jar", "up.jar"])
         self.assertEqual((files / "p.jar").read_bytes(), self.local_bytes)
         self.assertEqual((files / "c.jar").read_bytes(), self.custom_bytes)
-        self.assertEqual(sorted(p.name for p in (ctx / "common").iterdir()), ["lib.sh", "mc_status.py"])
+        self.assertEqual(sorted(p.name for p in (ctx / "common").iterdir()), ["lib.sh"])
         self.assertTrue((ctx / "Dockerfile").is_file() and (ctx / "entrypoint.sh").is_file())
         self.assertIn("gone\tunavailable\tno\tdeclared\t-", (ctx / "catalog" / "catalog.tsv").read_text())
         catalog = json.loads((ctx / "catalog" / "catalog.json").read_text())
@@ -150,7 +147,7 @@ class StageTest(unittest.TestCase):
         self.downloaded = []
         lock = make_lock([entry("pre", artifact={"filename": "p.jar", "url": None, "sha512": "00"},
                                 local={"path": "jars/p.jar", "sha512": "00"})])
-        with mock.patch.object(staging, "_download", self.fake_download):
+        with mock.patch.object(staging.http, "download", self.fake_download):
             with self.assertRaises(staging.StageError):
                 staging.stage(lock, self.tmp / "ctx", None, self.base, self.manifest_dir)
 

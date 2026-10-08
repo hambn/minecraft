@@ -17,33 +17,25 @@ import sys
 from pathlib import Path
 from typing import Any, Callable
 
-import locks
-import manifest as manifest_mod
-import versions
+import yaml
 
-try:  # the sources package is optional at import time (tests inject fakes)
-    from sources.models import ProviderUnavailable
-except ImportError:  # pragma: no cover
-    class ProviderUnavailable(Exception):  # type: ignore[no-redef]
-        pass
+from . import locks, versions
+from . import manifest as manifest_mod
+from .config import LICENSES_FILE, SERVERS_DIR, server_locks_dir
+from .loaders import Loader, get_loader, server_window
+from .sources import curseforge, modrinth, mojang
+from .sources.http import HttpError
+from .sources.models import ProviderUnavailable
+from .util import read_json, sha512_file, write_json
 
-try:
-    from sources.http import HttpError
-except ImportError:  # pragma: no cover
-    class HttpError(Exception):  # type: ignore[no-redef]
-        pass
-
-BASE_DIR = Path(__file__).resolve().parent
 PROVIDER_ERRORS = (ProviderUnavailable, HttpError)
 MISSING_METADATA = ["name", "description", "authors", "license", "homepage"]
 
 
 # ------------------------------------------------------------------- licenses
 
-def load_licenses(path: str | Path | None = None) -> dict:
-    import yaml
-
-    data = yaml.safe_load(Path(path or BASE_DIR / "licenses.yml").read_text(encoding="utf-8")) or {}
+def load_licenses(path: str | Path = LICENSES_FILE) -> dict:
+    data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
     return {"allowed": list(data.get("allowed") or []), "permissions": list(data.get("permissions") or [])}
 
 
@@ -179,14 +171,6 @@ def cache_key(parts: dict) -> str:
     return hashlib.sha256(json.dumps(parts, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
 
 
-def sha512_file(path: Path) -> str:
-    digest = hashlib.sha512()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1 << 20), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def _slugify(text: str) -> str:
     slug = re.sub(r"[^a-z0-9-]+", "-", str(text).lower()).strip("-")
     return slug or "dep"
@@ -226,9 +210,7 @@ class Resolver:
     @property
     def known_releases(self) -> list[str]:
         if self._known is None:
-            from sources import mojang
-
-            self._known = [r["id"] for r in mojang.stable_releases()]
+            self._known = mojang.release_ids()
         return self._known
 
     # provider access ----------------------------------------------------------
@@ -255,7 +237,7 @@ class Resolver:
         return self._release_cache[key]
 
     # target ----------------------------------------------------------------------
-    def resolve_target(self, minecraft: str, build: Any, base_dir: Path | None = None) -> dict:
+    def resolve_target(self, minecraft: str, build: Any, base_dir: Path = SERVERS_DIR) -> dict:
         """Draft lock for an *available* ``build``."""
         self._used_ids = set(self.manifest.ids)
         self._declared: dict[tuple, str] = {}
@@ -314,7 +296,7 @@ class Resolver:
         }
         locks.sort_entries(lock)
         locks.recompute_graph(lock["entries"])
-        lock["inputs_hash"] = locks.compute_inputs_hash(lock, base_dir or BASE_DIR)
+        lock["inputs_hash"] = locks.compute_inputs_hash(lock, base_dir)
         return lock
 
     # upstream -------------------------------------------------------------------
@@ -485,8 +467,6 @@ class Resolver:
 
 
 def default_providers() -> dict[str, Any]:
-    from sources import curseforge, modrinth
-
     providers: dict[str, Any] = {"modrinth": modrinth.ModrinthClient()}
     try:
         providers["curseforge"] = curseforge.CurseForgeClient()
@@ -498,13 +478,13 @@ def default_providers() -> dict[str, Any]:
 # ---------------------------------------------------------------------- plan
 
 def _committed_unchanged(servers_dir: Path, server: str, minecraft: str, inputs_hash: str) -> bool:
-    lock_path = locks.server_locks_dir(server, servers_dir) / f"{minecraft}.json"
-    status_path = locks.server_locks_dir(server, servers_dir) / "status.json"
+    lock_path = server_locks_dir(server, servers_dir) / f"{minecraft}.json"
+    status_path = server_locks_dir(server, servers_dir) / "status.json"
     if not lock_path.is_file() or not status_path.is_file():
         return False
     try:
-        old = locks.read_json(lock_path)
-        status = locks.read_json(status_path)
+        old = read_json(lock_path)
+        status = read_json(status_path)
     except (OSError, ValueError):
         return False
     if old.get("inputs_hash") != inputs_hash:
@@ -516,31 +496,26 @@ def _committed_unchanged(servers_dir: Path, server: str, minecraft: str, inputs_
 
 
 def plan(server: str, out: str | Path, *, force: bool = False, window: list[str] | None = None,
-         loader: Any = None, manifest: Any = None, resolver: Resolver | None = None,
-         servers_dir: str | Path | None = None, base_dir: Path | None = None,
-         releases: list[str] | None = None) -> dict:
+         loader: Loader | None = None, manifest: manifest_mod.Manifest | None = None,
+         resolver: Resolver | None = None, servers_dir: Path = SERVERS_DIR,
+         base_dir: Path = SERVERS_DIR, releases: list[str] | None = None) -> dict:
     """Resolve the window and write ``plan.json`` plus draft locks into ``out``.
 
     Without an explicit ``window`` the server's own window is detected from the
     Mojang releases it has stable builds for; newer unsupported releases become
-    pending targets.
+    pending targets.  ``servers_dir`` holds the committed locks compared against;
+    ``base_dir`` the Dockerfiles and manifests hashed into ``inputs_hash``.
     """
-    if loader is None:
-        from loaders import get_loader
-
-        loader = get_loader(server)
+    loader = loader or get_loader(server)
     if window is None:
-        from loaders import server_window
-
         detected = server_window(loader, releases=releases)
         window, upcoming, builds = detected.window, detected.upcoming, detected.builds
     else:
         upcoming, builds = [], {}
-    base = Path(base_dir) if base_dir else BASE_DIR
+    base = Path(base_dir)
     if manifest is None:
         manifest = manifest_mod.load(base / loader.manifest, artifact_ext=loader.artifact_ext)
     resolver = resolver or Resolver(server, loader, manifest)
-    locks_path = Path(servers_dir) if servers_dir else BASE_DIR
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
 
@@ -553,12 +528,12 @@ def plan(server: str, out: str | Path, *, force: bool = False, window: list[str]
             continue
         lock = resolver.resolve_target(mc, build, base)
         locks.write_lock(out / f"{mc}.json", lock)
-        unchanged = not force and _committed_unchanged(locks_path, server, mc, lock["inputs_hash"])
+        unchanged = not force and _committed_unchanged(Path(servers_dir), server, mc, lock["inputs_hash"])
         targets.append({"minecraft": mc, "status": "unchanged" if unchanged else "build",
                         "reason": "inputs unchanged since the published build" if unchanged else None,
                         "draft": f"{mc}.json", "inputs_hash": lock["inputs_hash"]})
     result = {"server": server, "window": list(window), "upcoming": list(upcoming), "targets": targets}
-    locks.write_json(out / "plan.json", result)
+    write_json(out / "plan.json", result)
     return result
 
 
@@ -569,11 +544,11 @@ def matrix(result: dict) -> dict:
 
 
 def plan_command(args: Any) -> int:
-    result = plan(args.server, args.out, force=bool(getattr(args, "force", False)))
+    result = plan(args.server, args.out, force=args.force)
     for target in result["targets"]:
         note = f" ({target['reason']})" if target["reason"] else ""
         print(f"{result['server']} {target['minecraft']}: {target['status']}{note}")
-    if getattr(args, "github_output", False):
+    if args.github_output:
         path = os.environ.get("GITHUB_OUTPUT")
         if not path:
             print("error: --github-output needs $GITHUB_OUTPUT", file=sys.stderr)

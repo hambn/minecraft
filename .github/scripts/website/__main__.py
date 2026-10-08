@@ -1,12 +1,12 @@
-#!/usr/bin/env python3
 """Static site generator for the Minecraft server images documentation.
 
-    python src/web/build.py --servers src/mc-server-images --out site \
-        --base-path /minecraft/ [--docs src/web/docs] [--repo hambn/minecraft]
+    PYTHONPATH=.github/scripts python -m website --out site --base-path /minecraft/ \
+        [--servers src/mc-server-images] [--source src/web] [--repo hambn/minecraft]
 
-Reads ``<server>/locks/status.json`` and ``<server>/locks/<minecraft>.json``
-and renders plain HTML files (no JavaScript, no external assets). Python 3,
-standard library only. The output is deterministic for identical inputs.
+Reads ``<servers>/<server>/locks/status.json`` and ``<minecraft>.json``, plus
+the templates, static files and Markdown docs in ``--source``, and renders
+plain HTML files (no JavaScript, no external assets). Python 3, standard
+library only. The output is deterministic for identical inputs.
 """
 
 from __future__ import annotations
@@ -23,10 +23,9 @@ from pathlib import Path
 from string import Template
 from typing import Any
 
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE))
+from . import markdown_lite
 
-import markdown_lite  # noqa: E402
+REPO_ROOT = Path(__file__).resolve().parents[3]
 
 # Optional descriptive metadata. Servers are discovered from
 # <servers>/*/locks/status.json; one missing here gets default_info().
@@ -226,11 +225,12 @@ class ImageData:
 # ---------------------------------------------------------------------------
 
 class Site:
-    def __init__(self, servers: Path, out: Path, base: str, docs: Path, repo: str):
+    def __init__(self, servers: Path, out: Path, base: str, source: Path, repo: str):
         self.servers_dir = servers
         self.out = out
         self.base = normalize_base(base)
-        self.docs_dir = docs
+        self.source = source
+        self.docs_dir = source / "docs"
         self.repo = repo
         self.owner = repo.split("/")[0].lower() if "/" in repo else repo.lower()
         self.servers = discover_servers(servers)
@@ -238,8 +238,8 @@ class Site:
         for image in self.images.values():
             # The registry owner always comes from --repo, never from a stale status file.
             image.status["image"] = f"ghcr.io/{self.owner}/minecraft-server-{image.server}"
-        self.templates = {p.stem: Template(p.read_text(encoding="utf-8")) for p in (HERE / "templates").glob("*.html")}
-        css = (HERE / "static" / "style.css").read_bytes()
+        self.templates = {p.stem: Template(p.read_text(encoding="utf-8")) for p in (source / "templates").glob("*.html")}
+        css = (source / "static" / "style.css").read_bytes()
         self.css_version = hashlib.sha256(css).hexdigest()[:10]
         self.docs: list[dict] = []
         self.written: list[str] = []
@@ -322,7 +322,7 @@ class Site:
 
     def copy_static(self) -> None:
         dest = self.out / "static"
-        shutil.copytree(HERE / "static", dest)
+        shutil.copytree(self.source / "static", dest)
 
     # -- index ----------------------------------------------------------
     def version_badges(self, image: ImageData) -> str:
@@ -717,14 +717,17 @@ def flatten(data: dict, prefix: str = "") -> list[tuple[str, str]]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--servers", required=True, type=Path, help="directory holding <server>/locks/ (src/mc-server-images)")
     parser.add_argument("--out", required=True, type=Path, help="output directory (replaced)")
     parser.add_argument("--base-path", default="/", help="URL prefix, e.g. /minecraft/ for GitHub Pages or / for root")
-    parser.add_argument("--docs", type=Path, default=HERE / "docs", help="markdown documentation directory")
-    parser.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY") or "hambn/minecraft", help="GitHub owner/name used for links and image refs")
+    parser.add_argument("--servers", type=Path, default=REPO_ROOT / "src" / "mc-server-images",
+                        help="directory holding <server>/locks/")
+    parser.add_argument("--source", type=Path, default=REPO_ROOT / "src" / "web",
+                        help="directory holding templates/, static/ and docs/")
+    parser.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY") or "hambn/minecraft",
+                        help="GitHub owner/name used for links and image refs")
     args = parser.parse_args(argv)
 
-    site = Site(args.servers, args.out, args.base_path, args.docs, args.repo)
+    site = Site(args.servers, args.out, args.base_path, args.source, args.repo)
     site.build()
     print(f"wrote {len(site.written)} files to {args.out} (base path {site.base})")
     return 0

@@ -1,5 +1,5 @@
 # Documentation site pipeline. Stages (each uses a job matrix):
-#   plan           snapshot the website sources and committed server locks, pin the commit,
+#   plan           snapshot the website sources, its generator and committed server locks, pin the commit,
 #                  emit the build targets (pages with the repository sub-path, docker at /).
 #   build          one job per target: generate the site and check it. `pages` produces the
 #                  Pages deployment artifact; `docker` builds src/web/Dockerfile, smoke-tests the
@@ -16,11 +16,13 @@ on:
     paths:
       - "src/web/**"
       - "src/mc-server-images/*/locks/**"
+      - ".github/scripts/website/**"
       - ".github/workflows/web.yml"
   pull_request:
     paths:
       - "src/web/**"
       - "src/mc-server-images/*/locks/**"
+      - ".github/scripts/website/**"
       - ".github/workflows/web.yml"
   workflow_run:
     workflows: [fabric, neoforge, paper, pumpkin]
@@ -56,10 +58,10 @@ jobs:
           sha="$(git rev-parse HEAD)"
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
           mkdir -p snapshot
-          tar -czf snapshot/inputs.tar.gz src/web src/mc-server-images/*/locks
+          tar -czf snapshot/inputs.tar.gz src/web .github/scripts/website src/mc-server-images/*/locks
           {
             echo "commit $sha"
-            find src/web src/mc-server-images/*/locks -type f -print0 | sort -z | xargs -0 sha256sum
+            find src/web .github/scripts/website src/mc-server-images/*/locks -type f -print0 | sort -z | xargs -0 sha256sum
           } > snapshot/inputs.sha256
 
       - name: Emit build targets
@@ -97,18 +99,13 @@ jobs:
         with:
           python-version-file: .python-version
 
-      - name: Install site generator dependencies
-        if: matrix.target == 'pages'
-        run: |
-          for req in src/web/requirements.txt src/mc-server-images/requirements.txt; do
-            if [ -f "$req" ]; then pip install -r "$req"; fi
-          done
-
+      # The generator uses only the standard library.
       - name: Generate site for GitHub Pages
         if: matrix.target == 'pages'
+        env:
+          PYTHONPATH: .github/scripts
         run: |
-          python src/web/build.py \
-            --servers src/mc-server-images \
+          python -m website \
             --out site \
             --repo "${{ github.repository }}" \
             --base-path "${{ matrix.base_path }}"

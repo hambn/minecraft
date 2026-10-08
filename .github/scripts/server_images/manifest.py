@@ -11,20 +11,13 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-import versions
+import yaml
+
+from . import versions
 
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 SECTIONS = ("modrinth", "curseforge", "custom_build", "prebuilt")
 UPSTREAM_SECTIONS = ("modrinth", "curseforge")
-
-# Fallback manifest locations (relative to src/mc-server-images) when the
-# loaders package is not importable.
-DEFAULT_MANIFESTS = {
-    "fabric": "fabric/mods/mods.yml",
-    "neoforge": "neoforge/mods/mods.yml",
-    "paper": "paper/plugins/plugins.yml",
-    "pumpkin": "pumpkin/plugins/plugins.yml",
-}
 
 
 class ManifestError(Exception):
@@ -74,18 +67,6 @@ class Manifest:
     @property
     def ids(self) -> list[str]:
         return [e.id for e in self.upstream] + [e.id for e in self.local]
-
-
-def manifest_path_for(server: str, base_dir: Path) -> Path:
-    """Manifest location for ``server`` (uses the loader registry when present)."""
-    try:
-        from loaders import get_loader  # type: ignore
-
-        return Path(base_dir) / get_loader(server).manifest
-    except Exception:
-        if server not in DEFAULT_MANIFESTS:
-            raise ManifestError(f"unknown server {server!r}")
-        return Path(base_dir) / DEFAULT_MANIFESTS[server]
 
 
 def _fail(path: Path, where: str, message: str) -> ManifestError:
@@ -151,8 +132,6 @@ def _validate_dependencies(path: Path, where: str, value: Any) -> list[str]:
 
 def load(path: str | Path, *, artifact_ext: str | None = None, check_files: bool = True) -> Manifest:
     """Parse and validate the manifest at ``path``."""
-    import yaml
-
     path = Path(path)
     try:
         text = path.read_text(encoding="utf-8")

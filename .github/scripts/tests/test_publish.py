@@ -7,7 +7,6 @@ import io
 import json
 import shutil
 import subprocess
-import sys
 import tempfile
 import unittest
 from argparse import Namespace
@@ -15,9 +14,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))
 
-import publish  # noqa: E402
+from server_images import publish
 
 FIXTURES = HERE / "fixtures" / "publish" / "artifacts"
 REGISTRY = "ghcr.io/hambn"
@@ -69,7 +67,7 @@ class PublishTestBase(unittest.TestCase):
     # -- helpers
     def args(self, **kw):
         base = dict(server="fabric", artifacts=str(self.artifacts), registry=REGISTRY,
-                    dry_run=False, no_commit=False)
+                    plan=None, dry_run=False, no_commit=False)
         base.update(kw)
         return Namespace(**base)
 

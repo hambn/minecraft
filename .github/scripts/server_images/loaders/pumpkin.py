@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import re
 
-from loaders import Loader, ServerBuild, pending
-from sources import github, http, registry
+from . import Loader, ServerBuild, pending
+from ..sources import github, http, registry
 
 REPO = "Pumpkin-MC/Pumpkin"
 REPO_URL = "https://github.com/Pumpkin-MC/Pumpkin"
