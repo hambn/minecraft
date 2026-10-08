@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "server": "pumpkin",
+  "image": "ghcr.io/hambn/minecraft-server-pumpkin",
+  "updated_at": "2026-10-08T12:06:11Z",
+  "window": [
+    "26.3",
+    "26.2",
+    "26.1.2"
+  ],
+  "latest": null,
+  "latest_outside_window": false,
+  "targets": {
+    "26.3": {
+      "state": "pending",
+      "reason": "Could not determine the Minecraft version supported by Pumpkin commit 5ede4c217f4f"
+    },
+    "26.2": {
+      "state": "pending",
+      "reason": "Could not determine the Minecraft version supported by Pumpkin commit 5ede4c217f4f"
+    },
+    "26.1.2": {
+      "state": "pending",
+      "reason": "Could not determine the Minecraft version supported by Pumpkin commit 5ede4c217f4f"
+    }
+  }
+}
