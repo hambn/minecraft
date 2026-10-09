@@ -164,7 +164,7 @@
         "name": "EssentialsX",
         "version": "2.22.0"
       },
-      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.2 (paper 132)",
+      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.2 (paper 133)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -843,7 +843,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:26a54b17d422aeba40bacf9029827e2f91f7b7115f4a66c63b92b40653844b90",
+  "inputs_hash": "sha256:01759a88f6b87ca0267c5d5504032e6eb2a4a10ae74a64042bf00e8022a8e473",
   "minecraft_version": "26.2",
   "runtime": {
     "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",
@@ -854,16 +854,16 @@
   "server": "paper",
   "server_build": {
     "details": {
-      "build": 132,
+      "build": 133,
       "channel": "STABLE",
       "downloads": {
         "paper": {
-          "sha256": "5ab560a769c1ab413cb7f637dd0dc697974571f2db0a667cfbac511422e51b26",
-          "url": "https://fill-data.papermc.io/v1/objects/5ab560a769c1ab413cb7f637dd0dc697974571f2db0a667cfbac511422e51b26/paper-26.2-132.jar"
+          "sha256": "bf1dcf627364f8a631ab15250d240eb5a8e89faaac523b391e1c61367fce9ff1",
+          "url": "https://fill-data.papermc.io/v1/objects/bf1dcf627364f8a631ab15250d240eb5a8e89faaac523b391e1c61367fce9ff1/paper-26.2-133.jar"
         }
       }
     },
-    "loader_version": "132",
+    "loader_version": "133",
     "reason": null,
     "status": "available"
   }
