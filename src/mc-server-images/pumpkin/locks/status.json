@@ -2,7 +2,7 @@
   "schema": 1,
   "server": "pumpkin",
   "image": "ghcr.io/hambn/minecraft-server-pumpkin",
-  "updated_at": "2026-10-09T06:59:00Z",
+  "updated_at": "2026-10-09T23:14:47Z",
   "window": [
     "26.3"
   ],
@@ -12,8 +12,8 @@
   "targets": {
     "26.3": {
       "state": "published",
-      "digest": "sha256:caa90a96995b6dcdf87de64eb8d6e8f64e7feec6388191f27d646ea639ac8498",
-      "published_at": "2026-10-09T06:59:00Z",
+      "digest": "sha256:46c7235c83086a0931102f0b9a3277cd7b195cef27f71d4435ed21a246d6718a",
+      "published_at": "2026-10-09T23:14:47Z",
       "lock": "26.3.json"
     }
   }
