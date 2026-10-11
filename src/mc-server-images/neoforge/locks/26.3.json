@@ -2,10 +2,10 @@
   "entries": [
     {
       "artifact": {
-        "filename": "Chunky-NeoForge-1.4.54.jar",
-        "sha512": "aa35a6aebf5aeef0fc428e729b607a40e67f413be7c1dc38c7c1f1589c35bdefda57a68627cd80d1967dcb84f6897169982bd80d0ef57a713ae89ad6ff76abb4",
-        "size": 352784,
-        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/gF4bKpRK/Chunky-NeoForge-1.4.54.jar"
+        "filename": "Chunky-NeoForge-1.5.4.jar",
+        "sha512": "ffcbedca6a0b5018962a8a62df21afdafe327ef306e6acb2f602b3bb56f313b88c90e9a57d9a2abaa9d12bd122e888d933ccb243c8fa3388e086a5dd1c18e30d",
+        "size": 353241,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/EyCqftOK/Chunky-NeoForge-1.5.4.jar"
       },
       "build": null,
       "closure": [
@@ -19,7 +19,7 @@
         "file_id": null,
         "project_id": "fALzjamp",
         "slug": "chunky",
-        "version_id": "gF4bKpRK"
+        "version_id": "EyCqftOK"
       },
       "local": null,
       "metadata": {
@@ -31,7 +31,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "Chunky",
-        "version": "1.4.54"
+        "version": "1.5.4"
       },
       "reason": null,
       "selectable": true,
@@ -41,15 +41,19 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "cloth-config-21.11.153-neoforge.jar",
-        "sha512": "04713c7d5c3e0a8de711b4f54933c2adf72836008e37dd6e65e8c10b4c7a45d28f3ecdf4b3a94dad6c62725cd5135247cafc378ae2711b13440962abf9c61dfe",
-        "size": 1157748,
-        "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Wsus0EWg/cloth-config-21.11.153-neoforge.jar"
+        "filename": "cloth-config-neoforge-26.3.159.jar",
+        "sha512": "941dd8aab50d658cfa6da071dacd05802c7097643ad569935d0073b39231a2137f2ade2403b791f70cf5ebf1649d7b6337862568a8b340c88e5d364569f94431",
+        "size": 1135657,
+        "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/GchRXPnb/cloth-config-neoforge-26.3.159.jar"
       },
       "build": null,
       "closure": [
@@ -63,7 +67,7 @@
         "file_id": null,
         "project_id": "9s6osm5g",
         "slug": "cloth-config",
-        "version_id": "Wsus0EWg"
+        "version_id": "GchRXPnb"
       },
       "local": null,
       "metadata": {
@@ -75,7 +79,7 @@
         "license": "LGPL-3.0-only",
         "missing": [],
         "name": "Cloth Config API",
-        "version": "21.11.153+neoforge"
+        "version": "26.3.159+neoforge"
       },
       "reason": null,
       "selectable": true,
@@ -85,15 +89,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "Clumps-neoforge-1.21.11-29.0.0.1.jar",
-        "sha512": "48d735331125a5aa6bc936b64c88195be8879f02ede244c8199dd5d33cad6d8207e552ae7e63e6b6eb34e961eac06c8f7a694b1f6a87a80583d8dab6548fa4c9",
-        "size": 18772,
-        "url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/a8bNGdqK/Clumps-neoforge-1.21.11-29.0.0.1.jar"
+        "filename": "Clumps-neoforge-26.3-26.3.2.jar",
+        "sha512": "710ac1f2ac8f2f6d39b6a4f56a7b0159a32bb64d3ff8337e20fca9eb991b32df54d38c7c0c1e3487a7c220bde80988def8562925fbc5dc5e2c94134244f41b4a",
+        "size": 18766,
+        "url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/kV095inH/Clumps-neoforge-26.3-26.3.2.jar"
       },
       "build": null,
       "closure": [
@@ -107,7 +111,7 @@
         "file_id": null,
         "project_id": "Wnxd13zP",
         "slug": "clumps",
-        "version_id": "a8bNGdqK"
+        "version_id": "kV095inH"
       },
       "local": null,
       "metadata": {
@@ -119,7 +123,7 @@
         "license": "MIT",
         "missing": [],
         "name": "Clumps",
-        "version": "29.0.0.1"
+        "version": "26.3.2"
       },
       "reason": null,
       "selectable": true,
@@ -129,15 +133,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "codxlib-1.6.1-neoforge+1.21.11.jar",
-        "sha512": "d25252f59436ffe941006fedac02d2e714ed19a0e59ae56d72923526330ad976f6e28bbccb03b4e7273c435372101c8019283951692d19e4f6abf1a4f10f3d3a",
-        "size": 193585,
-        "url": "https://cdn.modrinth.com/data/6oyMM4yX/versions/WxwLuZ2H/codxlib-1.6.1-neoforge%2B1.21.11.jar"
+        "filename": "codxlib-1.6.1-neoforge+26.3.jar",
+        "sha512": "641816b37732692dc2ff9ea821d16c0b7af8d7f69e30f11cafc8de26a884c38d21b8bd0c9edecd11f6d765752c0281b4ee8b5200cbb284d249f64cb5acbaa459",
+        "size": 193732,
+        "url": "https://cdn.modrinth.com/data/6oyMM4yX/versions/sODLTfFT/codxlib-1.6.1-neoforge%2B26.3.jar"
       },
       "build": null,
       "closure": [
@@ -151,7 +155,7 @@
         "file_id": null,
         "project_id": "6oyMM4yX",
         "slug": "codxlib",
-        "version_id": "WxwLuZ2H"
+        "version_id": "sODLTfFT"
       },
       "local": null,
       "metadata": {
@@ -163,7 +167,7 @@
           "authors"
         ],
         "name": "CodxLib",
-        "version": "1.6.1+neoforge-1.21.11"
+        "version": "1.6.1+neoforge-26.3"
       },
       "reason": null,
       "selectable": true,
@@ -173,15 +177,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "cristellib-neoforge-1.21.11-3.1.7.jar",
-        "sha512": "120dc80f8c93df143a76124cfea3c34ca0861947df581a8649ab2c750ecbc4ab344c88b54f33d1ead9e73e87d2bf4db64c3ad8cb458af231b146568ba4eee04b",
-        "size": 584662,
-        "url": "https://cdn.modrinth.com/data/cl223EMc/versions/rhpKhWXb/cristellib-neoforge-1.21.11-3.1.7.jar"
+        "filename": "cristellib-neoforge-26.3-3.1.13.jar",
+        "sha512": "efb06f8c5cdc8ec4852e705fab68fb6f1668be0b226058a24d7ae9d511d8eb77800d128f314fb5d7652fc56faef81c430d8becb376d54991fb14ec1ebeb1dea3",
+        "size": 581558,
+        "url": "https://cdn.modrinth.com/data/cl223EMc/versions/v197aEhs/cristellib-neoforge-26.3-3.1.13.jar"
       },
       "build": null,
       "closure": [
@@ -201,7 +205,7 @@
         "file_id": null,
         "project_id": "cl223EMc",
         "slug": "cristel-lib",
-        "version_id": "rhpKhWXb"
+        "version_id": "v197aEhs"
       },
       "local": null,
       "metadata": {
@@ -213,7 +217,7 @@
         "license": "CC-BY-NC-ND-4.0",
         "missing": [],
         "name": "Cristel Lib",
-        "version": "neoforge-1.21.11-3.1.7"
+        "version": "neoforge-26.3-3.1.13"
       },
       "reason": null,
       "selectable": true,
@@ -223,15 +227,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "ferritecore-8.2.0-neoforge.jar",
-        "sha512": "83f402ab8c5cd4aa28ad922af0c8ecd82daecc9e7faf7475ebfa999f3cf76005aab2170a64cb616ae4e6e36a82b1265cb0167454e0211c8724e02fd3bc23721b",
-        "size": 79272,
-        "url": "https://cdn.modrinth.com/data/uXXizFIs/versions/mLI5k2Gi/ferritecore-8.2.0-neoforge.jar"
+        "filename": "ferritecore-9.0.0-neoforge.jar",
+        "sha512": "e96a99ac5539f56a1f4cd109d62b668ebd5283f0068491ede956f52e67023beba7abe2e40021499352ffc41ead950bebcabce7792352249a1b45c5dccb3cf99c",
+        "size": 71947,
+        "url": "https://cdn.modrinth.com/data/uXXizFIs/versions/LtVvw4uS/ferritecore-9.0.0-neoforge.jar"
       },
       "build": null,
       "closure": [
@@ -245,7 +249,7 @@
         "file_id": null,
         "project_id": "uXXizFIs",
         "slug": "ferrite-core",
-        "version_id": "mLI5k2Gi"
+        "version_id": "LtVvw4uS"
       },
       "local": null,
       "metadata": {
@@ -257,7 +261,7 @@
         "license": "MIT",
         "missing": [],
         "name": "FerriteCore",
-        "version": "8.2.0-neoforge"
+        "version": "9.0.0-neoforge"
       },
       "reason": null,
       "selectable": true,
@@ -267,15 +271,19 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "Jade-1.21.11-NeoForge-21.1.7.jar",
-        "sha512": "0ced9be214e2bfd3d5afe9cff1cd3e243de7f8ca3d4b9fe773f5019bfd9f831a31a5f185865cd94688294a8375ed142c52be2ccb565bfc38c4623d18c2c265c4",
-        "size": 948614,
-        "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/LDFqgwEA/Jade-1.21.11-NeoForge-21.1.7.jar"
+        "filename": "Jade-mc26.3-NeoForge-26.3.5.jar",
+        "sha512": "32219fb2a8b004d027179bdf2707647be4c08ab374ca5204432d63601e7e4cbc4f4574273289bb867a8afa476db63a69a5a0d08746e9bc134d52eb41489e3add",
+        "size": 1084541,
+        "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/dVB8U7Td/Jade-mc26.3-NeoForge-26.3.5.jar"
       },
       "build": null,
       "closure": [
@@ -289,7 +297,7 @@
         "file_id": null,
         "project_id": "nvQzSEkH",
         "slug": "jade",
-        "version_id": "LDFqgwEA"
+        "version_id": "dVB8U7Td"
       },
       "local": null,
       "metadata": {
@@ -301,7 +309,7 @@
         "license": "CC-BY-NC-SA-4.0",
         "missing": [],
         "name": "Jade 🔍",
-        "version": "21.1.7+neoforge"
+        "version": "26.3.5+neoforge"
       },
       "reason": null,
       "selectable": true,
@@ -311,15 +319,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "jei-1.21.11-neoforge-27.35.0.90.jar",
-        "sha512": "e228b9f69ded355f6cc0eccdcfdba37c630a2fa0860861b46796684d86396efbc9086d3ae28153228342adcd1db3249c2930eea31f220a61a3958129b9b3ea1e",
-        "size": 1824127,
-        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/HHAZAOwD/jei-1.21.11-neoforge-27.35.0.90.jar"
+        "filename": "jei-1.21.1-neoforge-19.51.0.418.jar",
+        "sha512": "a6ca3abc3080f6f41033a77cb955fefe9f9ebae795c33546227f555b2d31e8d4131cc705126d14a3fbabb31097fc0e876dc0bbeb05ad907a1b796f21e57527bf",
+        "size": 1804792,
+        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/ufHUqt9b/jei-1.21.1-neoforge-19.51.0.418.jar"
       },
       "build": null,
       "closure": [
@@ -333,7 +341,7 @@
         "file_id": null,
         "project_id": "u6dRKJwZ",
         "slug": "jei",
-        "version_id": "HHAZAOwD"
+        "version_id": "ufHUqt9b"
       },
       "local": null,
       "metadata": {
@@ -345,25 +353,26 @@
         "license": "MIT",
         "missing": [],
         "name": "Just Enough Items (JEI)",
-        "version": "27.35.0.90"
+        "version": "19.51.0.418"
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "supports Minecraft 1.21, 1.21.1 (neoforge); this image is Minecraft 26.3 (neoforge 26.3.0.76)",
+      "selectable": false,
       "source": "modrinth",
-      "status": "compatible",
+      "status": "unsupported_fallback",
       "supported_loaders": [
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "1.21",
+        "1.21.1"
       ]
     },
     {
       "artifact": {
-        "filename": "ketket-graves-2.1.jar",
-        "sha512": "0a398243471629b645d99da9acea6d65826bffcd70855f974b45fae491d128aaa0ba6cb46182889294dd27474dff1f92747673dbf2fdd89142513d7a0672dcd2",
-        "size": 238863,
-        "url": "https://cdn.modrinth.com/data/bYcfmIoG/versions/hsHPP0ZY/ketket-graves-2.1.jar"
+        "filename": "ketket-graves-2.5.jar",
+        "sha512": "a392fcf6d806c3e327a78a9acd7cd3ac9db12bc04a30e9d8e71ca1dd6d755705f3b6a42e6c36eb8b4f2cbfa7f972e70c676262fd986a5fde967e50405a8ae566",
+        "size": 236112,
+        "url": "https://cdn.modrinth.com/data/bYcfmIoG/versions/O8jufnA9/ketket-graves-2.5.jar"
       },
       "build": null,
       "closure": [
@@ -377,7 +386,7 @@
         "file_id": null,
         "project_id": "bYcfmIoG",
         "slug": "ketket-graves",
-        "version_id": "hsHPP0ZY"
+        "version_id": "O8jufnA9"
       },
       "local": null,
       "metadata": {
@@ -389,7 +398,7 @@
         "license": "MIT",
         "missing": [],
         "name": "Graves",
-        "version": "2.1+mod"
+        "version": "2.5+mod"
       },
       "reason": null,
       "selectable": true,
@@ -399,15 +408,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "lithium-neoforge-0.21.4+mc1.21.11.jar",
-        "sha512": "df72f98f0a678aaa1bc6967105b00ac0533f078ec3a85098385d5a4a36ee5f8e101109ca19ae2170ba6e6b55c15c4a7654976d7c457f09ec44cda3fff4a7f270",
-        "size": 878706,
-        "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/M93zf1Gr/lithium-neoforge-0.21.4%2Bmc1.21.11.jar"
+        "filename": "lithium-neoforge-0.26.2+mc26.3.jar",
+        "sha512": "af579327afba03fac855b0a55c1cd25236483d2d2a22f7686eb7b046a1a814511caa1c767dc5967f69ce92dcd5980e85340047b5b732ab7ba190f093788c20db",
+        "size": 903255,
+        "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/1rb9wI5K/lithium-neoforge-0.26.2%2Bmc26.3.jar"
       },
       "build": null,
       "closure": [
@@ -421,7 +430,7 @@
         "file_id": null,
         "project_id": "gvQqBUqZ",
         "slug": "lithium",
-        "version_id": "M93zf1Gr"
+        "version_id": "1rb9wI5K"
       },
       "local": null,
       "metadata": {
@@ -434,7 +443,7 @@
         "license": "LGPL-3.0-only",
         "missing": [],
         "name": "Lithium",
-        "version": "mc1.21.11-0.21.4-neoforge"
+        "version": "mc26.3-0.26.2-neoforge"
       },
       "reason": null,
       "selectable": true,
@@ -444,15 +453,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "lithostitched-1.7.2-neoforge-21.11.jar",
-        "sha512": "d47c37dacb3bd410196b05a26274f6558735f4e382d3f1ad8663ccf3ea892121f1e35b2f7c30872c524173c04e0555367715e5472fe13592622952d990f53e95",
-        "size": 828510,
-        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/GXKf1eIb/lithostitched-1.7.2-neoforge-21.11.jar"
+        "filename": "lithostitched-2.0.5-neoforge-26.3.jar",
+        "sha512": "12646e3e30db5da088848f3be4053bd0fbd6431cc2c5d941bbc2a0ab9a5894bb8c04ba0931f5162341ae5cc60cff30495eaeba7e0ce1e91614e430d2c90c1f53",
+        "size": 960748,
+        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/rwgM3mRy/lithostitched-2.0.5-neoforge-26.3.jar"
       },
       "build": null,
       "closure": [
@@ -466,7 +475,7 @@
         "file_id": null,
         "project_id": "XaDC71GB",
         "slug": "lithostitched",
-        "version_id": "GXKf1eIb"
+        "version_id": "rwgM3mRy"
       },
       "local": null,
       "metadata": {
@@ -478,7 +487,7 @@
         "license": "MIT",
         "missing": [],
         "name": "Lithostitched",
-        "version": "1.7.2-neoforge-21.11"
+        "version": "2.0.5-neoforge-26.3"
       },
       "reason": null,
       "selectable": true,
@@ -488,15 +497,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "lootr-neoforge-1.21.11-1.20.34.104.jar",
-        "sha512": "3c69c048191e9ae5a676fb39db3cc956bda2499eac5739dde4ded62964279ed0144bd32fc83e89336d4b26f630723c4fb16631d45d2be13befda5316ec7f3814",
-        "size": 988168,
-        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/TBkxTN54/lootr-neoforge-1.21.11-1.20.34.104.jar"
+        "filename": "lootr-neoforge-26.3-1.25.42.124.jar",
+        "sha512": "e4046fb42bc66584c7b3c1c96063afc95bf8fc2bd45a00b53420ac43f0ed593c8bbd7682d8d1c9225f9529dea399423a9935b36692606d52d39f6a29e7b4508d",
+        "size": 1526591,
+        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/PdFGq3vT/lootr-neoforge-26.3-1.25.42.124.jar"
       },
       "build": null,
       "closure": [
@@ -510,7 +519,7 @@
         "file_id": null,
         "project_id": "EltpO5cN",
         "slug": "lootr",
-        "version_id": "TBkxTN54"
+        "version_id": "PdFGq3vT"
       },
       "local": null,
       "metadata": {
@@ -524,7 +533,7 @@
         "license": "MIT",
         "missing": [],
         "name": "Lootr",
-        "version": "1.21.11-1.20.34.104"
+        "version": "1.25.42.124"
       },
       "reason": null,
       "selectable": true,
@@ -534,7 +543,7 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
@@ -565,7 +574,7 @@
         "name": "MezzConfig",
         "version": null
       },
-      "reason": "no stable neoforge release found for Minecraft 1.21.11 or any other version",
+      "reason": "no stable neoforge release found for Minecraft 26.3 or any other version",
       "selectable": false,
       "source": "modrinth",
       "status": "unavailable",
@@ -574,10 +583,10 @@
     },
     {
       "artifact": {
-        "filename": "monsters_in_the_closet_reborn-1.0.3+1.21.11-neoforge.jar",
-        "sha512": "72151804a91debd419f36cda672f049f942ba1d4326fb5c14e3810b0785cbec366576b3ed9420670a31e8898fbbd13397d7073841a8985b9eb65856f34fa4f78",
-        "size": 13956,
-        "url": "https://cdn.modrinth.com/data/uA5LOlSs/versions/94i592eV/monsters_in_the_closet_reborn-1.0.3%2B1.21.11-neoforge.jar"
+        "filename": "monsters_in_the_closet_reborn-1.0.3+26.3-neoforge.jar",
+        "sha512": "22d4b1d7fc86eae93595a98502e8a6eece1cc04a9eec2a0a4ea54ef94e0a2ba579797394f1934470f3a4a60b3d660a53c36d8b9df15e1180f089249de733342b",
+        "size": 11574,
+        "url": "https://cdn.modrinth.com/data/uA5LOlSs/versions/qbvK5HAQ/monsters_in_the_closet_reborn-1.0.3%2B26.3-neoforge.jar"
       },
       "build": null,
       "closure": [
@@ -591,7 +600,7 @@
         "file_id": null,
         "project_id": "uA5LOlSs",
         "slug": "monsters-in-the-closet-reborn",
-        "version_id": "94i592eV"
+        "version_id": "qbvK5HAQ"
       },
       "local": null,
       "metadata": {
@@ -613,15 +622,15 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
       "artifact": {
-        "filename": "servercore-neoforge-1.5.15+1.21.11.jar",
-        "sha512": "9b500d0e049b8b7fd08cdfcee69d77add58aacdf438d23566118eba333fadc6c7edfb98a6a2f2f87377b49a0829e2dbc1a90ee777ae0eb8a6c632acd262a988b",
-        "size": 1517659,
-        "url": "https://cdn.modrinth.com/data/4WWQxlQP/versions/7Fkwao8d/servercore-neoforge-1.5.15%2B1.21.11.jar"
+        "filename": "servercore-neoforge-1.5.20+26.3.jar",
+        "sha512": "158d459149c38969666ce3957292f7747d3a368605600dcad88490feb2b54f9805141e957384ad46b7d2406c1005cdb42a697a60cd2d1d71bae0e6f183478167",
+        "size": 2103232,
+        "url": "https://cdn.modrinth.com/data/4WWQxlQP/versions/bfczZvad/servercore-neoforge-1.5.20%2B26.3.jar"
       },
       "build": null,
       "closure": [
@@ -635,7 +644,7 @@
         "file_id": null,
         "project_id": "4WWQxlQP",
         "slug": "servercore",
-        "version_id": "7Fkwao8d"
+        "version_id": "bfczZvad"
       },
       "local": null,
       "metadata": {
@@ -647,7 +656,7 @@
         "license": "MIT",
         "missing": [],
         "name": "ServerCore",
-        "version": "1.5.15+1.21.11"
+        "version": "1.5.20+26.3"
       },
       "reason": null,
       "selectable": true,
@@ -657,7 +666,7 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     },
     {
@@ -693,7 +702,7 @@
         "name": "Simple Backups",
         "version": "1.20.1-3.1.19"
       },
-      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 1.21.11 (neoforge 21.11.45)",
+      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.3 (neoforge 26.3.0.76)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -776,10 +785,10 @@
     },
     {
       "artifact": {
-        "filename": "spark-1.10.170-neoforge.jar",
-        "sha512": "66d623311c2893f2b1617d0f6f148a1a451b34313809b764087f802b85167b58a4d40bd0de06f0d5beff23ae6dc0a03e087cd72a76964352cdfd8a7de57db4c6",
-        "size": 3958504,
-        "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/FZ8rM4gr/spark-1.10.170-neoforge.jar"
+        "filename": "spark-1.10.187-neoforge.jar",
+        "sha512": "130c6f529346cd275460070491a47d76c0e61b30f1d02530e97aae7fce3eccba2b82b4e3bef5abe5febff62daf53066a235d843a94e81fed2ecf1def5946349a",
+        "size": 3910570,
+        "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/HwHxykP9/spark-1.10.187-neoforge.jar"
       },
       "build": null,
       "closure": [
@@ -793,7 +802,7 @@
         "file_id": null,
         "project_id": "l6YH9Als",
         "slug": "spark",
-        "version_id": "FZ8rM4gr"
+        "version_id": "HwHxykP9"
       },
       "local": null,
       "metadata": {
@@ -805,7 +814,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "spark",
-        "version": "1.10.170-neoforge"
+        "version": "1.10.187-neoforge"
       },
       "reason": null,
       "selectable": true,
@@ -815,7 +824,11 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
       ]
     },
     {
@@ -857,10 +870,10 @@
     },
     {
       "artifact": {
-        "filename": "t_and_t-fabric-neoforge-1.13.9.jar",
-        "sha512": "e0f743b746e78b271bca04c8684408eeb8e4a8570dccc4eebabc62a774c8404569963090f04056bb0f25bb39116a1b8ee47840dfd75a1c415ac5dfb41678b6c9",
-        "size": 3507359,
-        "url": "https://cdn.modrinth.com/data/DjLobEOy/versions/qb0cwwDT/t_and_t-fabric-neoforge-1.13.9.jar"
+        "filename": "t_and_t-fabric-neoforge-1.13.12.jar",
+        "sha512": "6774391b873d0241538be29cf7f8299ebfaf2d9f03292b28103dff41fced203dc69e64032ca9b99e3b5364de2169f654a6633a255465adc994db17ac0a4c33d8",
+        "size": 3195626,
+        "url": "https://cdn.modrinth.com/data/DjLobEOy/versions/yajFnGZS/t_and_t-fabric-neoforge-1.13.12.jar"
       },
       "build": null,
       "closure": [
@@ -881,7 +894,7 @@
         "file_id": null,
         "project_id": "DjLobEOy",
         "slug": "towns-and-towers",
-        "version_id": "qb0cwwDT"
+        "version_id": "yajFnGZS"
       },
       "local": null,
       "metadata": {
@@ -895,7 +908,7 @@
         "license": "CC-BY-NC-SA-4.0",
         "missing": [],
         "name": "Towns and Towers",
-        "version": "1.13.9"
+        "version": "1.13.12"
       },
       "reason": null,
       "selectable": true,
@@ -905,17 +918,17 @@
         "neoforge"
       ],
       "supported_minecraft_versions": [
-        "1.21.11"
+        "26.3"
       ]
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:cb5e3a850c636d4bd49d6b3a4083d1b0a10dacba6de0783bdef96477f5274691",
-  "minecraft_version": "1.21.11",
+  "inputs_hash": "sha256:00013374c9d0f9f12f247d6b9e1d4f09e84855f11ecd5f188fa7b31a1f37381a",
+  "minecraft_version": "26.3",
   "runtime": {
-    "base_digest": "sha256:cff19e6215689161eb6162c11b86b0c60ddf802164f2eaf48d570f8fb79a36c5",
-    "base_image": "eclipse-temurin:21-jre",
-    "java_major": 21
+    "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",
+    "base_image": "eclipse-temurin:25-jre",
+    "java_major": 25
   },
   "schema": 1,
   "server": "neoforge",
@@ -923,12 +936,12 @@
     "details": {
       "downloads": {
         "installer": {
-          "sha1": "040069577abf286e8d2348756b4aa2a8fb51fefe",
-          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.11.45/neoforge-21.11.45-installer.jar"
+          "sha1": "5467b9f8f7fe585e48771b469be33c9d39d73aa0",
+          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.76/neoforge-26.3.0.76-installer.jar"
         }
       }
     },
-    "loader_version": "21.11.45",
+    "loader_version": "26.3.0.76",
     "reason": null,
     "status": "available"
   }

@@ -2,21 +2,21 @@
   "schema": 1,
   "server": "neoforge",
   "image": "ghcr.io/hambn/minecraft-server-neoforge",
-  "updated_at": "2026-10-10T21:52:36Z",
+  "updated_at": "2026-10-11T22:06:47Z",
   "window": [
+    "26.3",
     "26.2",
-    "26.1.2",
-    "1.21.11"
+    "26.1.2"
   ],
-  "upcoming": [
-    "26.3"
-  ],
-  "latest": "26.2",
+  "upcoming": [],
+  "latest": "26.3",
   "latest_outside_window": false,
   "targets": {
     "26.3": {
-      "state": "pending",
-      "reason": "No stable NeoForge build for Minecraft 26.3 yet"
+      "state": "published",
+      "digest": "sha256:7556d0898983d5f5e694c8d5780ff85f7823ff33ee80a4db3a106c97eef29a98",
+      "published_at": "2026-10-11T22:06:47Z",
+      "lock": "26.3.json"
     },
     "26.2": {
       "state": "published",
@@ -29,12 +29,6 @@
       "digest": "sha256:08818d1734cd9cfa5a8d4e3386ad509f1995ee4f4280a6eb391ef80a370ff44b",
       "published_at": "2026-10-10T21:52:36Z",
       "lock": "26.1.2.json"
-    },
-    "1.21.11": {
-      "state": "published",
-      "digest": "sha256:70eefa811974672c69bde12255e6e1ae2537bdf20535f29e0600aa344ec0e410",
-      "published_at": "2026-10-08T13:07:28Z",
-      "lock": "1.21.11.json"
     }
   }
 }
