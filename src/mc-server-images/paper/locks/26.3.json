@@ -2,10 +2,10 @@
   "entries": [
     {
       "artifact": {
-        "filename": "Chunky-Bukkit-1.4.40.jar",
-        "sha512": "b017fd180141b5c14c38dfb10128d5f5a1072a68ff93ee486d4465953331f5851f09a09b4a159364837a95d192198d8e9885ce39c46eed32dacbf1fd65c6f30f",
-        "size": 296244,
-        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/P3y2MXnd/Chunky-Bukkit-1.4.40.jar"
+        "filename": "Chunky-Bukkit-1.5.3.jar",
+        "sha512": "43ffecc6e6a734b752da41575bbb316526c124c3f878942437d5133c377bfbd9b78bda975520dc074d7158c15dade58a444ccd0fd8d8a25d165b6fc450140422",
+        "size": 304616,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/MdY6JATr/Chunky-Bukkit-1.5.3.jar"
       },
       "build": null,
       "closure": [
@@ -19,7 +19,7 @@
         "file_id": null,
         "project_id": "fALzjamp",
         "slug": "chunky",
-        "version_id": "P3y2MXnd"
+        "version_id": "MdY6JATr"
       },
       "local": null,
       "metadata": {
@@ -31,7 +31,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "Chunky",
-        "version": "1.4.40"
+        "version": "1.5.3"
       },
       "reason": null,
       "selectable": true,
@@ -43,23 +43,11 @@
         "spigot"
       ],
       "supported_minecraft_versions": [
-        "1.20.5",
-        "1.20.6",
-        "1.21",
-        "1.21.1",
-        "1.21.2",
-        "1.21.3",
-        "1.21.4",
-        "1.21.5",
-        "1.21.6",
-        "1.21.7",
-        "1.21.8",
-        "1.21.9",
-        "1.21.10",
-        "1.21.11",
         "26.1",
         "26.1.1",
-        "26.1.2"
+        "26.1.2",
+        "26.2",
+        "26.3"
       ]
     },
     {
@@ -95,10 +83,10 @@
         "name": "CoreProtect",
         "version": "24.1"
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 175)",
+      "selectable": false,
       "source": "modrinth",
-      "status": "compatible",
+      "status": "unsupported_fallback",
       "supported_loaders": [
         "bukkit",
         "paper",
@@ -176,10 +164,10 @@
         "name": "EssentialsX",
         "version": "2.22.0"
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 175)",
+      "selectable": false,
       "source": "modrinth",
-      "status": "compatible",
+      "status": "unsupported_fallback",
       "supported_loaders": [
         "bukkit",
         "paper",
@@ -232,7 +220,7 @@
         "name": "Geyser",
         "version": null
       },
-      "reason": "no stable paper release found for Minecraft 1.21.11 or any other version",
+      "reason": "no stable paper release found for Minecraft 26.3 or any other version",
       "selectable": false,
       "source": "modrinth",
       "status": "unavailable",
@@ -781,10 +769,10 @@
         "name": "WorldEdit",
         "version": "7.4.5"
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "supports Minecraft 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 175)",
+      "selectable": false,
       "source": "modrinth",
-      "status": "compatible",
+      "status": "unsupported_fallback",
       "supported_loaders": [
         "bukkit",
         "paper",
@@ -807,30 +795,24 @@
     },
     {
       "artifact": {
-        "filename": "worldguard-bukkit-7.0.17.jar",
-        "sha512": "5da539cf8618079f9e7f5a0ab578c62d31ebd88e35b39ca047a2f9115e397e0d4dd781a94ca373e93333fce3371f7eaf503cd0b6abb6363085e3f4968ea51e4b",
-        "size": 1177934,
-        "url": "https://cdn.modrinth.com/data/DKY9btbd/versions/pI4UHLJL/worldguard-bukkit-7.0.17.jar"
+        "filename": "worldguard-bukkit-7.0.19.jar",
+        "sha512": "e9ad7ad53c93a07a7d5c3af3d844a677abbe894de4d7ff69fc03397daae5e8532217d57de23a3cddbe0d94ae81ee7acde6c78384b9596aa1eb3001bb37087d41",
+        "size": 1199021,
+        "url": "https://cdn.modrinth.com/data/DKY9btbd/versions/TtfwTyi6/worldguard-bukkit-7.0.19.jar"
       },
       "build": null,
       "closure": [
-        "worldedit",
         "worldguard"
       ],
       "conflicts": [],
       "declared": true,
-      "dependencies": [
-        {
-          "id": "worldedit",
-          "kind": "required"
-        }
-      ],
+      "dependencies": [],
       "id": "worldguard",
       "identity": {
         "file_id": null,
         "project_id": "DKY9btbd",
         "slug": "worldguard",
-        "version_id": "pI4UHLJL"
+        "version_id": "TtfwTyi6"
       },
       "local": null,
       "metadata": {
@@ -843,7 +825,7 @@
         "license": "LGPL-3.0-only",
         "missing": [],
         "name": "WorldGuard",
-        "version": "7.0.17"
+        "version": "7.0.19"
       },
       "reason": null,
       "selectable": true,
@@ -855,36 +837,33 @@
         "spigot"
       ],
       "supported_minecraft_versions": [
-        "1.21.11",
-        "26.1",
-        "26.1.1",
-        "26.1.2",
-        "26.2"
+        "26.2",
+        "26.3"
       ]
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:3041c1ee8e207873204aa4f6c32f1254e2adbb6267680a389653c13885062224",
-  "minecraft_version": "1.21.11",
+  "inputs_hash": "sha256:7be0bd4ecb51a0a62a6669e2b951ba6eae831d59b71958218599ddbac15038bd",
+  "minecraft_version": "26.3",
   "runtime": {
-    "base_digest": "sha256:cff19e6215689161eb6162c11b86b0c60ddf802164f2eaf48d570f8fb79a36c5",
-    "base_image": "eclipse-temurin:21-jre",
-    "java_major": 21
+    "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",
+    "base_image": "eclipse-temurin:25-jre",
+    "java_major": 25
   },
   "schema": 1,
   "server": "paper",
   "server_build": {
     "details": {
-      "build": 132,
+      "build": 175,
       "channel": "STABLE",
       "downloads": {
         "paper": {
-          "sha256": "5ffef465eeeb5f2a3c23a24419d97c51afd7dbb4923ff42df9a3f58bba1ccfba",
-          "url": "https://fill-data.papermc.io/v1/objects/5ffef465eeeb5f2a3c23a24419d97c51afd7dbb4923ff42df9a3f58bba1ccfba/paper-1.21.11-132.jar"
+          "sha256": "ece5afb6d0cdf0c930489618bf92341e33d2ebcd4f21e6d365daff6ed26dafb0",
+          "url": "https://fill-data.papermc.io/v1/objects/ece5afb6d0cdf0c930489618bf92341e33d2ebcd4f21e6d365daff6ed26dafb0/paper-26.3-175.jar"
         }
       }
     },
-    "loader_version": "132",
+    "loader_version": "175",
     "reason": null,
     "status": "available"
   }
