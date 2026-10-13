@@ -458,10 +458,10 @@
     },
     {
       "artifact": {
-        "filename": "lithostitched-2.0.5-neoforge-26.3.jar",
-        "sha512": "12646e3e30db5da088848f3be4053bd0fbd6431cc2c5d941bbc2a0ab9a5894bb8c04ba0931f5162341ae5cc60cff30495eaeba7e0ce1e91614e430d2c90c1f53",
-        "size": 960748,
-        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/rwgM3mRy/lithostitched-2.0.5-neoforge-26.3.jar"
+        "filename": "lithostitched-2.0.6-neoforge-26.3.jar",
+        "sha512": "0d085656fae32b09c2ef338f351eff3819349e7ad8ff895d34e9f763619fee7ca2bcb99d5443dc077db014088873dbdb661edeee45d8b0034ef39e86a877972c",
+        "size": 1002707,
+        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/sQznZoKs/lithostitched-2.0.6-neoforge-26.3.jar"
       },
       "build": null,
       "closure": [
@@ -475,7 +475,7 @@
         "file_id": null,
         "project_id": "XaDC71GB",
         "slug": "lithostitched",
-        "version_id": "rwgM3mRy"
+        "version_id": "sQznZoKs"
       },
       "local": null,
       "metadata": {
@@ -487,7 +487,7 @@
         "license": "MIT",
         "missing": [],
         "name": "Lithostitched",
-        "version": "2.0.5-neoforge-26.3"
+        "version": "2.0.6-neoforge-26.3"
       },
       "reason": null,
       "selectable": true,
@@ -923,7 +923,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:00013374c9d0f9f12f247d6b9e1d4f09e84855f11ecd5f188fa7b31a1f37381a",
+  "inputs_hash": "sha256:dc909fc2b300b138f8601e19a45e5ccca1f93c6ca871a87d33a1d6fbf03b99e2",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",

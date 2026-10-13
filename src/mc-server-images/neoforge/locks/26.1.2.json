@@ -284,10 +284,10 @@
     },
     {
       "artifact": {
-        "filename": "Jade-mc26.1-NeoForge-26.1.10.jar",
-        "sha512": "ab0e98bf60129d42eb2aa1b1c09f09596e49e95e5b9ec49a819f091b3c5039e65cb6952f2b7bd488703c9d701d57cae000738b3e05282f811d6500ba1f0fe11c",
-        "size": 1003732,
-        "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/aMkOTJX7/Jade-mc26.1-NeoForge-26.1.10.jar"
+        "filename": "Jade-mc26.1-NeoForge-26.1.12.jar",
+        "sha512": "f4573527b106aa5beedbe6c0945181f01c04a01b8711d815ba6b20c1f136bd22a32bea67169e24be895d380d7360b8ad8a2a9531de11c0150224a31be4f3b173",
+        "size": 1028720,
+        "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/Pr1h4azo/Jade-mc26.1-NeoForge-26.1.12.jar"
       },
       "build": null,
       "closure": [
@@ -301,7 +301,7 @@
         "file_id": null,
         "project_id": "nvQzSEkH",
         "slug": "jade",
-        "version_id": "aMkOTJX7"
+        "version_id": "Pr1h4azo"
       },
       "local": null,
       "metadata": {
@@ -313,7 +313,7 @@
         "license": "CC-BY-NC-SA-4.0",
         "missing": [],
         "name": "Jade 🔍",
-        "version": "26.1.10+neoforge"
+        "version": "26.1.12+neoforge"
       },
       "reason": null,
       "selectable": true,
@@ -942,7 +942,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:1ffe07615305ed66bc9c934a53aab80258f70271ed49fbef0f85a0ede3566d32",
+  "inputs_hash": "sha256:2424e535a4c1b8c74ce0b07da671e290094963e9580a62a21a69bc4afc84346d",
   "minecraft_version": "26.1.2",
   "runtime": {
     "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",
