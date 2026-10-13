@@ -83,7 +83,7 @@
         "name": "CoreProtect",
         "version": "24.1"
       },
-      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 180)",
+      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 181)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -164,7 +164,7 @@
         "name": "EssentialsX",
         "version": "2.22.0"
       },
-      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 180)",
+      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 181)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -769,7 +769,7 @@
         "name": "WorldEdit",
         "version": "7.4.5"
       },
-      "reason": "supports Minecraft 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 180)",
+      "reason": "supports Minecraft 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 181)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -843,7 +843,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:90c8285860a94dce63aa3b6282641dc91a3efe8d95d709ab5121eed951058e02",
+  "inputs_hash": "sha256:1603770e4d15b9221394274c7f0284a9e64f32a5aa7912d016e60add3430f1ff",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636",
@@ -854,16 +854,16 @@
   "server": "paper",
   "server_build": {
     "details": {
-      "build": 180,
+      "build": 181,
       "channel": "STABLE",
       "downloads": {
         "paper": {
-          "sha256": "d6a5589a720fbe74b15fd9be6679bff3c55f737801e149fab8337cd0b0a1a989",
-          "url": "https://fill-data.papermc.io/v1/objects/d6a5589a720fbe74b15fd9be6679bff3c55f737801e149fab8337cd0b0a1a989/paper-26.3-180.jar"
+          "sha256": "cada5af7f14363bc8545c0e973130de9431f6dc678dc612759187695027c27d9",
+          "url": "https://fill-data.papermc.io/v1/objects/cada5af7f14363bc8545c0e973130de9431f6dc678dc612759187695027c27d9/paper-26.3-181.jar"
         }
       }
     },
-    "loader_version": "180",
+    "loader_version": "181",
     "reason": null,
     "status": "available"
   }
