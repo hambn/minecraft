@@ -587,10 +587,10 @@
     },
     {
       "artifact": {
-        "filename": "lithostitched-1.8.0-fabric-26.1.jar",
-        "sha512": "1f3552e4b22318d981dfc3079d32b3f633f5b69fc68ef31f1701ba8b47279dca68b5b73e58b89fd72379f92bb45b6aa7353c68674dd1b28745c75f7081936d55",
-        "size": 1016827,
-        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/4IMaWZpJ/lithostitched-1.8.0-fabric-26.1.jar"
+        "filename": "lithostitched-1.8.1-fabric-26.1.jar",
+        "sha512": "c4b81e736a04ec403fba46f9953d5d6f64705e49168e47dfa584fac76fca9995fdf58062533e33b5c28c9bcdd49808b40897ea22116a63700937a347e6cee765",
+        "size": 1064954,
+        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/o908EP07/lithostitched-1.8.1-fabric-26.1.jar"
       },
       "build": null,
       "closure": [
@@ -610,7 +610,7 @@
         "file_id": null,
         "project_id": "XaDC71GB",
         "slug": "lithostitched",
-        "version_id": "4IMaWZpJ"
+        "version_id": "o908EP07"
       },
       "local": null,
       "metadata": {
@@ -622,7 +622,7 @@
         "license": "MIT",
         "missing": [],
         "name": "Lithostitched",
-        "version": "1.8.0-fabric-26.1"
+        "version": "1.8.1-fabric-26.1"
       },
       "reason": null,
       "selectable": true,
@@ -923,7 +923,7 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:d97d47758150fb08cd3e3b17229d7d2379c9536527452c3d5f4ba45bfbca6dcd",
+  "inputs_hash": "sha256:441dc4d230650fdeb22784523b05a96c7bed872eda00fff119f82d061e2ea0b4",
   "minecraft_version": "26.1.2",
   "runtime": {
     "base_digest": "sha256:fd4b1c02c64eef378212e23656fc0b0caa41a357876fa0b60e51ceda94a3db64",
