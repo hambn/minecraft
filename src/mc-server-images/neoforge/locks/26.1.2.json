@@ -470,10 +470,10 @@
     },
     {
       "artifact": {
-        "filename": "lithostitched-1.8.0-neoforge-26.1.jar",
-        "sha512": "6a9cbe420832a6aa7ca3d5e28e65a11ee09f12942f48491744599733ceaee1606401dac563f261cb29efd698bdeb84dc97d05bd0a97bafffa0224e562184cbac",
-        "size": 1021057,
-        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/jsm1eBZo/lithostitched-1.8.0-neoforge-26.1.jar"
+        "filename": "lithostitched-1.8.1-neoforge-26.1.jar",
+        "sha512": "2d4bec8cda3c9f18f6806bf757c7c9352e86454237b35239d59b11e28a98023a106ea8ecd7137ea46a397f2ff7a5ce1d4e0e532fd53ecda6e6c5e51b0e1c7a61",
+        "size": 1069275,
+        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/pLlJIqyp/lithostitched-1.8.1-neoforge-26.1.jar"
       },
       "build": null,
       "closure": [
@@ -487,7 +487,7 @@
         "file_id": null,
         "project_id": "XaDC71GB",
         "slug": "lithostitched",
-        "version_id": "jsm1eBZo"
+        "version_id": "pLlJIqyp"
       },
       "local": null,
       "metadata": {
@@ -499,7 +499,7 @@
         "license": "MIT",
         "missing": [],
         "name": "Lithostitched",
-        "version": "1.8.0-neoforge-26.1"
+        "version": "1.8.1-neoforge-26.1"
       },
       "reason": null,
       "selectable": true,
@@ -718,7 +718,7 @@
         "name": "Simple Backups",
         "version": "1.20.1-3.1.19"
       },
-      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.1.2 (neoforge 26.1.2.116)",
+      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.1.2 (neoforge 26.1.2.117)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -942,7 +942,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:aa071ee52385646672fce04629150dca4100210cb6d031336dd9a511a936b496",
+  "inputs_hash": "sha256:d66c901e9bdd18b76cfbea45bd08628dc0159d78675da3e4ea1b3a02ac714777",
   "minecraft_version": "26.1.2",
   "runtime": {
     "base_digest": "sha256:fd4b1c02c64eef378212e23656fc0b0caa41a357876fa0b60e51ceda94a3db64",
@@ -955,12 +955,12 @@
     "details": {
       "downloads": {
         "installer": {
-          "sha1": "3ba299fd382b6257a6a84f291077518844046bde",
-          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.116/neoforge-26.1.2.116-installer.jar"
+          "sha1": "7ed99ce127c1a7c87548d8af5fa2556ec9d7e5f5",
+          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.117/neoforge-26.1.2.117-installer.jar"
         }
       }
     },
-    "loader_version": "26.1.2.116",
+    "loader_version": "26.1.2.117",
     "reason": null,
     "status": "available"
   }
