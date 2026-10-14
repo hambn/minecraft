@@ -1,7 +1,7 @@
 {
   "entries": [],
   "image": "minecraft-server-pumpkin",
-  "inputs_hash": "sha256:9d9ae012acdf2a74933ed156880b4172d57c60a71a69aa9e3625fcf08e9bd862",
+  "inputs_hash": "sha256:71cf4d10642f983cb58fc4daee396a641ab02ace8405d4d0077102901a6ea49d",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:a29215f6a35e51e22adffa17f89e9d2ef06214e64a2bad10d765c46aea49f11f",
@@ -15,12 +15,12 @@
       "builder_image": "rust:1.96-trixie@sha256:1f0dbad1df66647807e6952d1db85d0b2bda7606cb2139d82517e4f009967376",
       "downloads": {},
       "source": {
-        "commit": "618784535b2558a508e3532edae219b9423f498c",
+        "commit": "5b53f064af8708ba33fcaa533b81ca29a53a3310",
         "repo": "https://github.com/Pumpkin-MC/Pumpkin"
       },
       "supported_minecraft": "26.3"
     },
-    "loader_version": "618784535b2558a508e3532edae219b9423f498c",
+    "loader_version": "5b53f064af8708ba33fcaa533b81ca29a53a3310",
     "reason": null,
     "status": "available"
   }
