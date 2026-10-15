@@ -718,7 +718,7 @@
         "name": "Simple Backups",
         "version": "1.20.1-3.1.19"
       },
-      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.1.2 (neoforge 26.1.2.117)",
+      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.1.2 (neoforge 26.1.2.121)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -942,7 +942,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:d66c901e9bdd18b76cfbea45bd08628dc0159d78675da3e4ea1b3a02ac714777",
+  "inputs_hash": "sha256:4d6c2d9afc5364380d0f7198d44c723b7042343adee163bf55c54c46c091f828",
   "minecraft_version": "26.1.2",
   "runtime": {
     "base_digest": "sha256:fd4b1c02c64eef378212e23656fc0b0caa41a357876fa0b60e51ceda94a3db64",
@@ -955,12 +955,12 @@
     "details": {
       "downloads": {
         "installer": {
-          "sha1": "7ed99ce127c1a7c87548d8af5fa2556ec9d7e5f5",
-          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.117/neoforge-26.1.2.117-installer.jar"
+          "sha1": "09bc3fd988be8706a4e184b1f6af4510d8eca54a",
+          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.121/neoforge-26.1.2.121-installer.jar"
         }
       }
     },
-    "loader_version": "26.1.2.117",
+    "loader_version": "26.1.2.121",
     "reason": null,
     "status": "available"
   }
