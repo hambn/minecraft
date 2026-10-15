@@ -736,10 +736,10 @@
     },
     {
       "artifact": {
-        "filename": "worldedit-bukkit-7.4.5.jar",
-        "sha512": "a383492fac6bfb4d43a257dfa7b5fc076aae503a71151b463de4fe80e6f3d5fc11209eaf4097baa115f3febf0adc40ca0a1ecda227b8439b429d0a4ba3a63a4f",
-        "size": 7708742,
-        "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/F5ea2ov3/worldedit-bukkit-7.4.5.jar"
+        "filename": "worldedit-bukkit-7.4.6.jar",
+        "sha512": "1fe3975132857093f971fed9efc601299bfa76fa7885f52a542fee41e7a0165ca9cb3cbcf5ae244474887d774d650b0db6f8f79aa80f98b245dea44f1c1b4152",
+        "size": 7870216,
+        "url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/YFnqiUlL/worldedit-bukkit-7.4.6.jar"
       },
       "build": null,
       "closure": [
@@ -753,7 +753,7 @@
         "file_id": null,
         "project_id": "1u6JkXh5",
         "slug": "worldedit",
-        "version_id": "F5ea2ov3"
+        "version_id": "YFnqiUlL"
       },
       "local": null,
       "metadata": {
@@ -767,7 +767,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "WorldEdit",
-        "version": "7.4.5"
+        "version": "7.4.6"
       },
       "reason": null,
       "selectable": true,
@@ -790,7 +790,8 @@
         "26.1",
         "26.1.1",
         "26.1.2",
-        "26.2"
+        "26.2",
+        "26.3"
       ]
     },
     {
@@ -852,7 +853,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:d9c80d06851a14477bf9a20bec1a6eecba4f41a205b85ddb19077e58f8956ef8",
+  "inputs_hash": "sha256:aa77059577b42889b2c4f869d1979d769a97c80772ea1dc43682aec74bdcbcbd",
   "minecraft_version": "26.1.2",
   "runtime": {
     "base_digest": "sha256:fd4b1c02c64eef378212e23656fc0b0caa41a357876fa0b60e51ceda94a3db64",
