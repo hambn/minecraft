@@ -355,7 +355,7 @@
         "name": "Just Enough Items (JEI)",
         "version": "19.51.0.418"
       },
-      "reason": "supports Minecraft 1.21, 1.21.1 (neoforge); this image is Minecraft 26.3 (neoforge 26.3.0.83)",
+      "reason": "supports Minecraft 1.21, 1.21.1 (neoforge); this image is Minecraft 26.3 (neoforge 26.3.0.84)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -702,7 +702,7 @@
         "name": "Simple Backups",
         "version": "1.20.1-3.1.19"
       },
-      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.3 (neoforge 26.3.0.83)",
+      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.3 (neoforge 26.3.0.84)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -923,7 +923,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:2316b44a83d245334da27c65cab83d6fcd56ed518199e42b7917c62d45693668",
+  "inputs_hash": "sha256:075fdd6c8cd02f0e7af79532ac898a6bc6398525783e70b49681126ec33d461b",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:fd4b1c02c64eef378212e23656fc0b0caa41a357876fa0b60e51ceda94a3db64",
@@ -936,12 +936,12 @@
     "details": {
       "downloads": {
         "installer": {
-          "sha1": "4c3b06cfd0ad407ddd00538941dad386a3150250",
-          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.83/neoforge-26.3.0.83-installer.jar"
+          "sha1": "8adf4721b8611a526cb5a3c63525444401a2c507",
+          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.84/neoforge-26.3.0.84-installer.jar"
         }
       }
     },
-    "loader_version": "26.3.0.83",
+    "loader_version": "26.3.0.84",
     "reason": null,
     "status": "available"
   }
