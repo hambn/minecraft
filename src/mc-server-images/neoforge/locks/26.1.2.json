@@ -330,24 +330,30 @@
     },
     {
       "artifact": {
-        "filename": "jei-26.1.2-neoforge-29.34.0.90.jar",
-        "sha512": "dac4fcb7fe5b19d223c2138e14b84808f1e3afbfaf66247f131ce39d2ce8de5736a95b1c415554ecc5a81244708cb131788ab8dccd26cb3a9bda7a1daf481b18",
-        "size": 1828696,
-        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/AisPQmQz/jei-26.1.2-neoforge-29.34.0.90.jar"
+        "filename": "jei-26.1.2-neoforge-29.47.0.110.jar",
+        "sha512": "487461d71820e3b31086d8b334b38b6ad6895c49d85e554b4083b60e0c2b185ed09a345b9aa9a96c0dd240be8cb6d890e08724a954ac9e6a69875a928ecbe27c",
+        "size": 2387371,
+        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/7qmEzno8/jei-26.1.2-neoforge-29.47.0.110.jar"
       },
       "build": null,
       "closure": [
-        "jei"
+        "jei",
+        "mezzconfig"
       ],
       "conflicts": [],
       "declared": true,
-      "dependencies": [],
+      "dependencies": [
+        {
+          "id": "mezzconfig",
+          "kind": "required"
+        }
+      ],
       "id": "jei",
       "identity": {
         "file_id": null,
         "project_id": "u6dRKJwZ",
         "slug": "jei",
-        "version_id": "AisPQmQz"
+        "version_id": "7qmEzno8"
       },
       "local": null,
       "metadata": {
@@ -359,10 +365,10 @@
         "license": "MIT",
         "missing": [],
         "name": "Just Enough Items (JEI)",
-        "version": "29.34.0.90"
+        "version": "29.47.0.110"
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "dependency mezzconfig is unavailable: no stable neoforge release found for Minecraft 26.1.2 or any other version",
+      "selectable": false,
       "source": "modrinth",
       "status": "compatible",
       "supported_loaders": [
@@ -942,10 +948,10 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:3605a28b6af773921f2ee43e04fdfdf53459ac087b3f90bfb3b60becfaba9676",
+  "inputs_hash": "sha256:76aad4ed897835ae951ff1abab03167f7dd4fbad27112b13b48b9ce086800efe",
   "minecraft_version": "26.1.2",
   "runtime": {
-    "base_digest": "sha256:79605dbd43984ded68dd0628983e46f773a47b08d4b70a4f270be7034b4062b5",
+    "base_digest": "sha256:dbb43d81099eec91e0800226ed2296d03146ee7857165b95112372ad0d67e87f",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
