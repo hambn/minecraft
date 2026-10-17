@@ -942,10 +942,10 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:0b1efab3dfbacd676953adda070f65121392a5a946e6f64808c0aecd740db412",
+  "inputs_hash": "sha256:3605a28b6af773921f2ee43e04fdfdf53459ac087b3f90bfb3b60becfaba9676",
   "minecraft_version": "26.1.2",
   "runtime": {
-    "base_digest": "sha256:fd4b1c02c64eef378212e23656fc0b0caa41a357876fa0b60e51ceda94a3db64",
+    "base_digest": "sha256:79605dbd43984ded68dd0628983e46f773a47b08d4b70a4f270be7034b4062b5",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
