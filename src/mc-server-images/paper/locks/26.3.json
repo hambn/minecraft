@@ -796,10 +796,10 @@
     },
     {
       "artifact": {
-        "filename": "worldguard-bukkit-7.0.19.jar",
-        "sha512": "e9ad7ad53c93a07a7d5c3af3d844a677abbe894de4d7ff69fc03397daae5e8532217d57de23a3cddbe0d94ae81ee7acde6c78384b9596aa1eb3001bb37087d41",
-        "size": 1199021,
-        "url": "https://cdn.modrinth.com/data/DKY9btbd/versions/TtfwTyi6/worldguard-bukkit-7.0.19.jar"
+        "filename": "worldguard-bukkit-7.0.20.jar",
+        "sha512": "d7ad3f8b14c57deceb409dc8997fe3d7f0a98dd4158c52648111bfbe6934ca9be53fa42ece4d60d9c2d9da33f7d6ecf597117991bd3b8e7afbf308cd925e409c",
+        "size": 1200197,
+        "url": "https://cdn.modrinth.com/data/DKY9btbd/versions/9YdeGXiK/worldguard-bukkit-7.0.20.jar"
       },
       "build": null,
       "closure": [
@@ -813,7 +813,7 @@
         "file_id": null,
         "project_id": "DKY9btbd",
         "slug": "worldguard",
-        "version_id": "TtfwTyi6"
+        "version_id": "9YdeGXiK"
       },
       "local": null,
       "metadata": {
@@ -826,7 +826,7 @@
         "license": "LGPL-3.0-only",
         "missing": [],
         "name": "WorldGuard",
-        "version": "7.0.19"
+        "version": "7.0.20"
       },
       "reason": null,
       "selectable": true,
@@ -838,16 +838,15 @@
         "spigot"
       ],
       "supported_minecraft_versions": [
-        "26.2",
         "26.3"
       ]
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:41c49142a04009e693b324dd2d8dc9eb6cbc58bfe179f19cb65ab11c705e51e5",
+  "inputs_hash": "sha256:6cb4ad90a7d983b0ea1533d47a3c267966e345822f0bf52e91e068f408269477",
   "minecraft_version": "26.3",
   "runtime": {
-    "base_digest": "sha256:79605dbd43984ded68dd0628983e46f773a47b08d4b70a4f270be7034b4062b5",
+    "base_digest": "sha256:dbb43d81099eec91e0800226ed2296d03146ee7857165b95112372ad0d67e87f",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
