@@ -401,24 +401,30 @@
     },
     {
       "artifact": {
-        "filename": "jei-26.1.2-fabric-29.34.0.90.jar",
-        "sha512": "0a1637844872b6bfe2af14c6db071aa8ffdd841ed729907b16732ce79f587a0750842988fa30d943646105aaeb38f3a63b159a69e4d58dff740d0e63aa246716",
-        "size": 1838568,
-        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/jZ7OgHsw/jei-26.1.2-fabric-29.34.0.90.jar"
+        "filename": "jei-26.1.2-fabric-29.47.0.110.jar",
+        "sha512": "a5c6d16956b0df0d9ac12c73215e8901ea1c4c71a2f8f5d5b7d60f31877b6ab19afaec9b8bee589f89a307e1809c43352b32319ab42c108d3a3c207bb8d38e0a",
+        "size": 2400273,
+        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/T8wS82jn/jei-26.1.2-fabric-29.47.0.110.jar"
       },
       "build": null,
       "closure": [
-        "jei"
+        "jei",
+        "mezzconfig"
       ],
       "conflicts": [],
       "declared": true,
-      "dependencies": [],
+      "dependencies": [
+        {
+          "id": "mezzconfig",
+          "kind": "required"
+        }
+      ],
       "id": "jei",
       "identity": {
         "file_id": null,
         "project_id": "u6dRKJwZ",
         "slug": "jei",
-        "version_id": "jZ7OgHsw"
+        "version_id": "T8wS82jn"
       },
       "local": null,
       "metadata": {
@@ -430,10 +436,10 @@
         "license": "MIT",
         "missing": [],
         "name": "Just Enough Items (JEI)",
-        "version": "29.34.0.90"
+        "version": "29.47.0.110"
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "dependency mezzconfig is unavailable: no stable fabric release found for Minecraft 26.1.2 or any other version",
+      "selectable": false,
       "source": "modrinth",
       "status": "compatible",
       "supported_loaders": [
@@ -690,6 +696,41 @@
       ]
     },
     {
+      "artifact": null,
+      "build": null,
+      "closure": [
+        "mezzconfig"
+      ],
+      "conflicts": [],
+      "declared": false,
+      "dependencies": [],
+      "id": "mezzconfig",
+      "identity": {
+        "file_id": null,
+        "project_id": "7tEfOcA7",
+        "slug": "mezzconfig",
+        "version_id": null
+      },
+      "local": null,
+      "metadata": {
+        "authors": [
+          "mezz"
+        ],
+        "description": "Simple configuration library for Minecraft Mods",
+        "homepage": "https://modrinth.com/mod/mezzconfig",
+        "license": "MIT",
+        "missing": [],
+        "name": "MezzConfig",
+        "version": null
+      },
+      "reason": "no stable fabric release found for Minecraft 26.1.2 or any other version",
+      "selectable": false,
+      "source": "modrinth",
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
+    },
+    {
       "artifact": {
         "filename": "monsters_in_the_closet_reborn-1.0.3+26.1.x-fabric.jar",
         "sha512": "99117f88c846d4044f336beccdbe3baddbab3a58339bb9d39125bc9c72ad517793b1b4d1ad7712a7afde780a10bb86b396383d29546c9c0bb9db3ca72d823f94",
@@ -923,10 +964,10 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:303ca958e738df3c2ed138c7692fe7402f5a82a710e084bdc94338da1b2720e6",
+  "inputs_hash": "sha256:7fb2829769877f7731d273529cd3a837783c672741e1bc844c83da7ef656a5fa",
   "minecraft_version": "26.1.2",
   "runtime": {
-    "base_digest": "sha256:79605dbd43984ded68dd0628983e46f773a47b08d4b70a4f270be7034b4062b5",
+    "base_digest": "sha256:dbb43d81099eec91e0800226ed2296d03146ee7857165b95112372ad0d67e87f",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
