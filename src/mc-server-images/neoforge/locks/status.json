@@ -2,7 +2,7 @@
   "schema": 1,
   "server": "neoforge",
   "image": "ghcr.io/hambn/minecraft-server-neoforge",
-  "updated_at": "2026-10-18T15:58:49Z",
+  "updated_at": "2026-10-19T13:32:50Z",
   "window": [
     "26.3",
     "26.2",
@@ -14,8 +14,8 @@
   "targets": {
     "26.3": {
       "state": "published",
-      "digest": "sha256:e47f7f690df594136fa650c278ce4e5384effbaa9a3874da138f224274b36a59",
-      "published_at": "2026-10-18T15:58:49Z",
+      "digest": "sha256:213706137b32808f701523c8ae6e963895855a2583ae824ff5e27ccaf55d57c7",
+      "published_at": "2026-10-19T13:32:50Z",
       "lock": "26.3.json"
     },
     "26.2": {
