@@ -2,7 +2,7 @@
   "schema": 1,
   "server": "paper",
   "image": "ghcr.io/hambn/minecraft-server-paper",
-  "updated_at": "2026-10-21T17:30:00Z",
+  "updated_at": "2026-10-22T17:28:32Z",
   "window": [
     "26.3",
     "26.2",
@@ -14,8 +14,8 @@
   "targets": {
     "26.3": {
       "state": "published",
-      "digest": "sha256:91a3152d84bd42904dd3fd418bc49941b9564b8b3f2d40ca264a552772019ab4",
-      "published_at": "2026-10-21T17:30:00Z",
+      "digest": "sha256:556fecac4e4e1d59ab63f0a0fcb9af8c0794d8d40f4764867e19c564f2e938a8",
+      "published_at": "2026-10-22T17:28:32Z",
       "lock": "26.3.json"
     },
     "26.2": {
