@@ -34,7 +34,7 @@
         "name": "Concurrent Chunk Management Engine (Fabric)",
         "version": "0.3.6.0.0"
       },
-      "reason": "supports Minecraft 1.21.11 (fabric); this image is Minecraft 26.2 (fabric 0.19.5)",
+      "reason": "supports Minecraft 1.21.11 (fabric); this image is Minecraft 26.2 (fabric 0.20.1)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -946,7 +946,7 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:ea8ac589a89f36ec34b702701421aea00ccf6c107967d848e200740259f71ae7",
+  "inputs_hash": "sha256:613cec56f7f3a24b16d1c07dd04c0a7f697fd83cb9f609533c9f5fdc3ff68669",
   "minecraft_version": "26.2",
   "runtime": {
     "base_digest": "sha256:dbb43d81099eec91e0800226ed2296d03146ee7857165b95112372ad0d67e87f",
@@ -969,7 +969,7 @@
       },
       "installer_version": "1.1.2"
     },
-    "loader_version": "0.19.5",
+    "loader_version": "0.20.1",
     "reason": null,
     "status": "available"
   }
