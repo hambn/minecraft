@@ -875,10 +875,10 @@
     },
     {
       "artifact": {
-        "filename": "t_and_t-fabric-neoforge-1.13.12.jar",
-        "sha512": "6774391b873d0241538be29cf7f8299ebfaf2d9f03292b28103dff41fced203dc69e64032ca9b99e3b5364de2169f654a6633a255465adc994db17ac0a4c33d8",
-        "size": 3195626,
-        "url": "https://cdn.modrinth.com/data/DjLobEOy/versions/yajFnGZS/t_and_t-fabric-neoforge-1.13.12.jar"
+        "filename": "t_and_t-fabric-neoforge-1.13.13.jar",
+        "sha512": "bd0469d23a80d1bbbb0a3696b3c1a62f90cc5ad16e4cc58fe9e0e08e7453c3015ff7619b1d429106a034279b46fe909a0962b6dc9e970920f717fc518d9e292d",
+        "size": 3194933,
+        "url": "https://cdn.modrinth.com/data/DjLobEOy/versions/vHZIKy6e/t_and_t-fabric-neoforge-1.13.13.jar"
       },
       "build": null,
       "closure": [
@@ -899,7 +899,7 @@
         "file_id": null,
         "project_id": "DjLobEOy",
         "slug": "towns-and-towers",
-        "version_id": "yajFnGZS"
+        "version_id": "vHZIKy6e"
       },
       "local": null,
       "metadata": {
@@ -913,7 +913,7 @@
         "license": "CC-BY-NC-SA-4.0",
         "missing": [],
         "name": "Towns and Towers",
-        "version": "1.13.12"
+        "version": "1.13.13"
       },
       "reason": null,
       "selectable": true,
@@ -928,10 +928,10 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:67c44c19242d9a6a2623fa49377d18f2d7c4c06f349e817d6f89ff4a93cdcb38",
+  "inputs_hash": "sha256:7b1f70f06c08075c468c42a165cfad62560e96332ce662c227a5f081803550d4",
   "minecraft_version": "26.3",
   "runtime": {
-    "base_digest": "sha256:93a78f5866e0a4b100e6d3088f32db0ddf27970c02cd900694ee9b4abd771a15",
+    "base_digest": "sha256:5ff847fd719aad712d5848d3d78b6ffe854f9051ca44d869f4bd9e03e851d83a",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
