@@ -83,7 +83,7 @@
         "name": "CoreProtect",
         "version": "24.1"
       },
-      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 226)",
+      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 227)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -164,7 +164,7 @@
         "name": "EssentialsX",
         "version": "2.22.0"
       },
-      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 226)",
+      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 227)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -514,10 +514,10 @@
     },
     {
       "artifact": {
-        "filename": "ViaBackwards-5.12.1.jar",
-        "sha512": "65752dd113bf1266ef2c3b25a748e79e9808bb67682a3f5fbcf3e2b097d76182786d0871562175af8d491bde7ec6addfeaf97fdb23987cb11b829b0c22f6e5ff",
-        "size": 1436080,
-        "url": "https://cdn.modrinth.com/data/NpvuJQoq/versions/dWw67APC/ViaBackwards-5.12.1.jar"
+        "filename": "ViaBackwards-5.12.2.jar",
+        "sha512": "78bc7e5fd33ecf13aee31c62e1de46a854e066a1936f294347c6798371357497fe2cc6f23f1d42003ad3050f94ac5382db95e60ffa90d765fada0322b59b0ef9",
+        "size": 1439641,
+        "url": "https://cdn.modrinth.com/data/NpvuJQoq/versions/WFO37e8T/ViaBackwards-5.12.2.jar"
       },
       "build": null,
       "closure": [
@@ -537,7 +537,7 @@
         "file_id": null,
         "project_id": "NpvuJQoq",
         "slug": "viabackwards",
-        "version_id": "dWw67APC"
+        "version_id": "WFO37e8T"
       },
       "local": null,
       "metadata": {
@@ -551,7 +551,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "ViaBackwards",
-        "version": "5.12.1"
+        "version": "5.12.2"
       },
       "reason": null,
       "selectable": true,
@@ -625,10 +625,10 @@
     },
     {
       "artifact": {
-        "filename": "ViaVersion-5.12.1.jar",
-        "sha512": "b2e5c03689e2265410613a928640076cfcd576e7a3dc7ca1276a76dbe624f2f5467348c3b3eaf8b5987ed7662afb93cc5cb9373035f4c5512884116e4bb6add9",
-        "size": 6503217,
-        "url": "https://cdn.modrinth.com/data/P1OZGk5p/versions/5WgnasGG/ViaVersion-5.12.1.jar"
+        "filename": "ViaVersion-5.12.2.jar",
+        "sha512": "c6af11f50e14bc1ba239f5a90be653cce85feee30c473a4b53336b4d5527d790369cf43843f7cb06d3ac3a34fc207e7203436737ca719070644101472453401b",
+        "size": 6508809,
+        "url": "https://cdn.modrinth.com/data/P1OZGk5p/versions/Fkfcr89K/ViaVersion-5.12.2.jar"
       },
       "build": null,
       "closure": [
@@ -642,7 +642,7 @@
         "file_id": null,
         "project_id": "P1OZGk5p",
         "slug": "viaversion",
-        "version_id": "5WgnasGG"
+        "version_id": "Fkfcr89K"
       },
       "local": null,
       "metadata": {
@@ -656,7 +656,7 @@
         "license": "GPL-3.0-or-later",
         "missing": [],
         "name": "ViaVersion",
-        "version": "5.12.1"
+        "version": "5.12.2"
       },
       "reason": null,
       "selectable": true,
@@ -666,6 +666,15 @@
         "paper"
       ],
       "supported_minecraft_versions": [
+        "1.8",
+        "1.8.1",
+        "1.8.2",
+        "1.8.3",
+        "1.8.4",
+        "1.8.5",
+        "1.8.6",
+        "1.8.7",
+        "1.8.8",
         "1.8.9",
         "1.9",
         "1.9.1",
@@ -843,10 +852,10 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:756c4680d55ef4eb3d843dab003abf470bfcbb06b880ef2678f566b71e6c4621",
+  "inputs_hash": "sha256:44303445c0a83b996a2a37cee99eec974ba31ae3a48be6f8d11acfdf18123aff",
   "minecraft_version": "26.3",
   "runtime": {
-    "base_digest": "sha256:5ff847fd719aad712d5848d3d78b6ffe854f9051ca44d869f4bd9e03e851d83a",
+    "base_digest": "sha256:3c4b788a72f8ddfe0dd07fdb79b2629f9c670d8e8e02d74d2b69fa8be07fbd7d",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
@@ -854,16 +863,16 @@
   "server": "paper",
   "server_build": {
     "details": {
-      "build": 226,
+      "build": 227,
       "channel": "STABLE",
       "downloads": {
         "paper": {
-          "sha256": "1373c651510d4aeee7e7903f3cfd7003919c1a364528dbe124a4ae40e11a766e",
-          "url": "https://fill-data.papermc.io/v1/objects/1373c651510d4aeee7e7903f3cfd7003919c1a364528dbe124a4ae40e11a766e/paper-26.3-226.jar"
+          "sha256": "416b7d105b1d0192df4afa4b29d2800d9dbeda092a82fbc5b511248a54adde15",
+          "url": "https://fill-data.papermc.io/v1/objects/416b7d105b1d0192df4afa4b29d2800d9dbeda092a82fbc5b511248a54adde15/paper-26.3-227.jar"
         }
       }
     },
-    "loader_version": "226",
+    "loader_version": "227",
     "reason": null,
     "status": "available"
   }
