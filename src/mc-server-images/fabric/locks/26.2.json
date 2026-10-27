@@ -946,10 +946,10 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:f18e6cfa6db6e4037eeadecb92dd1beeb453abee96ac90085d6dbdc80c6f6302",
+  "inputs_hash": "sha256:9d271cc3561bd6f38dc0b5f3c2cd5336ea3f96bd5b3403588cef8eb3a63bcc7b",
   "minecraft_version": "26.2",
   "runtime": {
-    "base_digest": "sha256:5ff847fd719aad712d5848d3d78b6ffe854f9051ca44d869f4bd9e03e851d83a",
+    "base_digest": "sha256:3c4b788a72f8ddfe0dd07fdb79b2629f9c670d8e8e02d74d2b69fa8be07fbd7d",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
