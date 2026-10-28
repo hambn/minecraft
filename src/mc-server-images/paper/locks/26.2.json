@@ -853,10 +853,10 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:b34b8d2c50e7ba840ebde1947366d2c746a1401c6ce1e2fd8ee53b3c14aa60b5",
+  "inputs_hash": "sha256:7bb9d4b963095e5c1af9bb0426eb125df6f1046676d9dbabbe799a350b2a2837",
   "minecraft_version": "26.2",
   "runtime": {
-    "base_digest": "sha256:3c4b788a72f8ddfe0dd07fdb79b2629f9c670d8e8e02d74d2b69fa8be07fbd7d",
+    "base_digest": "sha256:78f1f183913482ef390c2722f46c3f0ce76ada341d69590e7c482ec943ee72d5",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
