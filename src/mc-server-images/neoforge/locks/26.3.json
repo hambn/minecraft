@@ -418,10 +418,10 @@
     },
     {
       "artifact": {
-        "filename": "lithium-neoforge-0.26.2+mc26.3.jar",
-        "sha512": "af579327afba03fac855b0a55c1cd25236483d2d2a22f7686eb7b046a1a814511caa1c767dc5967f69ce92dcd5980e85340047b5b732ab7ba190f093788c20db",
-        "size": 903255,
-        "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/1rb9wI5K/lithium-neoforge-0.26.2%2Bmc26.3.jar"
+        "filename": "lithium-neoforge-0.26.3+mc26.3.jar",
+        "sha512": "0f184d76b54a3ddeabbb2d664859260fb42cfdb205da9ae4261630cd6b1f0751c4113f38523c6ff9b496b5b0d766a31c41c7e307ce84131696752dae8db9e9bd",
+        "size": 908506,
+        "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/2BP6jqRA/lithium-neoforge-0.26.3%2Bmc26.3.jar"
       },
       "build": null,
       "closure": [
@@ -435,7 +435,7 @@
         "file_id": null,
         "project_id": "gvQqBUqZ",
         "slug": "lithium",
-        "version_id": "1rb9wI5K"
+        "version_id": "2BP6jqRA"
       },
       "local": null,
       "metadata": {
@@ -448,7 +448,7 @@
         "license": "LGPL-3.0-only",
         "missing": [],
         "name": "Lithium",
-        "version": "mc26.3-0.26.2-neoforge"
+        "version": "mc26.3-0.26.3-neoforge"
       },
       "reason": null,
       "selectable": true,
@@ -928,7 +928,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:5f422688a3aa5b92f83a421d6a15930e0a2fcf68405037e0c32d6fa0beecc8c7",
+  "inputs_hash": "sha256:c1bff8f3629b4342843098602fc9c75af0cf3154b304a1fdfb061713c64cca9b",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:78f1f183913482ef390c2722f46c3f0ce76ada341d69590e7c482ec943ee72d5",
