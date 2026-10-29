@@ -531,10 +531,10 @@
     },
     {
       "artifact": {
-        "filename": "lithium-fabric-0.26.2+mc26.3.jar",
-        "sha512": "4d7fee66132eedc71feab9390b92c95d7058edbdad0fecfac1d836a2950b97a7ca463afbede61c7ef361ce65e1f927ab9e89dde5bf2e0e0ce486afb5c5dbee40",
-        "size": 914543,
-        "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/xS0Q8LSi/lithium-fabric-0.26.2%2Bmc26.3.jar"
+        "filename": "lithium-fabric-0.26.3+mc26.3.jar",
+        "sha512": "2ca92fb530135d2baddf0ba4cc4f93976234876a38c4aa02b487b2552400f005afcfbeebf5373fb4396fe2020537a42d7597b8da5a52b904355ef51d5fef07ad",
+        "size": 919892,
+        "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/fWv5bnZk/lithium-fabric-0.26.3%2Bmc26.3.jar"
       },
       "build": null,
       "closure": [
@@ -548,7 +548,7 @@
         "file_id": null,
         "project_id": "gvQqBUqZ",
         "slug": "lithium",
-        "version_id": "xS0Q8LSi"
+        "version_id": "fWv5bnZk"
       },
       "local": null,
       "metadata": {
@@ -561,7 +561,7 @@
         "license": "LGPL-3.0-only",
         "missing": [],
         "name": "Lithium",
-        "version": "mc26.3-0.26.2-fabric"
+        "version": "mc26.3-0.26.3-fabric"
       },
       "reason": null,
       "selectable": true,
@@ -940,7 +940,7 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:35eda2142a9c329d3a3b5a0b4ca63d423417b4ebf6ecae43f40d61c6721d27bf",
+  "inputs_hash": "sha256:a6ce9a0cff56e3d596d4e973d7c7661f975d409eac4c8caeef9cceceb9b5fbc3",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:78f1f183913482ef390c2722f46c3f0ce76ada341d69590e7c482ec943ee72d5",
