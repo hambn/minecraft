@@ -230,9 +230,9 @@
     {
       "artifact": {
         "filename": "GriefPrevention.jar",
-        "sha512": "c9bc692253ba3860327e5c38767ce3dc66c798264fe650a08b4ae888337ff75bc16e9bd1db7b39a514a275bf2cc2a3f1f8cd95cf080b89ae42a0f684fc2bfc66",
-        "size": 380232,
-        "url": "https://cdn.modrinth.com/data/O4o4mKaq/versions/dGfCZHqk/GriefPrevention.jar"
+        "sha512": "248edc681e94fe333aa4262b4e8858e9e8f79e7e4872a76348ff6df213cc56e6069eea9916c5c4e6476b1513575f0d45db76c91526f5dc032e02b8806341b9e9",
+        "size": 384582,
+        "url": "https://cdn.modrinth.com/data/O4o4mKaq/versions/MtwPHMAS/GriefPrevention.jar"
       },
       "build": null,
       "closure": [
@@ -246,7 +246,7 @@
         "file_id": null,
         "project_id": "O4o4mKaq",
         "slug": "griefprevention",
-        "version_id": "dGfCZHqk"
+        "version_id": "MtwPHMAS"
       },
       "local": null,
       "metadata": {
@@ -260,7 +260,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "GriefPrevention",
-        "version": "16.18.7"
+        "version": "16.18.8"
       },
       "reason": null,
       "selectable": true,
@@ -272,12 +272,6 @@
         "spigot"
       ],
       "supported_minecraft_versions": [
-        "1.21.10",
-        "1.21.11",
-        "26.1",
-        "26.1.1",
-        "26.1.2",
-        "26.2",
         "26.3"
       ]
     },
@@ -852,7 +846,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:66f2f0efcfdef253571a547436d6fcfb2eebe5c53f7fcc800dbf2f86ff174b54",
+  "inputs_hash": "sha256:ae7631fbb9b8c2b59e891b485239d0d509a4b9b4b7fb5ccd6036a90676ea10db",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:ecdc0adb37bde1a281c4d245a3cd535004b1fc8322d560f5b09463b248c81df0",
