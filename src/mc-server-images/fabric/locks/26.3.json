@@ -250,10 +250,10 @@
     },
     {
       "artifact": {
-        "filename": "fabric-api-0.165.0+26.3.jar",
-        "sha512": "0a4b8a14e847b71567b557b43d906c2167fa263eeeef37454a821ba286996e3da1616dc2d9647736d28a250d5ecf400541cae808359b29a62324a8a6f2ad5e30",
-        "size": 1778588,
-        "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/EQKgpeKu/fabric-api-0.165.0%2B26.3.jar"
+        "filename": "fabric-api-0.165.2+26.3.jar",
+        "sha512": "21ce87863ed73c4c871e072f13c5a7b00bd148a098c5064a5f381479d1ddd7c54b0f40ef7d17ce2ae5712deb647c5fcaf12cb72fb663fe8d958188e870b33de0",
+        "size": 1779306,
+        "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/nJlcvFfj/fabric-api-0.165.2%2B26.3.jar"
       },
       "build": null,
       "closure": [
@@ -267,7 +267,7 @@
         "file_id": null,
         "project_id": "P7dR8mSH",
         "slug": "fabric-api",
-        "version_id": "EQKgpeKu"
+        "version_id": "nJlcvFfj"
       },
       "local": null,
       "metadata": {
@@ -280,7 +280,7 @@
         "license": "Apache-2.0",
         "missing": [],
         "name": "Fabric API",
-        "version": "0.165.0+26.3"
+        "version": "0.165.2+26.3"
       },
       "reason": null,
       "selectable": true,
@@ -940,7 +940,7 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:3f2f8ff05bf1266fbb97fca1af89b5f30c500c44c1571526003f0ea73b565fe7",
+  "inputs_hash": "sha256:48abc0f1ba520d327cf33abf714e89281cd33652ad9bca9a2c04c99aa261e554",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:ecdc0adb37bde1a281c4d245a3cd535004b1fc8322d560f5b09463b248c81df0",
