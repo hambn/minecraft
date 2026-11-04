@@ -2,10 +2,10 @@
   "entries": [
     {
       "artifact": {
-        "filename": "Chunky-Bukkit-1.5.3.jar",
-        "sha512": "43ffecc6e6a734b752da41575bbb316526c124c3f878942437d5133c377bfbd9b78bda975520dc074d7158c15dade58a444ccd0fd8d8a25d165b6fc450140422",
-        "size": 304616,
-        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/MdY6JATr/Chunky-Bukkit-1.5.3.jar"
+        "filename": "Chunky-Paper-1.5.66.jar",
+        "sha512": "c67b14569b8624d8d4ca550f0a064703e144d388073b4c34a913c3bd34ea39351bef504542101d7f85b499b4de95c24d027a62ee64aad3f9a7051ae4bec80c52",
+        "size": 396960,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/RBuKjN4k/Chunky-Paper-1.5.66.jar"
       },
       "build": null,
       "closure": [
@@ -19,7 +19,7 @@
         "file_id": null,
         "project_id": "fALzjamp",
         "slug": "chunky",
-        "version_id": "MdY6JATr"
+        "version_id": "RBuKjN4k"
       },
       "local": null,
       "metadata": {
@@ -31,16 +31,14 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "Chunky",
-        "version": "1.5.3"
+        "version": "1.5.66"
       },
       "reason": null,
       "selectable": true,
       "source": "modrinth",
       "status": "compatible",
       "supported_loaders": [
-        "bukkit",
-        "paper",
-        "spigot"
+        "paper"
       ],
       "supported_minecraft_versions": [
         "26.1",
@@ -83,7 +81,7 @@
         "name": "CoreProtect",
         "version": "24.1"
       },
-      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 238)",
+      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 240)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -164,7 +162,7 @@
         "name": "EssentialsX",
         "version": "2.22.0"
       },
-      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 238)",
+      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 240)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -846,7 +844,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:cce6a9afb9d86218289f69621d1afc4d68ea21b368aaf569543db8c0fa6b66d8",
+  "inputs_hash": "sha256:c8b7132a9443cad5de22440b238b880355c2e5ddcd956914aedb5dbb508b457b",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:ecdc0adb37bde1a281c4d245a3cd535004b1fc8322d560f5b09463b248c81df0",
@@ -857,16 +855,16 @@
   "server": "paper",
   "server_build": {
     "details": {
-      "build": 238,
+      "build": 240,
       "channel": "STABLE",
       "downloads": {
         "paper": {
-          "sha256": "989f93c29d5b61fe52804f834ea6b3a0a5775d05412e238ec78107197a6b5be6",
-          "url": "https://fill-data.papermc.io/v1/objects/989f93c29d5b61fe52804f834ea6b3a0a5775d05412e238ec78107197a6b5be6/paper-26.3-238.jar"
+          "sha256": "2b3ca0c9c9b148f84d56720771720586d15572da2af528b6464519fdb0e588c0",
+          "url": "https://fill-data.papermc.io/v1/objects/2b3ca0c9c9b148f84d56720771720586d15572da2af528b6464519fdb0e588c0/paper-26.3-240.jar"
         }
       }
     },
-    "loader_version": "238",
+    "loader_version": "240",
     "reason": null,
     "status": "available"
   }

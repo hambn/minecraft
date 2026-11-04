@@ -2,10 +2,10 @@
   "entries": [
     {
       "artifact": {
-        "filename": "Chunky-Bukkit-1.5.3.jar",
-        "sha512": "43ffecc6e6a734b752da41575bbb316526c124c3f878942437d5133c377bfbd9b78bda975520dc074d7158c15dade58a444ccd0fd8d8a25d165b6fc450140422",
-        "size": 304616,
-        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/MdY6JATr/Chunky-Bukkit-1.5.3.jar"
+        "filename": "Chunky-Paper-1.5.66.jar",
+        "sha512": "c67b14569b8624d8d4ca550f0a064703e144d388073b4c34a913c3bd34ea39351bef504542101d7f85b499b4de95c24d027a62ee64aad3f9a7051ae4bec80c52",
+        "size": 396960,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/RBuKjN4k/Chunky-Paper-1.5.66.jar"
       },
       "build": null,
       "closure": [
@@ -19,7 +19,7 @@
         "file_id": null,
         "project_id": "fALzjamp",
         "slug": "chunky",
-        "version_id": "MdY6JATr"
+        "version_id": "RBuKjN4k"
       },
       "local": null,
       "metadata": {
@@ -31,16 +31,14 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "Chunky",
-        "version": "1.5.3"
+        "version": "1.5.66"
       },
       "reason": null,
       "selectable": true,
       "source": "modrinth",
       "status": "compatible",
       "supported_loaders": [
-        "bukkit",
-        "paper",
-        "spigot"
+        "paper"
       ],
       "supported_minecraft_versions": [
         "26.1",
@@ -862,7 +860,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:c32cfd3b54763e9a5af57172d09c35dee70e60517125086c30a76be0ad49d249",
+  "inputs_hash": "sha256:5ef1e49f0ca1f2c6cbbba3b33b49670f344c23bd25ca01f38c601048421d618b",
   "minecraft_version": "26.1.2",
   "runtime": {
     "base_digest": "sha256:ecdc0adb37bde1a281c4d245a3cd535004b1fc8322d560f5b09463b248c81df0",
