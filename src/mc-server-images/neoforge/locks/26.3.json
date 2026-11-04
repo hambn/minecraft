@@ -2,10 +2,10 @@
   "entries": [
     {
       "artifact": {
-        "filename": "Chunky-NeoForge-1.5.4.jar",
-        "sha512": "ffcbedca6a0b5018962a8a62df21afdafe327ef306e6acb2f602b3bb56f313b88c90e9a57d9a2abaa9d12bd122e888d933ccb243c8fa3388e086a5dd1c18e30d",
-        "size": 353241,
-        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/EyCqftOK/Chunky-NeoForge-1.5.4.jar"
+        "filename": "Chunky-NeoForge-1.5.66.jar",
+        "sha512": "1ec3a20a1338fb3dbfb4c637e2369138e9c5de01e638198c8051c71c86cfdc64ad993cc6e8268beab774969700829efafc8894a6a7656ae4a833e60e05190542",
+        "size": 441998,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/sDFaDSkE/Chunky-NeoForge-1.5.66.jar"
       },
       "build": null,
       "closure": [
@@ -19,7 +19,7 @@
         "file_id": null,
         "project_id": "fALzjamp",
         "slug": "chunky",
-        "version_id": "EyCqftOK"
+        "version_id": "sDFaDSkE"
       },
       "local": null,
       "metadata": {
@@ -31,7 +31,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "Chunky",
-        "version": "1.5.4"
+        "version": "1.5.66"
       },
       "reason": null,
       "selectable": true,
@@ -928,7 +928,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:5ef5e662af2d92ef8f2d2fe395202708598613dd46c141a2e729e36ff71d40ca",
+  "inputs_hash": "sha256:0b13dcd3d357c1e8d86bdb53b9bf955ce94a41b7c27278aa083565bcc537fc33",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:ecdc0adb37bde1a281c4d245a3cd535004b1fc8322d560f5b09463b248c81df0",
