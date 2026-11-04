@@ -47,10 +47,10 @@
     },
     {
       "artifact": {
-        "filename": "Chunky-Fabric-1.5.3.jar",
-        "sha512": "b83bfe7b218d0aa6232af977ae741dc1f82b10e50cd12bb759f65cf416b8b62beccb543e587ef0b9670abe03815660f8e091bc6823624d65cf07300571573516",
-        "size": 354095,
-        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/4Eotm6ov/Chunky-Fabric-1.5.3.jar"
+        "filename": "Chunky-Fabric-1.5.66.jar",
+        "sha512": "6f0323daa69d61bd3b3fbe9d8b713664d9b7c69182183f8dcff6362b43783639778a96e32215dbfd329588f06b60a5d93656dbb1d391c660db203482aa972d5e",
+        "size": 442176,
+        "url": "https://cdn.modrinth.com/data/fALzjamp/versions/86FKD9qx/Chunky-Fabric-1.5.66.jar"
       },
       "build": null,
       "closure": [
@@ -70,7 +70,7 @@
         "file_id": null,
         "project_id": "fALzjamp",
         "slug": "chunky",
-        "version_id": "4Eotm6ov"
+        "version_id": "86FKD9qx"
       },
       "local": null,
       "metadata": {
@@ -82,7 +82,7 @@
         "license": "GPL-3.0-only",
         "missing": [],
         "name": "Chunky",
-        "version": "1.5.3"
+        "version": "1.5.66"
       },
       "reason": null,
       "selectable": true,
@@ -940,7 +940,7 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:48abc0f1ba520d327cf33abf714e89281cd33652ad9bca9a2c04c99aa261e554",
+  "inputs_hash": "sha256:4269664f7d96193fe7e89bd04f55f22e6d884018585be06902997427e18d9dee",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:ecdc0adb37bde1a281c4d245a3cd535004b1fc8322d560f5b09463b248c81df0",
