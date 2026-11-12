@@ -29,7 +29,7 @@
         ],
         "description": "A Fabric mod designed to improve the chunk performance of Minecraft.",
         "homepage": "https://modrinth.com/mod/c2me-fabric",
-        "license": "MIT",
+        "license": "LGPL-3.0-only",
         "missing": [],
         "name": "Concurrent Chunk Management Engine (Fabric)",
         "version": "0.3.6.0.0"
@@ -946,10 +946,10 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:913171c68b905d42841618ebea2b42c86fa23c86b584c1992b7ddacfbc3cfe88",
+  "inputs_hash": "sha256:0d54b1f631319109386496e348901d5bd572aa65823a152c677423e0c6e0d1ea",
   "minecraft_version": "26.2",
   "runtime": {
-    "base_digest": "sha256:53ae0540cd9b483659be743dc246009a19aab718d73e546303291dbe8aa74692",
+    "base_digest": "sha256:a640968ae55027b322cedd5f8228b01a84baff0b9e9360e47601c6a111ba1699",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
