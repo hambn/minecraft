@@ -2,7 +2,7 @@
   "schema": 1,
   "server": "paper",
   "image": "ghcr.io/hambn/minecraft-server-paper",
-  "updated_at": "2026-11-11T19:48:15Z",
+  "updated_at": "2026-11-12T07:31:32Z",
   "window": [
     "26.3",
     "26.2",
@@ -14,20 +14,20 @@
   "targets": {
     "26.3": {
       "state": "published",
-      "digest": "sha256:086421c62c37c7cce5429706c9029352632e737a221d470d698466eb015cf5f4",
-      "published_at": "2026-11-11T19:48:15Z",
+      "digest": "sha256:c9b455e685dabf4ed8dc4f54a8b3f57917780526788f9d83900c187d40786645",
+      "published_at": "2026-11-12T07:31:32Z",
       "lock": "26.3.json"
     },
     "26.2": {
       "state": "published",
-      "digest": "sha256:934e972ad2f392de231f00d4979d13abbfcdc5a8c00960228fd72def08d4c6b0",
-      "published_at": "2026-11-04T06:49:57Z",
+      "digest": "sha256:ece1aa5b26aa2b66edf8896e5891d762e2dad4f1af0ea0cae7994a021a8a55c0",
+      "published_at": "2026-11-12T07:31:32Z",
       "lock": "26.2.json"
     },
     "26.1.2": {
       "state": "published",
-      "digest": "sha256:faa67faa8a4eed39449e684291d9b52392636d55ad52540c7576c3cbc28e03a6",
-      "published_at": "2026-11-04T06:49:57Z",
+      "digest": "sha256:5cab870628d8b7dfdb7d1e859a5d04a7ad68609fbf1c37282ae49d04df1aa96d",
+      "published_at": "2026-11-12T07:31:32Z",
       "lock": "26.1.2.json"
     }
   }
