@@ -81,7 +81,7 @@
         "name": "CoreProtect",
         "version": "24.1"
       },
-      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 249)",
+      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 251)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -162,7 +162,7 @@
         "name": "EssentialsX",
         "version": "2.22.0"
       },
-      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 249)",
+      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 251)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -844,7 +844,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:edc334b599eeb840854edfdc6e2c9a54b6b06c24f3ac5b74c434950f91cf1b79",
+  "inputs_hash": "sha256:49f090c05034ae57c905930bd7fbd273767513c2095d4e209f72114f79b42e4d",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:a640968ae55027b322cedd5f8228b01a84baff0b9e9360e47601c6a111ba1699",
@@ -855,16 +855,16 @@
   "server": "paper",
   "server_build": {
     "details": {
-      "build": 249,
+      "build": 251,
       "channel": "STABLE",
       "downloads": {
         "paper": {
-          "sha256": "4c734aeb4da98845934af1e5481f0df7c80ad3ca50d272319ffe2b0e8a187c8a",
-          "url": "https://fill-data.papermc.io/v1/objects/4c734aeb4da98845934af1e5481f0df7c80ad3ca50d272319ffe2b0e8a187c8a/paper-26.3-249.jar"
+          "sha256": "3e7591f1c5b40a379c0ef494bcbeda128a62f5819e32cfc5e6335880bee39c55",
+          "url": "https://fill-data.papermc.io/v1/objects/3e7591f1c5b40a379c0ef494bcbeda128a62f5819e32cfc5e6335880bee39c55/paper-26.3-251.jar"
         }
       }
     },
-    "loader_version": "249",
+    "loader_version": "251",
     "reason": null,
     "status": "available"
   }
