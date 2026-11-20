@@ -81,7 +81,7 @@
         "name": "CoreProtect",
         "version": "24.1"
       },
-      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 256)",
+      "reason": "supports Minecraft 1.16.5, 1.17, 1.17.1, 1.18, 1.18.1, 1.18.2, 1.19, 1.19.1, 1.19.2, 1.19.3, 1.19.4, 1.20, 1.20.1, 1.20.2, 1.20.3, 1.20.4, 1.20.5, 1.20.6, 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10, 1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 257)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -162,7 +162,7 @@
         "name": "EssentialsX",
         "version": "2.22.0"
       },
-      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 256)",
+      "reason": "supports Minecraft 1.8.8, 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.4, 1.20.6, 1.21.11, 26.1.2 (bukkit, paper, spigot); this image is Minecraft 26.3 (paper 257)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -844,10 +844,10 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:169624e8a5e60e540af91336a9262b85b63e7df94f5f1b292c2a556c1bee6b44",
+  "inputs_hash": "sha256:a40bdec67cdcacb0625664e8bc8f8a69fb685756d8a7cc503b6d34c4d17b2ccf",
   "minecraft_version": "26.3",
   "runtime": {
-    "base_digest": "sha256:945247f9d092703e0c6be92243ef3c51640229e23ab34d353c8dcdc73e6cd4e6",
+    "base_digest": "sha256:4ed132f6832e9804b123e89a849a7b4502756ae64a4ee08ebab939d9d5d0a9fa",
     "base_image": "eclipse-temurin:25-jre",
     "java_major": 25
   },
@@ -855,16 +855,16 @@
   "server": "paper",
   "server_build": {
     "details": {
-      "build": 256,
+      "build": 257,
       "channel": "STABLE",
       "downloads": {
         "paper": {
-          "sha256": "c86baf83b1fb0eb0d572f39484c242210896c6adf9cc9342d5c16c4de70c9bdc",
-          "url": "https://fill-data.papermc.io/v1/objects/c86baf83b1fb0eb0d572f39484c242210896c6adf9cc9342d5c16c4de70c9bdc/paper-26.3-256.jar"
+          "sha256": "64a5bd44910cb982b2648e9a35036cc95a6de4d561e15812aecf5411f84f7b01",
+          "url": "https://fill-data.papermc.io/v1/objects/64a5bd44910cb982b2648e9a35036cc95a6de4d561e15812aecf5411f84f7b01/paper-26.3-257.jar"
         }
       }
     },
-    "loader_version": "256",
+    "loader_version": "257",
     "reason": null,
     "status": "available"
   }
