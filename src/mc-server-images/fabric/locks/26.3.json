@@ -625,31 +625,20 @@
       ]
     },
     {
-      "artifact": {
-        "filename": "lootr-fabric-26.3-1.25.42.124.jar",
-        "sha512": "290786fd4af4011c4f09c425d262bacc80f6ef47e23fbf6424193c719b6045a70cae70308c95d30c5ab78bf1f5a3d089cc3b01db8cc4dacc1a74c0f2d70c245d",
-        "size": 1583342,
-        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/gVwn7m2v/lootr-fabric-26.3-1.25.42.124.jar"
-      },
+      "artifact": null,
       "build": null,
       "closure": [
-        "fabric-api",
         "lootr"
       ],
       "conflicts": [],
       "declared": true,
-      "dependencies": [
-        {
-          "id": "fabric-api",
-          "kind": "required"
-        }
-      ],
+      "dependencies": [],
       "id": "lootr",
       "identity": {
         "file_id": null,
         "project_id": "EltpO5cN",
         "slug": "lootr",
-        "version_id": "gVwn7m2v"
+        "version_id": null
       },
       "local": null,
       "metadata": {
@@ -660,21 +649,17 @@
         ],
         "description": "A mod that makes it so nobody misses out on Loot! All loot chests are instanced per player and visually unique.",
         "homepage": "https://modrinth.com/mod/lootr",
-        "license": "MIT",
+        "license": "LicenseRef-All-Rights-Reserved",
         "missing": [],
         "name": "Lootr",
-        "version": "1.25.42.124"
+        "version": null
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "license 'LicenseRef-All-Rights-Reserved' is not on the redistribution allowlist (licenses.yml); no author permission recorded",
+      "selectable": false,
       "source": "modrinth",
-      "status": "compatible",
-      "supported_loaders": [
-        "fabric"
-      ],
-      "supported_minecraft_versions": [
-        "26.3"
-      ]
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
     },
     {
       "artifact": null,
@@ -940,7 +925,7 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:a45154ad54236b5f1b0f8b9425cf40ab1b574a8d4c6007b2c4b5d3573ad9b266",
+  "inputs_hash": "sha256:ef9fabb35a67b33b4db32137a9a0468c19b78c5f743d8e30c6b9c3e91cee353b",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:4ed132f6832e9804b123e89a849a7b4502756ae64a4ee08ebab939d9d5d0a9fa",
