@@ -509,12 +509,7 @@
       ]
     },
     {
-      "artifact": {
-        "filename": "lootr-neoforge-26.2-1.24.41.124.jar",
-        "sha512": "08f181293478e2a21bb483244d3250f84492cf7506aa065c2869af30b0be32f921b30d38aa06a06c779288ed8630449d1bf07805fbdeec71b66d28e5677e0a6f",
-        "size": 1526225,
-        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/qsxWCPd3/lootr-neoforge-26.2-1.24.41.124.jar"
-      },
+      "artifact": null,
       "build": null,
       "closure": [
         "lootr"
@@ -527,7 +522,7 @@
         "file_id": null,
         "project_id": "EltpO5cN",
         "slug": "lootr",
-        "version_id": "qsxWCPd3"
+        "version_id": null
       },
       "local": null,
       "metadata": {
@@ -538,21 +533,17 @@
         ],
         "description": "A mod that makes it so nobody misses out on Loot! All loot chests are instanced per player and visually unique.",
         "homepage": "https://modrinth.com/mod/lootr",
-        "license": "MIT",
+        "license": "LicenseRef-All-Rights-Reserved",
         "missing": [],
         "name": "Lootr",
-        "version": "1.24.41.124"
+        "version": null
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "license 'LicenseRef-All-Rights-Reserved' is not on the redistribution allowlist (licenses.yml); no author permission recorded",
+      "selectable": false,
       "source": "modrinth",
-      "status": "compatible",
-      "supported_loaders": [
-        "neoforge"
-      ],
-      "supported_minecraft_versions": [
-        "26.2"
-      ]
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
     },
     {
       "artifact": null,
@@ -934,7 +925,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:e52f3441141af47ee1134ccc1468aa69c516d3236eac9ce4aef0b2202017b686",
+  "inputs_hash": "sha256:668462123b5ab72bf2e483916802e181c28b053a913efb11247d8bb67cdbbf2c",
   "minecraft_version": "26.2",
   "runtime": {
     "base_digest": "sha256:4ed132f6832e9804b123e89a849a7b4502756ae64a4ee08ebab939d9d5d0a9fa",

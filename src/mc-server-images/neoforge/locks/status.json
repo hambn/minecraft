@@ -2,7 +2,7 @@
   "schema": 1,
   "server": "neoforge",
   "image": "ghcr.io/hambn/minecraft-server-neoforge",
-  "updated_at": "2026-11-21T19:26:10Z",
+  "updated_at": "2026-11-24T10:04:24Z",
   "window": [
     "26.3",
     "26.2",
@@ -14,20 +14,20 @@
   "targets": {
     "26.3": {
       "state": "published",
-      "digest": "sha256:e83a10e186609a07fb122bc3f2fab9666e91a4004a272bd2d6c6d2f75bde5808",
-      "published_at": "2026-11-20T20:32:40Z",
+      "digest": "sha256:ddcb82130640efe575fb00e71abd2122389ef2a2cd77eb4f8074a406612e8c2d",
+      "published_at": "2026-11-24T10:04:24Z",
       "lock": "26.3.json"
     },
     "26.2": {
       "state": "published",
-      "digest": "sha256:0434350a12df37f02e7c5412f9d793b509e6c88c09a356cd1273e95d4af5fbbd",
-      "published_at": "2026-11-20T20:32:40Z",
+      "digest": "sha256:a6bcc9e19c7083be3f143ccac5d95c5d8b15a2d2f06e1b041839f22e848b9632",
+      "published_at": "2026-11-24T10:04:24Z",
       "lock": "26.2.json"
     },
     "26.1.2": {
       "state": "published",
-      "digest": "sha256:296109317a4685bdbf0b3fc7d1e2e5ba20bb192cccad2fe496b3ec9f57aef56f",
-      "published_at": "2026-11-21T19:26:10Z",
+      "digest": "sha256:a0e7cce9aa8d683b802754e33fdb4806ac8d48568b55b9c18439425d048f2fcf",
+      "published_at": "2026-11-24T10:04:24Z",
       "lock": "26.1.2.json"
     }
   }

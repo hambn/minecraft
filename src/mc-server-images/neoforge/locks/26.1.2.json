@@ -521,12 +521,7 @@
       ]
     },
     {
-      "artifact": {
-        "filename": "lootr-neoforge-26.1.2-1.23.38.123.jar",
-        "sha512": "03c4013e0325e0ea53f6c159ea46788a0257db9915fc55db1d8c3c4e8c9492244012e08e38a2c8e28bfee6b27a3c749021f83e4fd07889568e1686840a1e8f52",
-        "size": 1514826,
-        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/nGDBqS5U/lootr-neoforge-26.1.2-1.23.38.123.jar"
-      },
+      "artifact": null,
       "build": null,
       "closure": [
         "lootr"
@@ -539,7 +534,7 @@
         "file_id": null,
         "project_id": "EltpO5cN",
         "slug": "lootr",
-        "version_id": "nGDBqS5U"
+        "version_id": null
       },
       "local": null,
       "metadata": {
@@ -550,21 +545,17 @@
         ],
         "description": "A mod that makes it so nobody misses out on Loot! All loot chests are instanced per player and visually unique.",
         "homepage": "https://modrinth.com/mod/lootr",
-        "license": "MIT",
+        "license": "LicenseRef-All-Rights-Reserved",
         "missing": [],
         "name": "Lootr",
-        "version": "1.23.38.123"
+        "version": null
       },
-      "reason": null,
-      "selectable": true,
+      "reason": "license 'LicenseRef-All-Rights-Reserved' is not on the redistribution allowlist (licenses.yml); no author permission recorded",
+      "selectable": false,
       "source": "modrinth",
-      "status": "compatible",
-      "supported_loaders": [
-        "neoforge"
-      ],
-      "supported_minecraft_versions": [
-        "26.1.2"
-      ]
+      "status": "unavailable",
+      "supported_loaders": [],
+      "supported_minecraft_versions": []
     },
     {
       "artifact": null,
@@ -724,7 +715,7 @@
         "name": "Simple Backups",
         "version": "1.20.1-3.1.19"
       },
-      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.1.2 (neoforge 26.1.2.129)",
+      "reason": "supports Minecraft 1.20.1 (neoforge); this image is Minecraft 26.1.2 (neoforge 26.1.2.130)",
       "selectable": false,
       "source": "modrinth",
       "status": "unsupported_fallback",
@@ -948,7 +939,7 @@
     }
   ],
   "image": "minecraft-server-neoforge",
-  "inputs_hash": "sha256:5b1e124b568cdcfdbc77f81a9039417c2838d95df2668e98ad17f7608df82fbd",
+  "inputs_hash": "sha256:842210b8cfde109fe494dc55a144effb11b6bd1386f096c9f451478446d59bd3",
   "minecraft_version": "26.1.2",
   "runtime": {
     "base_digest": "sha256:4ed132f6832e9804b123e89a849a7b4502756ae64a4ee08ebab939d9d5d0a9fa",
@@ -961,12 +952,12 @@
     "details": {
       "downloads": {
         "installer": {
-          "sha1": "04bb807e775ee5a4ac117977c6f7a6e0775fd1ec",
-          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.129/neoforge-26.1.2.129-installer.jar"
+          "sha1": "ed78b45171441ef57036b4dea5b218fcc9dfa8fb",
+          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.130/neoforge-26.1.2.130-installer.jar"
         }
       }
     },
-    "loader_version": "26.1.2.129",
+    "loader_version": "26.1.2.130",
     "reason": null,
     "status": "available"
   }
