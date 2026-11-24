@@ -1,10 +1,10 @@
 {
   "entries": [],
   "image": "minecraft-server-pumpkin",
-  "inputs_hash": "sha256:01c9b816bd2dce93e8f801e163b4be0cb3bf691807a88368c94d50dabe91d837",
+  "inputs_hash": "sha256:72db603342922c4e7ea7fd49412026d3fda61b72fcff7a7726f75b39d22726b3",
   "minecraft_version": "26.3",
   "runtime": {
-    "base_digest": "sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2",
+    "base_digest": "sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0",
     "base_image": "debian:trixie-slim",
     "java_major": null
   },
