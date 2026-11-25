@@ -101,10 +101,10 @@
     },
     {
       "artifact": {
-        "filename": "cloth-config-fabric-26.3.159.jar",
-        "sha512": "8924e19d41845096724fa10f3717bc51964a0edbbbcad0ff1e6c6187a398b08f356e49579a657c2dc44a7f92e3850771f3ca70bf8c1f654de60425163b91dbb1",
-        "size": 1135009,
-        "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/fg2uyxOW/cloth-config-fabric-26.3.159.jar"
+        "filename": "cloth-config-fabric-26.3.161.jar",
+        "sha512": "6c258fd152cc37d54d08e39a28bcf1e0bf663079f5c49dcd38d4065d9ec74b902de0c65f2bcea0525ed35e4a25da76b0f4c5e88255799e3abca3426d838f86d5",
+        "size": 1135028,
+        "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/x10ElkQ0/cloth-config-fabric-26.3.161.jar"
       },
       "build": null,
       "closure": [
@@ -118,7 +118,7 @@
         "file_id": null,
         "project_id": "9s6osm5g",
         "slug": "cloth-config",
-        "version_id": "fg2uyxOW"
+        "version_id": "x10ElkQ0"
       },
       "local": null,
       "metadata": {
@@ -130,7 +130,7 @@
         "license": "LGPL-3.0-only",
         "missing": [],
         "name": "Cloth Config API",
-        "version": "26.3.159+fabric"
+        "version": "26.3.161+fabric"
       },
       "reason": null,
       "selectable": true,
@@ -925,7 +925,7 @@
     }
   ],
   "image": "minecraft-server-fabric",
-  "inputs_hash": "sha256:ef9fabb35a67b33b4db32137a9a0468c19b78c5f743d8e30c6b9c3e91cee353b",
+  "inputs_hash": "sha256:9aef5222c6761c43365b4facb73ae57597f45c4f099c925e52b7b127ce96c805",
   "minecraft_version": "26.3",
   "runtime": {
     "base_digest": "sha256:4ed132f6832e9804b123e89a849a7b4502756ae64a4ee08ebab939d9d5d0a9fa",
