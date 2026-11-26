@@ -14,7 +14,7 @@ ARG REPO=hambn/minecraft
 RUN PYTHONPATH=.github/scripts python -m server_images site-data --repo "$REPO" --out /site-data.json
 
 # 2. Build the static site, served from "/".
-FROM node:24-slim AS build
+FROM node:25-slim AS build
 ENV PNPM_HOME=/pnpm PATH=/pnpm:$PATH
 RUN corepack enable
 WORKDIR /web
