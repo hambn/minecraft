@@ -541,8 +541,8 @@
       "metadata": {
         "authors": [
           "creeper123123321",
-          "florianreuth",
-          "kennytv"
+          "kennytv",
+          "florianreuth"
         ],
         "description": "Allow older Java Edition clients to connect to newer servers.",
         "homepage": "https://modrinth.com/mod/viabackwards",
@@ -851,7 +851,7 @@
     }
   ],
   "image": "minecraft-server-paper",
-  "inputs_hash": "sha256:5c3b078f7f0b411403ecaf5cb3b4173c8aebae9e77cbe9e66cb20aff3d7865ce",
+  "inputs_hash": "sha256:c25cea0ee56ad71c113bb78764791f35bfb1b691fa456c25aeee2ca0b31235a7",
   "minecraft_version": "26.2",
   "runtime": {
     "base_digest": "sha256:4ed132f6832e9804b123e89a849a7b4502756ae64a4ee08ebab939d9d5d0a9fa",
